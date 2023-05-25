@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import os
 from lib.utils import *
-from lib.agents import *
+# from lib.agents import *
 
 #label2id = {tool: idx-1 for idx, tool in enumerate(os.listdir(dataset_folder)) if tool[0] != '.'}
 #id2label = {v: k for k, v in label2id.items()}
@@ -19,7 +19,7 @@ np.random.seed(SEED)
 dataset_folder = os.path.join(os.getcwd(), 'mechanical_tools')
 tools = [tool for tool in os.listdir(dataset_folder) if tool[0] != '.']
 
-df = get_data(dataset_folder, tools, POSITIVE_TOOL, SIZE, samples=100, balanced=True)
+df = get_data(dataset_folder, tools, POSITIVE_TOOL, SIZE, samples=200, balanced=True)
 df.to_pickle('dataset.pkl')
 
 #df_train, df_test = train_test_split(df, test_size=0.2, random_state=SEED, shuffle=True)

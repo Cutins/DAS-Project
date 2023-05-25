@@ -24,7 +24,7 @@ SEED = 25
 np.random.seed(SEED)
 
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic" # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy" # {"Quadratic", "BinaryCrossEntropy"}
 
 # Load DataFrame
 file = open('dataset.pkl', 'rb')
@@ -43,18 +43,21 @@ N_BATCH = len(df_train) // BATCHSIZE + 1
 ###############################################################################
 # Cost Function
 def cost_fucnt(Y,xT, mask=None):
-
-    if mask is not None:
-            Y = Y*mask
-            xT = xT*mask
+    xT0 = xT[0]
 
     if CostFunct == "BinaryCrossEntropy":
-            pass
+            J = -(Y*np.log(xT0) + (1-Y)*(np.log(1-xT0)))
+            # dJ = (Y/xT0) + (1-Y)/(1-xT0)
+            dJ = (xT0-Y)/(xT0*(1-xT0)+1e-4) #Preso da cidice di Nicholas
+
 
     if CostFunct == "Quadratic":
-            J = (xT - Y).T@(xT - Y)
-            dJ = 2*(xT - Y)
-            
+            J = (xT0 - Y)*(xT0 - Y)
+            dJ = 2*(xT0 - Y)
+         
+    if mask is not None:
+            dJ = dJ*mask
+
     return J, dJ
 
 # Activation Function
