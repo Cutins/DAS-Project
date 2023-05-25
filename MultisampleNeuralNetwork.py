@@ -5,7 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 from PIL import Image
 import os
 import pickle
@@ -18,25 +18,25 @@ D_NEURONS = 16 # Number of neurons for each layer
 T_LAYERS = 3 # Number of layers
 BATCHSIZE = 1 # Dimension of the minibatch set
 
-N_AGENTS = 2
-SEED = 25
-np.random.seed(SEED)
+# N_AGENTS = 2
+# SEED = 25
+# np.random.seed(SEED)
 
-ActivationFunct = "HyTan" # {"Sigmoid", "ReLu", "HyTan"}
+ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
 CostFunct = "Quadratic" # {"Quadratic", "BinaryCrossEntropy"}
 
-# Load DataFrame
-file = open('dataset.pkl', 'rb')
-df = pickle.load(file)
-file.close()
+# # Load DataFrame
+# file = open('dataset.pkl', 'rb')
+# df = pickle.load(file)
+# file.close()
 
-# Create Train & Test split
-df_train, df_test = train_test_split(df, test_size=0.1, random_state=SEED, shuffle=True)
-df_train.reset_index(drop=True, inplace=True)
-df_test.reset_index(drop=True, inplace=True)
+# # Create Train & Test split
+# df_train, df_test = train_test_split(df, test_size=0.1, random_state=SEED, shuffle=True)
+# df_train.reset_index(drop=True, inplace=True)
+# df_test.reset_index(drop=True, inplace=True)
 
-# Divide data in different sets - one for each agent
-data = {n: df_train.iloc[n::N_AGENTS, :].reset_index(drop=True) for n in range(N_AGENTS)}
+# # Divide data in different sets - one for each agent
+# data = {n: df_train.iloc[n::N_AGENTS, :].reset_index(drop=True) for n in range(N_AGENTS)}
 
 N_BATCH = 5#len(df_train) // BATCHSIZE + 1
 ###############################################################################
@@ -156,15 +156,15 @@ CurrentDir = os.path.dirname(os.path.abspath(__file__))
 
 Name = ["000005.jpg", "000007.jpg", "000009.jpg", "000012.jpg", "000022.jpg"]
 
-INPUTS = np.zeros((BATCHSIZE, D_NEURONS)) # 3 Flattened Images with 16 pixels
-LABEL = np.ones((BATCHSIZE, D_NEURONS))
+INPUTS = np.zeros((N_BATCH, D_NEURONS)) # 3 Flattened Images with 16 pixels
+LABEL = np.ones((N_BATCH, D_NEURONS))
 
 if ActivationFunct == "HyTan":
     LABEL[0,:] = -1 #Le immagini sono tutte corde, la prima è un martello
 if ActivationFunct == "Sigmoid":
     LABEL[0,:] = 0 #Le immagini sono tutte corde, la prima è un martello
 
-for i in range(len(Name)):
+for i in range(N_BATCH):
     Path = os.path.join(CurrentDir, "FlattenInput", "Flatten" + Name[i])
     Input = np.array(Image.open(Path))
     InputNormalized = Input/255.
@@ -203,11 +203,11 @@ for k in range(EPOCHS):
         for batch_sample in range(BATCHSIZE):
             idx = (batch_n*BATCHSIZE) + batch_sample
             
-            xx[idx] = forward_pass(INPUTS[idx], uu)
+            xx[batch_sample] = forward_pass(INPUTS[idx], uu)
 
-            loss, llambdaT = cost_fucnt(LABEL[idx], xx[idx,-1,:], mask)
+            loss, llambdaT = cost_fucnt(LABEL[idx], xx[batch_sample,-1,:], mask)
             J[k] += loss
-            _, Grad = backward_pass(xx[idx], uu, llambdaT)
+            _, Grad = backward_pass(xx[batch_sample], uu, llambdaT)
 
             delta_u += Grad / BATCHSIZE
         
@@ -215,8 +215,10 @@ for k in range(EPOCHS):
         NormGradientJ[k] += np.linalg.norm(delta_u) / N_BATCH
     
     if k == EPOCHS-1:
-        for img in range(N_BATCH*BATCHSIZE):
-            print(f"Label for Image {img} was {LABEL[img]} but is classified as:", xx[img,-1, 0])
+        temp = np.zeros((N_BATCH, T_LAYERS, D_NEURONS))
+        for img in range(N_BATCH):
+            temp[img] = forward_pass(INPUTS[img], uu)
+            print(f"Label for Image {img} was {LABEL[img]} but is classified as:", temp[img,-1, 0])
 
 
 
@@ -228,12 +230,13 @@ for k in range(EPOCHS):
 plt.figure('Cost function')
 plt.plot(range(EPOCHS),J)
 plt.title('J')
+plt.grid()
 
 plt.figure('Norm of Cost function')
 plt.semilogy(range(EPOCHS), NormGradientJ)
 plt.title('norm_gradient_J')
-
 plt.grid()
+
 plt.show()
 
 
