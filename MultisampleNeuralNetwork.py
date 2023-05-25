@@ -12,7 +12,7 @@ import os
 import pickle
 
 ###############################################################################
-EPOCHS = 1000
+EPOCHS = 10
 STEPSIZE = 1e-1
 
 D_NEURONS = 16 # Number of neurons for each layer
@@ -24,7 +24,7 @@ SEED = 25
 np.random.seed(SEED)
 
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "BinaryCrossEntropy" # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "Quadratic" # {"Quadratic", "BinaryCrossEntropy"}
 
 # Load DataFrame
 file = open('dataset.pkl', 'rb')
@@ -147,7 +147,22 @@ def backward_pass(xx,uu,llambdaT):
 
     return llambda, delta_u
 
+def accuracy(xT,Y):
+    error = 0
+    success = 0
 
+    if xT>0.5:
+        if Y==0: # Missclassified
+            error += 1
+        else:
+            success += 1
+    else:
+        if Y==0:  #Correctly classified
+            success += 1
+        else:
+            error +=1 
+
+    return success, error
 
 ###############################################################################
 # MAIN
@@ -202,6 +217,9 @@ uu =  np.random.randn(T_LAYERS-1, D_NEURONS, D_NEURONS+1)*1e-1
 mask = np.zeros(D_NEURONS)
 mask[0] = 1
 
+Success = 0
+Error = 0 
+
 # GO!
 for k in range(EPOCHS):
     if k%10==0 and k!=0:
@@ -228,10 +246,14 @@ for k in range(EPOCHS):
     if k == EPOCHS-1:
         for img in range(BATCHSIZE):
             print(f"Label for Image {img} was {LABEL[img]} but is classified as:", xx[img,-1, 0])
+            success, error = accuracy(xx[img,-1, 0],LABEL[img])
+            Success += success
+            Error += error
 
-
-
-
+        PercentageOfSuccess = (Success/(Success+Error))*100
+        print("Correctly classified point: ", Success)
+        print("Wrong classified point: ", Error)
+        print("Percentage of Success: ", PercentageOfSuccess)
 
 ###############################################################################
 # PLOT
