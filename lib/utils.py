@@ -1,3 +1,7 @@
+'''
+Funzioni da usare insieme al "Main_Vecchio_DataSet"
+'''
+
 from tqdm import tqdm
 import os
 import cv2
