@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import tensorflow.keras as ks
+import pandas as pd
 
 ###############################################################################
 # Set seed for reproducibility
@@ -15,25 +16,31 @@ SEED = 25
 np.random.seed(SEED)
 
 ###############################################################################
+# DataFrame Settings
+TARGET = 3
+SIZE = (4,4)
+SAMPLES = 10 # Put even number
+
 # Load DataFrame
 (x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
 
-# DataFrame Settings
-TARGET = 3
-SIZE = (10,10)
-SAMPLES = 128
-
+# Preprocess the image, reshape & normalize
 preprocess = lambda x: cv2.resize(x, SIZE).flatten() / 255.
 x_train = [preprocess(x) for x in x_train]
 x_test  = [preprocess(x) for x in x_test]
 
+# Assign the TARGET
 y_train = [1 if y == TARGET else 0 for y in y_train]
 y_test  = [1 if y == TARGET else 0 for y in y_test]
 
-images = np.array(x_train[:SAMPLES]) # [SAMPLES, image_size]
-labels = np.array(y_train[:SAMPLES]) # [SAMPLES]
+# Select the SAMPLES
+df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
+df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
 
-image_size = images[0].size
+images = np.array(df_train_balanced['image'].tolist())   # [SAMPLES, image_size]
+labels = np.array(df_train_balanced['label'].tolist())  # [SAMPLES]
+
+image_size = images.shape[-1]
 
 print(f'Positive samples {np.sum(labels == 1)}')
 print(f'Negative samples {np.sum(labels == 0)}')
@@ -225,16 +232,20 @@ for epoch in range(EPOCHS):
         uu = uu - (STEP_SIZE * batch_grad)
         NormGradientJ[epoch] += np.linalg.norm(batch_grad) / N_BATCH
 
+for img in range(BATCH_SIZE-1):
+    idx = ((N_BATCH-1)*BATCH_SIZE) + img
+    print(f"Label for Image {idx} was {labels[idx]} but is classified as:", xx[img,-1, 0])
 
+
+###############################################################################
 # Accuracy computation
-# if epoch == EPOCHS-1:
-for img in range(BATCH_SIZE):
-    print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
+for img in range(SAMPLES):
+    xx[img] = forward_pass(images[img], uu)
     success, error = accuracy(xx[img,-1, 0],labels[img])
     successes += success
     errors += error
 
-percentage_of_success = (successes/(successes+errors))*100
+percentage_of_success = (successes/SAMPLES)*100
 print("Correctly classified point: ", successes)
 print("Wrong classified point: ", errors)
 print("Percentage of Success: ", percentage_of_success)

@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import tensorflow.keras as ks
+import pandas as pd
 import networkx as nx
 
 ###############################################################################
@@ -17,29 +18,36 @@ SEED = 25
 np.random.seed(SEED)
 
 ###############################################################################
+# DataFrame Settings
+TARGET = 3
+SIZE = (4,4)
+N_AGENTS = 5
+SAMPLES_PER_AGENT = 6
+SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
+
 # Load DataFrame
 (x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
 
-# DataFrame Settings
-TARGET = 3
-SIZE = (10,10)
-N_AGENTS = 1
-SAMPLES_PER_AGENT = 128
-
+# Preprocess the image, reshape & normalize
 preprocess = lambda x: cv2.resize(x, SIZE).flatten() / 255.
 x_train = [preprocess(x) for x in x_train]
 x_test  = [preprocess(x) for x in x_test]
 
+# Assign the TARGET
 y_train = [1 if y == TARGET else 0 for y in y_train]
 y_test  = [1 if y == TARGET else 0 for y in y_test]
 
-images = np.array([x_train[SAMPLES_PER_AGENT*agent:SAMPLES_PER_AGENT*(agent+1)] for agent in range(N_AGENTS)]).squeeze()# [N_AGENTS, samples_per_agent, image_size]
-labels = np.array([y_train[SAMPLES_PER_AGENT*agent:SAMPLES_PER_AGENT*(agent+1)] for agent in range(N_AGENTS)]).squeeze()# [N_AGENTS, samples_per_agent]
+# Select the SAMPLES
+df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
+df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
 
-image_size = images[0].size
+images = np.array([df_train_balanced['image'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent, image_size]
+labels = np.array([df_train_balanced['label'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent]
 
-print(f'Positive samples {np.sum(labels == 1)}')
-print(f'Negative samples {np.sum(labels == 0)}')
+image_size = images.shape[-1]
+
+print(f'Total positive samples {np.sum(labels == 1)}')
+print(f'Total negative samples {np.sum(labels == 0)}')
 
 ###############################################################################
 # Network setting
@@ -237,9 +245,9 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 10000
 STEP_SIZE = 1e-1
-BATCH_SIZE = 4 # Dimension of the minibatch set
+BATCH_SIZE = 2 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
@@ -296,18 +304,28 @@ for epoch in range(EPOCHS):
         for agent in range(N_AGENTS): 
             uu[agent] = vv[agent]
 
+# for img in range(BATCH_SIZE):
+#     for agents in range(N_AGENTS):
+#         print(f"Label for Image {img} was {labels[agent,img]} but is classified as:", xx[img,-1, 0])
 
-###############################################################################
-# Accuracy computation
-for img in range(BATCH_SIZE):
-    print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
-    success, error = accuracy(xx[img,-1, 0],labels[img])
-    successes += success
-    errors += error
 
-percentage_of_success = (successes/(successes+errors))*100
-print("Correctly classified point: ", successes)
-print("Wrong classified point: ", errors)
-print("Percentage of Success: ", percentage_of_success)
+# for agents in range(N_AGENTS):
+#     for img in range(BATCH_SIZE):
+#         idx = ((N_BATCH-1)*BATCH_SIZE) + img
+#         print(f"Label for Image {idx} was {labels[idx]} but is classified as:", xx[img,-1, 0])
+
+
+# ###############################################################################
+# # Accuracy computation
+# for img in range(BATCH_SIZE):
+#     print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
+#     success, error = accuracy(xx[img,-1, 0],labels[img])
+#     successes += success
+#     errors += error
+
+# percentage_of_success = (successes/(successes+errors))*100
+# print("Correctly classified point: ", successes)
+# print("Wrong classified point: ", errors)
+# print("Percentage of Success: ", percentage_of_success)
 
                 
