@@ -1,46 +1,52 @@
-# 20 may 2023
-# Giulia Cutini
+'''
+20 may 2023
+@ Giulia Cutini, Cenerini Simone, Riccardo Paolini
 
-# Multi-sample Neural-Network (Centralized Training)
+Multi-sample Neural-Network (Distributed Training)
+'''
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.utils import shuffle
+import cv2
+import tensorflow.keras as ks
 import networkx as nx
-import pickle
 
 ###############################################################################
 # Set seed for reproducibility
 SEED = 25
 np.random.seed(SEED)
 
-# Select number of agents
-N_AGENTS = 5
-
+###############################################################################
 # Load DataFrame
-file = open('dataset.pkl', 'rb')
-df = pickle.load(file)
-image_size = df['image'][0].size
-file.close()
+(x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
 
+# DataFrame Settings
+TARGET = 3
+SIZE = (10,10)
+N_AGENTS = 1
+SAMPLES_PER_AGENT = 128
+
+preprocess = lambda x: cv2.resize(x, SIZE).flatten() / 255.
+x_train = [preprocess(x) for x in x_train]
+x_test  = [preprocess(x) for x in x_test]
+
+y_train = [1 if y == TARGET else 0 for y in y_train]
+y_test  = [1 if y == TARGET else 0 for y in y_test]
+
+images = np.array([x_train[SAMPLES_PER_AGENT*agent:SAMPLES_PER_AGENT*(agent+1)] for agent in range(N_AGENTS)]).squeeze()# [N_AGENTS, samples_per_agent, image_size]
+labels = np.array([y_train[SAMPLES_PER_AGENT*agent:SAMPLES_PER_AGENT*(agent+1)] for agent in range(N_AGENTS)]).squeeze()# [N_AGENTS, samples_per_agent]
+
+image_size = images[0].size
+
+print(f'Positive samples {np.sum(labels == 1)}')
+print(f'Negative samples {np.sum(labels == 0)}')
+
+###############################################################################
 # Network setting
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
 CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
-
-###############################################################################
-# Create Train & Test split
-df_train, df_test = train_test_split(df, test_size=0.1, random_state=SEED, shuffle=True)
-df_train.reset_index(drop=True, inplace=True)
-df_test.reset_index(drop=True, inplace=True)
-
-# Divide data in different sets - one for each agent
-samples_per_agent = len(df_train) // N_AGENTS
-
-images = np.array([df_train['image'][n:N_AGENTS*samples_per_agent:N_AGENTS].tolist() for n in range(N_AGENTS)]) # [N_AGENTS, samples_per_agent, image_size]
-labels = np.array([df_train['label'][n:N_AGENTS*samples_per_agent:N_AGENTS].tolist() for n in range(N_AGENTS)]) # [N_AGENTS, samples_per_agent]
 
 #####################################################################################
 #  Generate Network Graph
@@ -99,20 +105,21 @@ print('Col Stochasticity {}'.format(np.sum(WW,axis=0)))
 
 # Cost Function
 def cost_fn(Y,xT, mask=None):
-
-    if mask is not None:
-            Y = Y*mask
-            xT = xT*mask
+    xT0 = xT[0] #It's a scalar
 
     if CostFunct == "BinaryCrossEntropy":
-            #J = - Y @ np.log(xT) + (1 - Y) @ np.log(1 - xT)
-            #dJ = (xT - Y) / (xT * (1 - xT))
-            pass
+            J = -(Y*np.log(xT0) + 1e-10)-((1-Y)*(np.log(1-xT0)) + 1e-10)
+            dJ = -Y/(xT0 + 1e-10) + (1-Y)/(1-xT0 + 1e-10)
+
 
     if CostFunct == "Quadratic":
-            J = (xT - Y).T@(xT - Y)
-            dJ = 2*(xT - Y)
-            
+            J = (xT0 - Y)*(xT0 - Y)
+            dJ = 2*(xT0 - Y)
+
+         
+    if mask is not None:
+            dJ = dJ*mask
+
     return J, dJ
 
 
@@ -205,6 +212,26 @@ def backward_pass(xx, uu, llambdaT):
 
     return llambda, delta_u
 
+# Computes the number of correctly and wrong classified samples
+def accuracy(xT,Y):
+    error = 0
+    success = 0
+
+    if xT>0.5:
+        if Y==0: # Missclassified
+            error += 1
+        else:
+            success += 1
+    else:
+        if Y==0:  #Correctly classified
+            success += 1
+        else:
+            error +=1 
+
+    return success, error
+
+
+
 ###############################################################################
 # MAIN
 ###############################################################################
@@ -213,20 +240,25 @@ def backward_pass(xx, uu, llambdaT):
 EPOCHS = 1000
 STEP_SIZE = 1e-1
 BATCH_SIZE = 4 # Dimension of the minibatch set
-N_BATCH = samples_per_agent // BATCH_SIZE + 1
+N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
+# Network Variables
 xx = np.zeros((N_AGENTS, BATCH_SIZE, T_LAYERS, D_NEURONS))
 weight_init = np.random.randn(T_LAYERS-1, D_NEURONS, D_NEURONS+1)*1e-2
 uu = np.array([weight_init for _ in range(N_AGENTS)])
-print(uu.shape)
-
 vv = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
 #ss = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+
+# Mask for output regression
 mask = np.zeros(D_NEURONS)
 mask[0] = 1
 
 J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
 NormGradientJ = np.zeros((EPOCHS, N_AGENTS))
+
+# Initialization for Accuracy
+successes = 0
+errors = 0
 
 for epoch in range(EPOCHS):
     if epoch % 10 == 0 and epoch != 0:
@@ -236,6 +268,7 @@ for epoch in range(EPOCHS):
         for agent in range(N_AGENTS):
             neighs = np.nonzero(ADJ[agent])[0]
 
+            # Distributed Gradient Algorithm
             vv[agent] = WW[agent, agent] * uu[agent] 
             for neigh in neighs:
                 vv[agent] += WW[agent, neigh] * uu[neigh]
@@ -245,7 +278,7 @@ for epoch in range(EPOCHS):
                 idx = (batch_num*BATCH_SIZE) + batch_el
                 
                 # Skip if samples are finished (last minibatch)
-                if idx >= samples_per_agent:
+                if idx >= SAMPLES_PER_AGENT:
                     break
 
                 xx[agent, batch_el] = forward_pass(images[agent, idx], vv[agent])
@@ -253,14 +286,28 @@ for epoch in range(EPOCHS):
                 loss, out_grad = cost_fn(labels[agent, idx], pred, mask)
                 _, grad = backward_pass(xx[agent, batch_el], vv[agent], out_grad) # out_grad = llambdaT
 
-                J[epoch, agent] += loss / samples_per_agent
+                J[epoch, agent] += loss / SAMPLES_PER_AGENT
                 batch_grad += grad / BATCH_SIZE
 
-            vv[agent] = vv[agent] - STEP_SIZE * batch_grad
+            vv[agent] = vv[agent] - (STEP_SIZE * batch_grad)
             NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad) / N_BATCH
         
         # SYNCHRONOUS UPDATE
         for agent in range(N_AGENTS): 
             uu[agent] = vv[agent]
+
+
+###############################################################################
+# Accuracy computation
+for img in range(BATCH_SIZE):
+    print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
+    success, error = accuracy(xx[img,-1, 0],labels[img])
+    successes += success
+    errors += error
+
+percentage_of_success = (successes/(successes+errors))*100
+print("Correctly classified point: ", successes)
+print("Wrong classified point: ", errors)
+print("Percentage of Success: ", percentage_of_success)
 
                 

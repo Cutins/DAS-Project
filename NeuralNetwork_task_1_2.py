@@ -1,16 +1,13 @@
-# 20 may 2023
-# Giulia Cutini
+'''
+20 may 2023
+@ Giulia Cutini, Cenerini Simone, Riccardo Paolini
 
-# Multi-sample Neural-Network (Centralized Training)
-
+Multi-sample Neural-Network (Centralized Training)
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import tensorflow.keras as ks
-from sklearn.model_selection import train_test_split
-from sklearn.utils import shuffle
-import networkx as nx
-import pickle
 
 ###############################################################################
 # Set seed for reproducibility
@@ -23,7 +20,7 @@ np.random.seed(SEED)
 
 # DataFrame Settings
 TARGET = 3
-SIZE = (4,4)
+SIZE = (10,10)
 SAMPLES = 128
 
 preprocess = lambda x: cv2.resize(x, SIZE).flatten() / 255.
@@ -46,23 +43,23 @@ print(f'Negative samples {np.sum(labels == 0)}')
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 ###############################################################################
 
 # Cost Function
 def cost_fn(Y,xT, mask=None):
-    xT0 = xT[0]
+    xT0 = xT[0] #It's a scalar
 
     if CostFunct == "BinaryCrossEntropy":
-            J = -(Y*np.log(xT0) + (1-Y)*(np.log(1-xT0)))
-            # dJ = (Y/xT0) + (1-Y)/(1-xT0)
-            dJ = (xT0-Y)/(xT0*(1-xT0)+1e-4) #Preso da cidice di Nicholas
+            J = -(Y*np.log(xT0) + 1e-10)-((1-Y)*(np.log(1-xT0)) + 1e-10)
+            dJ = -Y/(xT0 + 1e-10) + (1-Y)/(1-xT0 + 1e-10)
 
 
     if CostFunct == "Quadratic":
             J = (xT0 - Y)*(xT0 - Y)
             dJ = 2*(xT0 - Y)
+
          
     if mask is not None:
             dJ = dJ*mask
@@ -159,6 +156,24 @@ def backward_pass(xx, uu, llambdaT):
 
     return llambda, delta_u
 
+# Computes the number of correctly and wrong classified samples
+def accuracy(xT,Y):
+    error = 0
+    success = 0
+
+    if xT>0.5:
+        if Y==0: # Missclassified
+            error += 1
+        else:
+            success += 1
+    else:
+        if Y==0:  #Correctly classified
+            success += 1
+        else:
+            error +=1 
+
+    return success, error
+
 
 ###############################################################################
 # MAIN
@@ -167,7 +182,7 @@ def backward_pass(xx, uu, llambdaT):
 # Training parameters
 EPOCHS = 1000
 STEP_SIZE = 1e-1
-BATCH_SIZE = 32 # Dimension of the minibatch set
+BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES/BATCH_SIZE))
 
 # Network Variables
@@ -181,8 +196,12 @@ mask[0] = 1
 J = np.zeros(EPOCHS) # Cost function
 NormGradientJ = np.zeros(EPOCHS)
 
+# Initialization for Accuracy
+successes = 0
+errors = 0
+
 for epoch in range(EPOCHS):
-    if epoch % 10 == 0 and epoch != 0:
+    if epoch % 5 == 0 and epoch != 0:
         print(f'Cost at k={epoch:d} is {J[epoch-1]:.4f}')
 
     for batch_num in range(N_BATCH):
@@ -206,4 +225,33 @@ for epoch in range(EPOCHS):
         uu = uu - (STEP_SIZE * batch_grad)
         NormGradientJ[epoch] += np.linalg.norm(batch_grad) / N_BATCH
 
+
+# Accuracy computation
+# if epoch == EPOCHS-1:
+for img in range(BATCH_SIZE):
+    print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
+    success, error = accuracy(xx[img,-1, 0],labels[img])
+    successes += success
+    errors += error
+
+percentage_of_success = (successes/(successes+errors))*100
+print("Correctly classified point: ", successes)
+print("Wrong classified point: ", errors)
+print("Percentage of Success: ", percentage_of_success)
+
+
+###############################################################################
+# PLOT
+###############################################################################
+plt.figure('Cost function')
+plt.plot(range(EPOCHS),J)
+plt.title('J')
+plt.grid()
+
+plt.figure('Norm of Cost function')
+plt.semilogy(range(EPOCHS), NormGradientJ)
+plt.title('norm_gradient_J')
+plt.grid()
+
+plt.show()
                 
