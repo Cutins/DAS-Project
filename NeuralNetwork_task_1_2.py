@@ -5,6 +5,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
+import tensorflow.keras as ks
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 import networkx as nx
@@ -15,29 +17,36 @@ import pickle
 SEED = 25
 np.random.seed(SEED)
 
+###############################################################################
 # Load DataFrame
-file = open('dataset.pkl', 'rb')
-df = pickle.load(file)
-image_size = df['image'][0].size
-file.close()
+(x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
 
+# DataFrame Settings
+TARGET = 3
+SIZE = (4,4)
+SAMPLES = 128
+
+preprocess = lambda x: cv2.resize(x, SIZE).flatten() / 255.
+x_train = [preprocess(x) for x in x_train]
+x_test  = [preprocess(x) for x in x_test]
+
+y_train = [1 if y == TARGET else 0 for y in y_train]
+y_test  = [1 if y == TARGET else 0 for y in y_test]
+
+images = np.array(x_train[:SAMPLES]) # [SAMPLES, image_size]
+labels = np.array(y_train[:SAMPLES]) # [SAMPLES]
+
+image_size = images[0].size
+
+print(f'Positive samples {np.sum(labels == 1)}')
+print(f'Negative samples {np.sum(labels == 0)}')
+
+###############################################################################
 # Network setting
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
 CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
-
-###############################################################################
-# Create Train & Test split
-df_train, df_test = train_test_split(df, test_size=0.1, random_state=SEED, shuffle=True)
-df_train.reset_index(drop=True, inplace=True)
-df_test.reset_index(drop=True, inplace=True)
-
-# Divide data in different sets - one for each agent
-samples = len(df_train)
-
-images = np.array(df_train['image'][:samples]) # [samples, image_size]
-labels = np.array(df_train['label'][:samples]) # [samples]
 
 ###############################################################################
 
@@ -150,6 +159,7 @@ def backward_pass(xx, uu, llambdaT):
 
     return llambda, delta_u
 
+
 ###############################################################################
 # MAIN
 ###############################################################################
@@ -158,7 +168,7 @@ def backward_pass(xx, uu, llambdaT):
 EPOCHS = 1000
 STEP_SIZE = 1e-1
 BATCH_SIZE = 32 # Dimension of the minibatch set
-N_BATCH = np.ceil(samples/BATCH_SIZE)
+N_BATCH = int(np.ceil(SAMPLES/BATCH_SIZE))
 
 # Network Variables
 xx = np.zeros((BATCH_SIZE, T_LAYERS, D_NEURONS))
@@ -181,8 +191,8 @@ for epoch in range(EPOCHS):
         for batch_el in range(BATCH_SIZE):
             idx = (batch_num*BATCH_SIZE) + batch_el
             
-            # Skip if samples are finished (last minibatch)
-            if idx >= samples:
+            # Skip if SAMPLES are finished (last minibatch)
+            if idx >= SAMPLES:
                 break
 
             xx[batch_el] = forward_pass(images[idx], uu)
@@ -190,7 +200,7 @@ for epoch in range(EPOCHS):
             loss, out_grad = cost_fn(labels[idx], pred, mask)
             _, grad = backward_pass(xx[batch_el], uu, out_grad) # out_grad = llambdaT
 
-            J[epoch] += loss / samples
+            J[epoch] += loss / SAMPLES
             batch_grad += grad / BATCH_SIZE
 
         uu = uu - (STEP_SIZE * batch_grad)
