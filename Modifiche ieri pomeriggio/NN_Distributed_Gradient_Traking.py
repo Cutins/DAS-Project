@@ -11,18 +11,22 @@ import cv2
 import tensorflow.keras as ks
 import pandas as pd
 import networkx as nx
+import os
+import pickle
 
 ###############################################################################
 # Set seed for reproducibility
 SEED = 25
 np.random.seed(SEED)
 
+save_weights = True
+
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (4, 4)
+SIZE = (15, 15)
 N_AGENTS = 5
-SAMPLES_PER_AGENT = 80
+SAMPLES_PER_AGENT = 10
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -39,22 +43,25 @@ y_test  = [1 if y == TARGET else 0 for y in y_test]
 
 # Balance the Dataset, select the SAMPLES
 df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
-df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
+df_train_balanced = df_train.sample(SAMPLES, random_state=SEED).sample(frac=1, random_state=SEED)
 
-images = np.array([df_train_balanced['image'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent, image_size]
-labels = np.array([df_train_balanced['label'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent]
+images_train = np.array([df_train_balanced['image'][agent:SAMPLES:N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent, image_size]
+labels_train = np.array([df_train_balanced['label'][agent:SAMPLES:N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent]
 
-image_size = images.shape[-1]
+images_test = np.array([df_train_balanced['image'][agent+SAMPLES::N_AGENTS].tolist() for agent in range(N_AGENTS)])
+labels_test = np.array([df_train_balanced['label'][agent+SAMPLES::N_AGENTS].tolist() for agent in range(N_AGENTS)])
 
-print(f'Total positive samples {np.sum(labels == 1)}')
-print(f'Total negative samples {np.sum(labels == 0)}')
+image_size = images_train.shape[-1]
+
+print(f'Total positive samples {np.sum(labels_train == 1)}')
+print(f'Total negative samples {np.sum(labels_train == 0)}')
 
 ###############################################################################
 # Network setting
-T_LAYERS = 3        # Number of layers
+T_LAYERS = 4        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -124,10 +131,6 @@ def cost_fn(Y,xT0):
     if CostFunct == "Quadratic":
             J = (xT0 - Y)*(xT0 - Y)
             dJ = 2*(xT0 - Y)
-
-         
-    # if mask is not None:
-    #         dJ = dJ*mask
 
     return J, dJ
 
@@ -246,7 +249,7 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 300
 STEP_SIZE = 1e-1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
@@ -261,13 +264,19 @@ ss_plus = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
 batch_grad = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
 prediction = np.zeros((N_AGENTS,SAMPLES))
 
+uu_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+
 J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
 NormGradientJ = np.zeros((EPOCHS, N_AGENTS))
 
 # Initialization for Accuracy
-successes = np.zeros((N_AGENTS))
-errors = np.zeros((N_AGENTS))
-percentage_of_success = np.zeros((N_AGENTS))
+successes_train = np.zeros((N_AGENTS))
+errors_train = np.zeros((N_AGENTS))
+percentage_of_success_train = np.zeros((N_AGENTS))
+successes_test = np.zeros((N_AGENTS))
+errors_test = np.zeros((N_AGENTS))
+percentage_of_success_test = np.zeros((N_AGENTS))
 
 ###############################################################################
 # Initialization of Gradient Tracking Algorithm
@@ -276,11 +285,11 @@ for agent in range(N_AGENTS):
     for idx in range(BATCH_SIZE):
         
         # Forward pass
-        xx = forward_pass(images[agent, idx], uu[agent])
+        xx = forward_pass(images_train[agent, idx], uu[agent])
 
         # Loss evaluation
         out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)out_grad
-        loss, out_grad[0] = cost_fn(labels[agent, idx], xx[-1, 0])
+        loss, out_grad[0] = cost_fn(labels_train[agent, idx], xx[-1, 0])
 
         # Backward pass
         _, grad = backward_pass(xx, uu[agent], out_grad) # out_grad = llambdaT
@@ -293,8 +302,8 @@ for agent in range(N_AGENTS):
 ###############################################################################
 # Training
 for epoch in range(EPOCHS):
-    if epoch % 10 == 0 and epoch != 0:
-        print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f}')
+    if epoch % 1 == 0 and epoch != 0:
+        print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.4f}')
 
     for batch_num in range(N_BATCH):
         for agent in range(N_AGENTS):
@@ -315,12 +324,12 @@ for epoch in range(EPOCHS):
                     break
 
                 # Forward pass
-                xx = forward_pass(images[agent, idx], uu_plus[agent])
+                xx = forward_pass(images_train[agent, idx], uu_plus[agent])
                 prediction[agent,idx] = xx[-1, 0] # prediction <= value of the first neuron in the last layer
 
                 # Loss evalutation
                 out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
-                loss, out_grad[0] = cost_fn(labels[agent, idx], prediction[agent,idx])
+                loss, out_grad[0] = cost_fn(labels_train[agent, idx], prediction[agent,idx])
 
                 # Backward pass
                 _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
@@ -334,46 +343,80 @@ for epoch in range(EPOCHS):
             ss_plus[agent] = (WW[agent, agent] * ss[agent]) + (batch_grad_plus - batch_grad[agent])
             for neigh in neighs:
                 ss_plus[agent] += WW[agent, neigh] * ss[neigh]
+            
+            batch_grad[agent] = batch_grad_plus
         
         # SYNCHRONOUS UPDATE
         for agent in range(N_AGENTS): 
             uu[agent] = uu_plus[agent]
             ss[agent] = ss_plus[agent]
-            
-    print('WEIGHTS')
-    print(uu[0])
-    print('\nAUX GRADS')
-    print(ss[0])
-    input()
+
+            ss_ELIMINA[epoch,agent] = ss[agent]     # ELIMINAMI
+            uu_ELIMINA[epoch, agent] = uu[agent]    # ELIMINAMI
+
+# Computes the mean error over uu
+uu_mean = np.mean(uu, axis=0)
+for agent in range(N_AGENTS):
+    print(f'The Agent {agent} has mean error = {np.linalg.norm(uu_mean - uu[agent])}')
+
 
 print('\n\nTRAINING SET\n')
+for agent in range(N_AGENTS):
+    for batch_el in range(BATCH_SIZE):
+        idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+        print(f"[Agent {agent}] Label for Image {idx} was {labels_train[agent,idx]} but is classified as :{prediction[agent,idx]:.4f}")
+    print()
+
+print('\n\nTEST SET\n')
 for agents in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
-        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as {prediction[agent,idx]:.4f}:")
+        print(f"[Agent {agents}] Label for the SAME Image {idx} was {labels_test[0, idx]} but is classified as {forward_pass(images_test[0, idx], uu[agent])[-1,0]:.4f}")
     print()
 
 
 # ###############################################################################
 # Accuracy computation
+print('\n--------------TRAINING SCORES----------------')
 for agent in range(N_AGENTS):
     for img in range(SAMPLES_PER_AGENT):
-        success, error = accuracy(prediction[agent,img],labels[agent,img])
-        successes[agent] += success
-        errors[agent] += error
+        success, error = accuracy(prediction[agent,img],labels_train[agent,img])
+        successes_train[agent] += success
+        errors_train[agent] += error
 
-    percentage_of_success[agent] = (successes[agent]/(SAMPLES_PER_AGENT))*100
+    percentage_of_success_train[agent] = (successes_train[agent]/(SAMPLES_PER_AGENT))*100
     print('\nAGENT: ', agent)
-    print("Correctly classified point: ", successes[agent])
-    print("Wrong classified point: ", errors[agent])
-    print(f"Percentage of Success: {percentage_of_success[agent]:.4f}" )   
+    print("Correctly classified point: ", successes_train[agent])
+    print("Wrong classified point: ", errors_train[agent])
+    print(f"Accuracy: {percentage_of_success_train[agent]:.4f}" )  
 
+print('\n------------------TEST SCORES-----------------')
+for agent in range(N_AGENTS):
+    for img in range(SAMPLES_PER_AGENT):
+        output = forward_pass(images_test[0,img], uu[agent])
+        success, error = accuracy(output[-1, 0], labels_test[0,img])
+        successes_test[agent] += success
+        errors_test[agent] += error
+
+    percentage_of_success_test[agent] = (successes_test[agent]/(SAMPLES_PER_AGENT))*100
+    print('\nAGENT: ', agent)
+    print("Correctly classified point: ", successes_test[agent])
+    print("Wrong classified point: ", errors_test[agent])
+    print(f"Accuracy: {percentage_of_success_test[agent]:.4f}" ) 
+
+###############################################################################
+# Save weights of agent 0 (theoretically at consensous)
+if save_weights:
+    weights_file = f'Grad_Track-weights_{SIZE[0]}x{SIZE[1]}_E{EPOCHS}_S{SAMPLES}_B{BATCH_SIZE}.pkl'
+    weights_path = os.path.join(os.getcwd(), 'weights', weights_file)
+    with open(weights_path, 'wb') as f:
+        pickle.dump(uu[0], f)
                 
 ###############################################################################
 # PLOT
 ###############################################################################
 plt.figure('Cost function')
-plt.plot(range(EPOCHS),np.sum(J, axis=-1)/N_AGENTS, label='Total Normalized Cost Evolution', linewidth = 3)
+plt.plot(range(EPOCHS),np.sum(J, axis=1)/N_AGENTS, label='Total Normalized Cost Evolution', linewidth = 3)
 for agent in range(N_AGENTS):
      plt.plot(range(EPOCHS), J[:, agent], linestyle = ':')
 plt.xlabel(r'Epochs')
@@ -385,10 +428,37 @@ plt.grid()
 plt.figure('Norm of Cost function')
 plt.semilogy(range(EPOCHS), np.sum(NormGradientJ, axis=-1)/N_AGENTS, label='Total Gradient Evolution', linewidth = 3)
 for agent in range(N_AGENTS):
-     plt.plot(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
+    plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('norm_gradient_J')
+plt.grid()
+
+# ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+mean_along_layers_ss = np.mean(ss_ELIMINA, axis=2)
+mean_along_neurons_ss = np.mean(mean_along_layers_ss, axis=(2,3))
+ss_mean = mean_along_neurons_ss
+
+mean_along_layers_uu = np.mean(uu_ELIMINA, axis=2)
+mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
+uu_mean = mean_along_neurons_uu
+
+plt.figure('SS evolution')
+plt.semilogy(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
+for agent in range(N_AGENTS):
+    plt.semilogy(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
+plt.xlabel(r'Epochs')
+plt.legend()
+plt.title('SS')
+plt.grid()
+
+plt.figure('UU (Weights) evolution')
+plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
+for agent in range(N_AGENTS):
+    plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
+plt.xlabel(r'Epochs')
+plt.legend()
+plt.title('UU')
 plt.grid()
 
 plt.show()

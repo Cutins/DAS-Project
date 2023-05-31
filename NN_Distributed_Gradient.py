@@ -57,7 +57,7 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -127,10 +127,6 @@ def cost_fn(Y,xT0):
     if CostFunct == "Quadratic":
             J = (xT0 - Y)*(xT0 - Y)
             dJ = 2*(xT0 - Y)
-
-         
-    # if mask is not None:
-    #         dJ = dJ*mask
 
     return J, dJ
 
@@ -364,21 +360,7 @@ for agent in range(N_AGENTS):
     print("Correctly classified point: ", successes_test[agent])
     print("Wrong classified point: ", errors_test[agent])
     print(f"Accuracy: {percentage_of_success_test[agent]:.4f}" ) 
-               
-
-# ###############################################################################
-# # Accuracy computation
-# for agent in range(N_AGENTS):
-#     for img in range(SAMPLES_PER_AGENT):
-#         success, error = accuracy(prediction[agent,img],labels[agent,img])
-#         successes[agent] += success
-#         errors[agent] += error
-
-#     percentage_of_success[agent] = (successes[agent]/(SAMPLES_PER_AGENT))*100
-#     print('\nAGENT: ', agent)
-#     print("Correctly classified point: ", successes[agent])
-#     print("Wrong classified point: ", errors[agent])
-#     print(f"Percentage of Success: {percentage_of_success[agent]:.4f}" )   
+                
 
                 
 ###############################################################################
@@ -397,7 +379,7 @@ plt.grid()
 plt.figure('Norm of Cost function')
 plt.semilogy(range(EPOCHS), np.sum(NormGradientJ, axis=-1)/N_AGENTS, label='Total Gradient Evolution', linewidth = 3)
 for agent in range(N_AGENTS):
-     plt.plot(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
+     plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('norm_gradient_J')

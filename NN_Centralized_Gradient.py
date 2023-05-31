@@ -275,6 +275,7 @@ print("Correctly classified point: ", successes_test)
 print("Wrong classified point: ", errors_test)
 print(f"Accuracy: {accuracy_test:.2f}")
 
+###############################################################################
 # Save weights
 if save_weights:
     weights_file = f'weights_{SIZE[0]}x{SIZE[1]}_E{EPOCHS}_S{SAMPLES}_B{BATCH_SIZE}.pkl'
