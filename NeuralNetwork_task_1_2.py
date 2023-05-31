@@ -5,21 +5,25 @@
 Multi-sample Neural-Network (Centralized Training)
 '''
 import numpy as np
+import pickle
 import matplotlib.pyplot as plt
 import cv2
 import tensorflow.keras as ks
 import pandas as pd
+import os
 
 ###############################################################################
 # Set seed for reproducibility
 SEED = 25
 np.random.seed(SEED)
 
+save_weights = True
+
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
 SIZE = (4,4)
-SAMPLES = 200 # Put even number
+SAMPLES = 800 # Put even number
 
 # Load DataFrame
 (x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
@@ -193,7 +197,7 @@ def get_accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 10
 STEP_SIZE = 1e-1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES/BATCH_SIZE))
@@ -239,17 +243,19 @@ for epoch in range(EPOCHS):
         NormGradientJ[epoch] += np.linalg.norm(batch_grad) / N_BATCH
 
 print('\n\nTRAINING SET\n')
-for img in range(SAMPLES):
-    print(f"Label for Image {img} was {labels[img]} but is classified as:", prediction[img])
+for batch_el in range(BATCH_SIZE):
+    idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+    print(f"Label for Image {idx} was {labels[idx]} but is classified as:", prediction[idx])
 
 print('\n\nTEST SET\n')
-for idx, img in enumerate(images_test):
+for idx in range(BATCH_SIZE):
+    print(f"Label for Image {idx} was {labels_test[idx]} but is classified as:", forward_pass(images_test[idx], uu)[-1, 0])  
     print(f"Label for Image {idx} was {labels_test[idx]} but is classified as:", forward_pass(img, uu)[-1, 0])
 
 ###############################################################################
 # Accuracy computation
-for img in range(SAMPLES):
-    success, error = get_accuracy(prediction[img],labels[img])
+for idx in range(SAMPLES):
+    success, error = get_accuracy(prediction[idx],labels[idx])
     successes_train += success
     errors_train += error
 
@@ -270,18 +276,26 @@ print("Correctly classified point: ", successes_test)
 print("Wrong classified point: ", errors_test)
 print("Percentage of Success: ", accuracy_test)
 
+# Save weights
+if save_weights:
+    weights_file = f'weights_{SIZE[0]}x{SIZE[1]}_{EPOCHS}_{SAMPLES}_{BATCH_SIZE}_{STEP_SIZE}.pkl'
+    weights_path = os.path.join(os.getcwd(), 'weights', weights_file)
+    with open(weights_path, 'wb') as f:
+        pickle.dump(uu, f)
+
+
 ###############################################################################
 # PLOT
 ###############################################################################
-plt.figure('Cost function')
-plt.plot(range(EPOCHS),J)
-plt.title('J')
-plt.grid()
+# plt.figure('Cost function')
+# plt.plot(range(EPOCHS),J)
+# plt.title('J')
+# plt.grid()
 
-plt.figure('Norm of Cost function')
-plt.semilogy(range(EPOCHS), NormGradientJ)
-plt.title('norm_gradient_J')
-plt.grid()
+# plt.figure('Norm of Cost function')
+# plt.semilogy(range(EPOCHS), NormGradientJ)
+# plt.title('norm_gradient_J')
+# plt.grid()
 
-plt.show()
+# plt.show()
                 
