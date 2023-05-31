@@ -20,7 +20,7 @@ np.random.seed(SEED)
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (4,4)
+SIZE = (4, 4)
 N_AGENTS = 5
 SAMPLES_PER_AGENT = 6
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
@@ -73,7 +73,7 @@ if GRAPH_TYPE == "Star":
 	G = nx.star_graph(N_AGENTS-1)
 	nx.draw(G, with_labels=True)
 
-plt.show()
+# plt.show()s
 
 ID_AGENTS = np.identity(N_AGENTS, dtype=int)
 
@@ -104,16 +104,17 @@ for ii in range(N_AGENTS):
 
    WW[ii,ii] = 1-np.sum(WW[ii,:])
 
-print(WW)
-
 print('Row Stochasticity {}'.format(np.sum(WW,axis=1)))
 print('Col Stochasticity {}'.format(np.sum(WW,axis=0)))
 
 ###############################################################################
 
 # Cost Function
-def cost_fn(Y,xT, mask=None):
-    xT0 = xT[0] #It's a scalar
+def cost_fn(Y,xT0):
+    '''
+    Y [Scalar]
+    XT0 [Scalar]
+    '''
 
     if CostFunct == "BinaryCrossEntropy":
             J = -(Y*np.log(xT0) + 1e-10)-((1-Y)*(np.log(1-xT0)) + 1e-10)
@@ -125,8 +126,8 @@ def cost_fn(Y,xT, mask=None):
             dJ = 2*(xT0 - Y)
 
          
-    if mask is not None:
-            dJ = dJ*mask
+    # if mask is not None:
+    #         dJ = dJ*mask
 
     return J, dJ
 
@@ -245,7 +246,7 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 10000
+EPOCHS = 1000
 STEP_SIZE = 1e-1
 BATCH_SIZE = 2 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
@@ -256,17 +257,15 @@ weight_init = np.random.randn(T_LAYERS-1, D_NEURONS, D_NEURONS+1)*1e-2
 uu = np.array([weight_init for _ in range(N_AGENTS)])
 vv = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
 #ss = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
-
-# Mask for output regression
-mask = np.zeros(D_NEURONS)
-mask[0] = 1
+prediction = np.zeros((N_AGENTS,SAMPLES))
 
 J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
 NormGradientJ = np.zeros((EPOCHS, N_AGENTS))
 
 # Initialization for Accuracy
-successes = 0
-errors = 0
+successes = np.zeros((N_AGENTS))
+errors = np.zeros((N_AGENTS))
+percentage_of_success = np.zeros((N_AGENTS))
 
 for epoch in range(EPOCHS):
     if epoch % 10 == 0 and epoch != 0:
@@ -290,8 +289,9 @@ for epoch in range(EPOCHS):
                     break
 
                 xx[agent, batch_el] = forward_pass(images[agent, idx], vv[agent])
-                pred = xx[agent, batch_el, -1, :]
-                loss, out_grad = cost_fn(labels[agent, idx], pred, mask)
+                prediction[agent,idx] = xx[agent, batch_el, -1, 0]
+                out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
+                loss, out_grad[0] = cost_fn(labels[agent, idx], prediction[agent,idx])
                 _, grad = backward_pass(xx[agent, batch_el], vv[agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
@@ -304,28 +304,51 @@ for epoch in range(EPOCHS):
         for agent in range(N_AGENTS): 
             uu[agent] = vv[agent]
 
-# for img in range(BATCH_SIZE):
-#     for agents in range(N_AGENTS):
-#         print(f"Label for Image {img} was {labels[agent,img]} but is classified as:", xx[img,-1, 0])
 
 
-# for agents in range(N_AGENTS):
-#     for img in range(BATCH_SIZE):
-#         idx = ((N_BATCH-1)*BATCH_SIZE) + img
-#         print(f"Label for Image {idx} was {labels[idx]} but is classified as:", xx[img,-1, 0])
+print('\n\nTRAINING SET\n')
+for agents in range(N_AGENTS):
+    for batch_el in range(BATCH_SIZE):
+        idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as:", prediction[agent,idx])
+    print()
 
 
 # ###############################################################################
-# # Accuracy computation
-# for img in range(BATCH_SIZE):
-#     print(f"Label for Image {img} was {labels[img]} but is classified as:", xx[img,-1, 0])
-#     success, error = accuracy(xx[img,-1, 0],labels[img])
-#     successes += success
-#     errors += error
+# Accuracy computation
+for agent in range(N_AGENTS):
+    for img in range(SAMPLES_PER_AGENT):
+        success, error = accuracy(prediction[agent,img],labels[agent,img])
+        successes[agent] += success
+        errors[agent] += error
 
-# percentage_of_success = (successes/(successes+errors))*100
-# print("Correctly classified point: ", successes)
-# print("Wrong classified point: ", errors)
-# print("Percentage of Success: ", percentage_of_success)
+    percentage_of_success[agent] = (successes[agent]/(SAMPLES_PER_AGENT))*100
+    print('\nAGENT: ', agent)
+    print("Correctly classified point: ", successes[agent])
+    print("Wrong classified point: ", errors[agent])
+    print("Percentage of Success: ", percentage_of_success[agent])   
 
                 
+###############################################################################
+# PLOT
+###############################################################################
+plt.figure('Cost function')
+plt.plot(range(EPOCHS),np.sum(J, axis=-1)/N_AGENTS, label='Total Normalized Cost Evolution', linewidth = 3)
+for agent in range(N_AGENTS):
+     plt.plot(range(EPOCHS), J[:, agent], linestyle = ':')
+plt.xlabel(r'Epochs')
+plt.ylabel(r'J')
+plt.legend()
+plt.title('J')
+plt.grid()
+
+plt.figure('Norm of Cost function')
+plt.semilogy(range(EPOCHS), np.sum(NormGradientJ, axis=-1)/N_AGENTS, label='Total Gradient Evolution', linewidth = 3)
+for agent in range(N_AGENTS):
+     plt.plot(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
+plt.xlabel(r'Epochs')
+plt.legend()
+plt.title('norm_gradient_J')
+plt.grid()
+
+plt.show()

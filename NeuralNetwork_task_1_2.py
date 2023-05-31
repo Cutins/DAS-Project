@@ -19,7 +19,7 @@ np.random.seed(SEED)
 # DataFrame Settings
 TARGET = 3
 SIZE = (4,4)
-SAMPLES = 50 # Put even number
+SAMPLES = 200 # Put even number
 
 # Load DataFrame
 (x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
@@ -35,10 +35,13 @@ y_test  = [1 if y == TARGET else 0 for y in y_test]
 
 # Balance the Dataset, select the SAMPLES
 df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
-df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
+df_train_balanced = df_train.sample(SAMPLES, random_state=SEED).sample(frac=1, random_state=SEED).reset_index(drop=True)
 
-images = np.array(df_train_balanced['image'].tolist())   # [SAMPLES, image_size]
-labels = np.array(df_train_balanced['label'].tolist())  # [SAMPLES]
+images = np.array(df_train_balanced['image'][:SAMPLES].tolist())   # [SAMPLES, image_size]
+labels = np.array(df_train_balanced['label'][:SAMPLES].tolist())   # [SAMPLES]
+
+images_test = np.array(df_train_balanced['image'][SAMPLES:].tolist())
+labels_test = np.array(df_train_balanced['label'][SAMPLES:].tolist())
 
 image_size = images.shape[-1]
 
@@ -167,7 +170,7 @@ def backward_pass(xx, uu, llambdaT):
     return llambda, delta_u
 
 # Computes the number of correctly and wrong classified samples
-def accuracy(xT,Y):
+def get_accuracy(xT,Y):
     error = 0
     success = 0
 
@@ -204,8 +207,10 @@ J = np.zeros(EPOCHS) # Cost function
 NormGradientJ = np.zeros(EPOCHS)
 
 # Initialization for Accuracy
-successes = 0
-errors = 0
+successes_train = 0
+successes_test  = 0
+errors_train = 0
+errors_test  = 0
 
 for epoch in range(EPOCHS):
     if epoch % 5 == 0 and epoch != 0:
@@ -233,22 +238,37 @@ for epoch in range(EPOCHS):
         uu = uu - (STEP_SIZE * batch_grad)
         NormGradientJ[epoch] += np.linalg.norm(batch_grad) / N_BATCH
 
+print('\n\nTRAINING SET\n')
 for img in range(SAMPLES):
     print(f"Label for Image {img} was {labels[img]} but is classified as:", prediction[img])
 
+print('\n\nTEST SET\n')
+for idx, img in enumerate(images_test):
+    print(f"Label for Image {idx} was {labels_test[idx]} but is classified as:", forward_pass(img, uu)[-1, 0])
 
 ###############################################################################
 # Accuracy computation
 for img in range(SAMPLES):
-    success, error = accuracy(prediction[img],labels[img])
-    successes += success
-    errors += error
+    success, error = get_accuracy(prediction[img],labels[img])
+    successes_train += success
+    errors_train += error
 
-percentage_of_success = (successes/SAMPLES)*100
-print("Correctly classified point: ", successes)
-print("Wrong classified point: ", errors)
-print("Percentage of Success: ", percentage_of_success)
+for idx, img in enumerate(images_test):
+    success, error = get_accuracy(forward_pass(img, uu)[-1, 0], labels_test[idx])
+    successes_test += success
+    errors_test += error   
 
+accuracy = (successes_train/SAMPLES)*100
+print('\nTRAINING SCORES')
+print("Correctly classified point: ", successes_train)
+print("Wrong classified point: ", errors_train)
+print("Percentage of Success: ", accuracy)
+
+accuracy_test = (successes_test/(successes_test + errors_test))*100
+print('\nTEST SCORES')
+print("Correctly classified point: ", successes_test)
+print("Wrong classified point: ", errors_test)
+print("Percentage of Success: ", accuracy_test)
 
 ###############################################################################
 # PLOT
