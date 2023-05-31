@@ -22,7 +22,7 @@ np.random.seed(SEED)
 TARGET = 3
 SIZE = (4, 4)
 N_AGENTS = 5
-SAMPLES_PER_AGENT = 80
+SAMPLES_PER_AGENT = 800
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -247,7 +247,7 @@ def accuracy(xT,Y):
 
 # Training parameters
 EPOCHS = 1000
-STEP_SIZE = 1e-1
+STEP_SIZE = 1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
@@ -334,23 +334,25 @@ for epoch in range(EPOCHS):
             ss_plus[agent] = (WW[agent, agent] * ss[agent]) + (batch_grad_plus - batch_grad[agent])
             for neigh in neighs:
                 ss_plus[agent] += WW[agent, neigh] * ss[neigh]
+            
+            batch_grad[agent] = batch_grad_plus
         
         # SYNCHRONOUS UPDATE
         for agent in range(N_AGENTS): 
             uu[agent] = uu_plus[agent]
             ss[agent] = ss_plus[agent]
             
-    print('WEIGHTS')
-    print(uu[0])
-    print('\nAUX GRADS')
-    print(ss[0])
-    input()
+
+uu_mean = np.mean(uu, axis=0)
+for agent in range(N_AGENTS):
+    print(f'The Agent {agent} has mean error = {np.linalg.norm(uu_mean - uu[agent])}')
+
 
 print('\n\nTRAINING SET\n')
-for agents in range(N_AGENTS):
+for agent in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
-        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as {prediction[agent,idx]:.4f}:")
+        print(f"[Agent {agent}] Label for Image {idx} was {labels[agent,idx]} but is classified as :{prediction[agent,idx]:.4f}")
     print()
 
 
