@@ -197,7 +197,7 @@ def get_accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 10
+EPOCHS = 1000
 STEP_SIZE = 1e-1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES/BATCH_SIZE))
@@ -245,12 +245,11 @@ for epoch in range(EPOCHS):
 print('\n\nTRAINING SET\n')
 for batch_el in range(BATCH_SIZE):
     idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
-    print(f"Label for Image {idx} was {labels[idx]} but is classified as:", prediction[idx])
+    print(f"Label for Image {idx} was {labels[idx]} but is classified as: {prediction[idx]:.4f}")
 
 print('\n\nTEST SET\n')
 for idx in range(BATCH_SIZE):
-    print(f"Label for Image {idx} was {labels_test[idx]} but is classified as:", forward_pass(images_test[idx], uu)[-1, 0])  
-    print(f"Label for Image {idx} was {labels_test[idx]} but is classified as:", forward_pass(img, uu)[-1, 0])
+    print(f"Label for Image {idx} was {labels_test[idx]} but is classified as: {forward_pass(images_test[idx], uu)[-1, 0]:.4f}")
 
 ###############################################################################
 # Accuracy computation
@@ -268,17 +267,17 @@ accuracy = (successes_train/SAMPLES)*100
 print('\nTRAINING SCORES')
 print("Correctly classified point: ", successes_train)
 print("Wrong classified point: ", errors_train)
-print("Percentage of Success: ", accuracy)
+print(f"Accuracy: {accuracy:.2f}")
 
 accuracy_test = (successes_test/(successes_test + errors_test))*100
 print('\nTEST SCORES')
 print("Correctly classified point: ", successes_test)
 print("Wrong classified point: ", errors_test)
-print("Percentage of Success: ", accuracy_test)
+print(f"Accuracy: {accuracy_test:.2f}")
 
 # Save weights
 if save_weights:
-    weights_file = f'weights_{SIZE[0]}x{SIZE[1]}_{EPOCHS}_{SAMPLES}_{BATCH_SIZE}_{STEP_SIZE}.pkl'
+    weights_file = f'weights_{SIZE[0]}x{SIZE[1]}_E{EPOCHS}_S{SAMPLES}_B{BATCH_SIZE}.pkl'
     weights_path = os.path.join(os.getcwd(), 'weights', weights_file)
     with open(weights_path, 'wb') as f:
         pickle.dump(uu, f)

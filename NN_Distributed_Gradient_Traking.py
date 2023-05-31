@@ -22,7 +22,7 @@ np.random.seed(SEED)
 TARGET = 3
 SIZE = (4, 4)
 N_AGENTS = 5
-SAMPLES_PER_AGENT = 6
+SAMPLES_PER_AGENT = 80
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -54,7 +54,7 @@ print(f'Total negative samples {np.sum(labels == 0)}')
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -117,8 +117,8 @@ def cost_fn(Y,xT0):
     '''
 
     if CostFunct == "BinaryCrossEntropy":
-            J = -(Y*np.log(xT0) + 1e-10)-((1-Y)*(np.log(1-xT0)) + 1e-10)
-            dJ = -Y/(xT0 + 1e-10) + (1-Y)/(1-xT0 + 1e-10)
+            J = -(Y*np.log(xT0 + 1e-5) )-((1-Y)*(np.log(1-xT0 + 1e-5)))
+            dJ = -Y/(xT0 + 1e-5) + (1-Y)/(1-xT0 + 1e-5)
 
 
     if CostFunct == "Quadratic":
@@ -134,7 +134,7 @@ def cost_fn(Y,xT0):
 
 # Activation Function
 def activation_fn(xl):
-
+    
     if ActivationFunct == "ReLu":       # Rectified Linear Unit
         out = max(0, xl) 
 
@@ -248,15 +248,17 @@ def accuracy(xT,Y):
 # Training parameters
 EPOCHS = 1000
 STEP_SIZE = 1e-1
-BATCH_SIZE = 2 # Dimension of the minibatch set
+BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
-xx = np.zeros((N_AGENTS, BATCH_SIZE, T_LAYERS, D_NEURONS))
+xx = np.zeros((T_LAYERS, D_NEURONS))
 weight_init = np.random.randn(T_LAYERS-1, D_NEURONS, D_NEURONS+1)*1e-2
 uu = np.array([weight_init for _ in range(N_AGENTS)])
-vv = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
-#ss = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+uu_plus = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+ss = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+ss_plus = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+batch_grad = np.zeros((N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
 prediction = np.zeros((N_AGENTS,SAMPLES))
 
 J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
@@ -267,20 +269,44 @@ successes = np.zeros((N_AGENTS))
 errors = np.zeros((N_AGENTS))
 percentage_of_success = np.zeros((N_AGENTS))
 
+###############################################################################
+# Initialization of Gradient Tracking Algorithm
+for agent in range(N_AGENTS):
+    batch_grad[agent] = 0
+    for idx in range(BATCH_SIZE):
+        
+        # Forward pass
+        xx = forward_pass(images[agent, idx], uu[agent])
+
+        # Loss evaluation
+        out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)out_grad
+        loss, out_grad[0] = cost_fn(labels[agent, idx], xx[-1, 0])
+
+        # Backward pass
+        _, grad = backward_pass(xx, uu[agent], out_grad) # out_grad = llambdaT
+
+        # Gradient accumulation
+        batch_grad[agent] += grad / BATCH_SIZE
+        
+    ss[agent] = batch_grad[agent]
+        
+###############################################################################
+# Training
 for epoch in range(EPOCHS):
     if epoch % 10 == 0 and epoch != 0:
         print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f}')
 
     for batch_num in range(N_BATCH):
         for agent in range(N_AGENTS):
+                
             neighs = np.nonzero(ADJ[agent])[0]
 
-            # Distributed Gradient Algorithm
-            vv[agent] = WW[agent, agent] * uu[agent] 
+            # Gradient Tracking Algorithm - Weights Update
+            uu_plus[agent] = (WW[agent, agent] * uu[agent]) - (STEP_SIZE * ss[agent])
             for neigh in neighs:
-                vv[agent] += WW[agent, neigh] * uu[neigh]
+                uu_plus[agent] += WW[agent, neigh] * uu[neigh]
 
-            batch_grad = 0
+            batch_grad_plus = 0
             for batch_el in range(BATCH_SIZE):
                 idx = (batch_num*BATCH_SIZE) + batch_el
                 
@@ -288,29 +314,43 @@ for epoch in range(EPOCHS):
                 if idx >= SAMPLES_PER_AGENT:
                     break
 
-                xx[agent, batch_el] = forward_pass(images[agent, idx], vv[agent])
-                prediction[agent,idx] = xx[agent, batch_el, -1, 0]
+                # Forward pass
+                xx = forward_pass(images[agent, idx], uu_plus[agent])
+                prediction[agent,idx] = xx[-1, 0] # prediction <= value of the first neuron in the last layer
+
+                # Loss evalutation
                 out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
                 loss, out_grad[0] = cost_fn(labels[agent, idx], prediction[agent,idx])
-                _, grad = backward_pass(xx[agent, batch_el], vv[agent], out_grad) # out_grad = llambdaT
+
+                # Backward pass
+                _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
-                batch_grad += grad / BATCH_SIZE
+                batch_grad_plus += grad / BATCH_SIZE
 
-            vv[agent] = vv[agent] - (STEP_SIZE * batch_grad)
-            NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad) / N_BATCH
+            NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad_plus) / N_BATCH
+
+            # Gradient Tracking Algorithm - SS Update
+            ss_plus[agent] = (WW[agent, agent] * ss[agent]) + (batch_grad_plus - batch_grad[agent])
+            for neigh in neighs:
+                ss_plus[agent] += WW[agent, neigh] * ss[neigh]
         
         # SYNCHRONOUS UPDATE
         for agent in range(N_AGENTS): 
-            uu[agent] = vv[agent]
-
-
+            uu[agent] = uu_plus[agent]
+            ss[agent] = ss_plus[agent]
+            
+    print('WEIGHTS')
+    print(uu[0])
+    print('\nAUX GRADS')
+    print(ss[0])
+    input()
 
 print('\n\nTRAINING SET\n')
 for agents in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
-        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as:", prediction[agent,idx])
+        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as {prediction[agent,idx]:.4f}:")
     print()
 
 
@@ -326,7 +366,7 @@ for agent in range(N_AGENTS):
     print('\nAGENT: ', agent)
     print("Correctly classified point: ", successes[agent])
     print("Wrong classified point: ", errors[agent])
-    print("Percentage of Success: ", percentage_of_success[agent])   
+    print(f"Percentage of Success: {percentage_of_success[agent]:.4f}" )   
 
                 
 ###############################################################################
