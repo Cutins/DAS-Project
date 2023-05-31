@@ -37,7 +37,7 @@ x_test  = [preprocess(x) for x in x_test]
 y_train = [1 if y == TARGET else 0 for y in y_train]
 y_test  = [1 if y == TARGET else 0 for y in y_test]
 
-# Select the SAMPLES
+# Balance the Dataset, select the SAMPLES
 df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
 df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
 
@@ -54,7 +54,7 @@ print(f'Total negative samples {np.sum(labels == 0)}')
 T_LAYERS = 3        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph

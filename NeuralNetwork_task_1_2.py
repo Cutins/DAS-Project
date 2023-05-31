@@ -19,7 +19,7 @@ np.random.seed(SEED)
 # DataFrame Settings
 TARGET = 3
 SIZE = (4,4)
-SAMPLES = 10 # Put even number
+SAMPLES = 50 # Put even number
 
 # Load DataFrame
 (x_train, y_train), (x_test, y_test) = ks.datasets.mnist.load_data()
@@ -33,7 +33,7 @@ x_test  = [preprocess(x) for x in x_test]
 y_train = [1 if y == TARGET else 0 for y in y_train]
 y_test  = [1 if y == TARGET else 0 for y in y_test]
 
-# Select the SAMPLES
+# Balance the Dataset, select the SAMPLES
 df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
 df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
 
@@ -55,8 +55,11 @@ CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 ###############################################################################
 
 # Cost Function
-def cost_fn(Y,xT, mask=None):
-    xT0 = xT[0] #It's a scalar
+def cost_fn(Y,xT0):
+    '''
+    Y [Scalar]
+    XT0 [Scalar]
+    '''
 
     if CostFunct == "BinaryCrossEntropy":
             J = -(Y*np.log(xT0) + 1e-10)-((1-Y)*(np.log(1-xT0)) + 1e-10)
@@ -68,8 +71,8 @@ def cost_fn(Y,xT, mask=None):
             dJ = 2*(xT0 - Y)
 
          
-    if mask is not None:
-            dJ = dJ*mask
+    # if mask is not None:
+    #         dJ = dJ*mask
 
     return J, dJ
 
@@ -195,10 +198,7 @@ N_BATCH = int(np.ceil(SAMPLES/BATCH_SIZE))
 # Network Variables
 xx = np.zeros((BATCH_SIZE, T_LAYERS, D_NEURONS))
 uu = np.random.randn(T_LAYERS-1, D_NEURONS, D_NEURONS+1)*1e-2
-
-# Mask for output regression
-mask = np.zeros(D_NEURONS)
-mask[0] = 1
+prediction = np.zeros((SAMPLES))
 
 J = np.zeros(EPOCHS) # Cost function
 NormGradientJ = np.zeros(EPOCHS)
@@ -222,8 +222,9 @@ for epoch in range(EPOCHS):
                 break
 
             xx[batch_el] = forward_pass(images[idx], uu)
-            pred = xx[batch_el, -1, :]
-            loss, out_grad = cost_fn(labels[idx], pred, mask)
+            prediction[idx] =  xx[batch_el, -1, 0]
+            out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
+            loss, out_grad[0] = cost_fn(labels[idx], prediction[idx])
             _, grad = backward_pass(xx[batch_el], uu, out_grad) # out_grad = llambdaT
 
             J[epoch] += loss / SAMPLES
@@ -232,16 +233,14 @@ for epoch in range(EPOCHS):
         uu = uu - (STEP_SIZE * batch_grad)
         NormGradientJ[epoch] += np.linalg.norm(batch_grad) / N_BATCH
 
-for img in range(BATCH_SIZE-1):
-    idx = ((N_BATCH-1)*BATCH_SIZE) + img
-    print(f"Label for Image {idx} was {labels[idx]} but is classified as:", xx[img,-1, 0])
+for img in range(SAMPLES):
+    print(f"Label for Image {img} was {labels[img]} but is classified as:", prediction[img])
 
 
 ###############################################################################
 # Accuracy computation
 for img in range(SAMPLES):
-    xx[img] = forward_pass(images[img], uu)
-    success, error = accuracy(xx[img,-1, 0],labels[img])
+    success, error = accuracy(prediction[img],labels[img])
     successes += success
     errors += error
 
