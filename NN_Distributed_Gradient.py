@@ -20,9 +20,9 @@ np.random.seed(SEED)
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (4, 4)
-N_AGENTS = 5
-SAMPLES_PER_AGENT = 80
+SIZE = (10, 10)
+N_AGENTS = 4
+SAMPLES_PER_AGENT = 60 #Multiple of Minibatch
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -252,10 +252,10 @@ def get_step_size(step_initial, step_final, EPOCHS, epoch):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 100
 STEP_SIZE_INITIAL = 1
 STEP_SIZE_FINAL = 1e-3
-BATCH_SIZE = 8 # Dimension of the minibatch set
+BATCH_SIZE = 6 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
@@ -280,7 +280,7 @@ percentage_of_success_test = np.zeros((N_AGENTS))
 for epoch in range(EPOCHS):
     step_size = get_step_size(STEP_SIZE_INITIAL, STEP_SIZE_FINAL, EPOCHS, epoch)
 
-    if epoch % 20 == 0 and epoch != 0:
+    if epoch % 5 == 0 and epoch != 0:
         print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f}')
 
     for batch_num in range(N_BATCH):

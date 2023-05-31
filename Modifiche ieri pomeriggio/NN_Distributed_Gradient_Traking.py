@@ -24,9 +24,9 @@ save_weights = True
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (15, 15)
-N_AGENTS = 5
-SAMPLES_PER_AGENT = 10
+SIZE = (10, 10)
+N_AGENTS = 4
+SAMPLES_PER_AGENT = 80 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -249,7 +249,7 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 300
+EPOCHS = 50
 STEP_SIZE = 1e-1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
@@ -303,7 +303,7 @@ for agent in range(N_AGENTS):
 # Training
 for epoch in range(EPOCHS):
     if epoch % 1 == 0 and epoch != 0:
-        print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.4f}')
+        print(f'[k={epoch:d}] Cost is {np.mean(J[epoch-1]):.4f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.4f}')
 
     for batch_num in range(N_BATCH):
         for agent in range(N_AGENTS):
