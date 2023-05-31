@@ -10,8 +10,11 @@ Modifiche del 2023/05/30
 
 
 TO DO:
-- Modificare in 1_3 Il vettore Prediction
-- Finire Accuracy e Plot di Task 1_3
+- Inserire il Save di uu in Distirbuted Algorithm
+- Plottare l'evoluzione della norma di SS e UU
+- Salvare per mostrare al prof al ricevimento la UU e relativi grafici
+- Crare il file .py per solo i Test Set
+
 
 
 DOMANDE PER PICHIERRI:

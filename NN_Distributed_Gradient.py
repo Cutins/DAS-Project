@@ -39,15 +39,18 @@ y_test  = [1 if y == TARGET else 0 for y in y_test]
 
 # Balance the Dataset, select the SAMPLES
 df_train = pd.DataFrame({'image': x_train, 'label': y_train}).groupby('label')
-df_train_balanced = df_train.sample(SAMPLES//2, random_state=SEED).sample(frac=1, random_state=SEED)
+df_train_balanced = df_train.sample(SAMPLES, random_state=SEED).sample(frac=1, random_state=SEED)
 
-images = np.array([df_train_balanced['image'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent, image_size]
-labels = np.array([df_train_balanced['label'][agent::N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent]
+images_train = np.array([df_train_balanced['image'][agent:SAMPLES:N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent, image_size]
+labels_train = np.array([df_train_balanced['label'][agent:SAMPLES:N_AGENTS].tolist() for agent in range(N_AGENTS)])# [N_AGENTS, samples_per_agent]
 
-image_size = images.shape[-1]
+images_test = np.array([df_train_balanced['image'][agent+SAMPLES::N_AGENTS].tolist() for agent in range(N_AGENTS)])
+labels_test = np.array([df_train_balanced['label'][agent+SAMPLES::N_AGENTS].tolist() for agent in range(N_AGENTS)])
 
-print(f'Total positive samples {np.sum(labels == 1)}')
-print(f'Total negative samples {np.sum(labels == 0)}')
+image_size = images_train.shape[-1]
+
+print(f'Total positive samples {np.sum(labels_train == 1)}')
+print(f'Total negative samples {np.sum(labels_train == 0)}')
 
 ###############################################################################
 # Network setting
@@ -239,6 +242,14 @@ def accuracy(xT,Y):
 
     return success, error
 
+# Computes a proper diminishing step size
+def get_step_size(step_initial, step_final, EPOCHS, epoch):
+    m = (step_final - step_initial)/EPOCHS
+
+    step = m*epoch + step_initial
+
+    return step
+
 
 ###############################################################################
 # MAIN
@@ -246,7 +257,8 @@ def accuracy(xT,Y):
 
 # Training parameters
 EPOCHS = 1000
-STEP_SIZE = 1
+STEP_SIZE_INITIAL = 1
+STEP_SIZE_FINAL = 1e-3
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
@@ -262,12 +274,15 @@ J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
 NormGradientJ = np.zeros((EPOCHS, N_AGENTS))
 
 # Initialization for Accuracy
-successes = np.zeros((N_AGENTS))
-errors = np.zeros((N_AGENTS))
-percentage_of_success = np.zeros((N_AGENTS))
+successes_train = np.zeros((N_AGENTS))
+errors_train = np.zeros((N_AGENTS))
+percentage_of_success_train = np.zeros((N_AGENTS))
+successes_test = np.zeros((N_AGENTS))
+errors_test = np.zeros((N_AGENTS))
+percentage_of_success_test = np.zeros((N_AGENTS))
 
 for epoch in range(EPOCHS):
-    STEP_SIZE_DIMINISH = STEP_SIZE/(epoch+1) # Diminishing stepsize
+    step_size = get_step_size(STEP_SIZE_INITIAL, STEP_SIZE_FINAL, EPOCHS, epoch)
 
     if epoch % 20 == 0 and epoch != 0:
         print(f'Cost at k={epoch:d} is {np.mean(J[epoch-1]):.4f}')
@@ -289,16 +304,16 @@ for epoch in range(EPOCHS):
                 if idx >= SAMPLES_PER_AGENT:
                     break
 
-                xx[agent, batch_el] = forward_pass(images[agent, idx], vv[agent])
+                xx[agent, batch_el] = forward_pass(images_train[agent, idx], vv[agent])
                 prediction[agent,idx] = xx[agent, batch_el, -1, 0]
                 out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
-                loss, out_grad[0] = cost_fn(labels[agent, idx], prediction[agent,idx])
+                loss, out_grad[0] = cost_fn(labels_train[agent, idx], prediction[agent,idx])
                 _, grad = backward_pass(xx[agent, batch_el], vv[agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
                 batch_grad += grad / BATCH_SIZE
 
-            vv[agent] = vv[agent] - (STEP_SIZE * batch_grad)
+            vv[agent] = vv[agent] - (step_size * batch_grad)
             NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad) / N_BATCH
         
         # SYNCHRONOUS UPDATE
@@ -311,23 +326,59 @@ print('\n\nTRAINING SET\n')
 for agents in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
-        print(f"[Agent {agents}] Label for Image {idx} was {labels[agent,idx]} but is classified as {prediction[agent,idx]:.4f}")
+        print(f"[Agent {agents}] Label for Image {idx} was {labels_train[agent, idx]} but is classified as {prediction[agent, idx]:.4f}")
     print()
 
+print('\n\nTEST SET\n')
+for agents in range(N_AGENTS):
+    for batch_el in range(BATCH_SIZE):
+        idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+        print(f"[Agent {agents}] Label for the SAME Image {idx} was {labels_test[0, idx]} but is classified as {forward_pass(images_test[0, idx], uu[agent])[-1,0]:.4f}")
+    print()
 
 # ###############################################################################
 # Accuracy computation
+print('\n--------------TRAINING SCORES----------------')
 for agent in range(N_AGENTS):
     for img in range(SAMPLES_PER_AGENT):
-        success, error = accuracy(prediction[agent,img],labels[agent,img])
-        successes[agent] += success
-        errors[agent] += error
+        success, error = accuracy(prediction[agent,img],labels_train[agent,img])
+        successes_train[agent] += success
+        errors_train[agent] += error
 
-    percentage_of_success[agent] = (successes[agent]/(SAMPLES_PER_AGENT))*100
+    percentage_of_success_train[agent] = (successes_train[agent]/(SAMPLES_PER_AGENT))*100
     print('\nAGENT: ', agent)
-    print("Correctly classified point: ", successes[agent])
-    print("Wrong classified point: ", errors[agent])
-    print(f"Percentage of Success: {percentage_of_success[agent]:.4f}" )   
+    print("Correctly classified point: ", successes_train[agent])
+    print("Wrong classified point: ", errors_train[agent])
+    print(f"Accuracy: {percentage_of_success_train[agent]:.4f}" )  
+
+print('\n------------------TEST SCORES-----------------')
+for agent in range(N_AGENTS):
+    for img in range(SAMPLES_PER_AGENT):
+        output = forward_pass(images_test[0,img], uu[agent])
+        success, error = accuracy(output[-1, 0], labels_test[0,img])
+        successes_test[agent] += success
+        errors_test[agent] += error
+
+    percentage_of_success_test[agent] = (successes_test[agent]/(SAMPLES_PER_AGENT))*100
+    print('\nAGENT: ', agent)
+    print("Correctly classified point: ", successes_test[agent])
+    print("Wrong classified point: ", errors_test[agent])
+    print(f"Accuracy: {percentage_of_success_test[agent]:.4f}" ) 
+               
+
+# ###############################################################################
+# # Accuracy computation
+# for agent in range(N_AGENTS):
+#     for img in range(SAMPLES_PER_AGENT):
+#         success, error = accuracy(prediction[agent,img],labels[agent,img])
+#         successes[agent] += success
+#         errors[agent] += error
+
+#     percentage_of_success[agent] = (successes[agent]/(SAMPLES_PER_AGENT))*100
+#     print('\nAGENT: ', agent)
+#     print("Correctly classified point: ", successes[agent])
+#     print("Wrong classified point: ", errors[agent])
+#     print(f"Percentage of Success: {percentage_of_success[agent]:.4f}" )   
 
                 
 ###############################################################################
