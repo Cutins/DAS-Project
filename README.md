@@ -13,8 +13,10 @@ TO DO:
 - Inserire il Save di uu in Distirbuted Algorithm
 - Plottare l'evoluzione della norma di SS e UU
 - Salvare per mostrare al prof al ricevimento la UU e relativi grafici
-- Crare il file .py per solo i Test Set
+- Creare il file .py per solo i Test Set
+- Plottere la differenza tra la Media e i singoli agenti di UU, questo deve andare a 0
 
+- CAPIRE PERCHÈ NON CONVERGONO LE UU
 
 
 DOMANDE PER PICHIERRI:

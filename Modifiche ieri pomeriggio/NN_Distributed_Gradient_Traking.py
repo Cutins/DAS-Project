@@ -24,9 +24,9 @@ save_weights = True
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (10, 10)
-N_AGENTS = 4
-SAMPLES_PER_AGENT = 80 # Multiple of Minibatch Size 
+SIZE = (4, 4)
+N_AGENTS = 10
+SAMPLES_PER_AGENT = 400 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -58,10 +58,10 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 
 ###############################################################################
 # Network setting
-T_LAYERS = 4        # Number of layers
+T_LAYERS = 2        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -249,9 +249,9 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 50
-STEP_SIZE = 1e-1
-BATCH_SIZE = 8 # Dimension of the minibatch set
+EPOCHS = 100
+STEP_SIZE = 1
+BATCH_SIZE = 4 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
@@ -415,50 +415,53 @@ if save_weights:
 ###############################################################################
 # PLOT
 ###############################################################################
-plt.figure('Cost function')
-plt.plot(range(EPOCHS),np.sum(J, axis=1)/N_AGENTS, label='Total Normalized Cost Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-     plt.plot(range(EPOCHS), J[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.ylabel(r'J')
-plt.legend()
-plt.title('J')
-plt.grid()
 
-plt.figure('Norm of Cost function')
-plt.semilogy(range(EPOCHS), np.sum(NormGradientJ, axis=-1)/N_AGENTS, label='Total Gradient Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-    plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.legend()
-plt.title('norm_gradient_J')
-plt.grid()
+plt.plot()
 
-# ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
-mean_along_layers_ss = np.mean(ss_ELIMINA, axis=2)
-mean_along_neurons_ss = np.mean(mean_along_layers_ss, axis=(2,3))
-ss_mean = mean_along_neurons_ss
+# plt.figure('Cost function')
+# plt.plot(range(EPOCHS),np.sum(J, axis=1)/N_AGENTS, label='Total Normalized Cost Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#      plt.plot(range(EPOCHS), J[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.ylabel(r'J')
+# plt.legend()
+# plt.title('J')
+# plt.grid()
 
-mean_along_layers_uu = np.mean(uu_ELIMINA, axis=2)
-mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
-uu_mean = mean_along_neurons_uu
+# plt.figure('Norm of Cost function')
+# plt.semilogy(range(EPOCHS), np.sum(NormGradientJ, axis=-1)/N_AGENTS, label='Total Gradient Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.legend()
+# plt.title('norm_gradient_J')
+# plt.grid()
 
-plt.figure('SS evolution')
-plt.semilogy(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-    plt.semilogy(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.legend()
-plt.title('SS')
-plt.grid()
+# # ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+# mean_along_layers_ss = np.mean(ss_ELIMINA, axis=2)
+# mean_along_neurons_ss = np.mean(mean_along_layers_ss, axis=(2,3))
+# ss_mean = mean_along_neurons_ss
 
-plt.figure('UU (Weights) evolution')
-plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-    plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.legend()
-plt.title('UU')
-plt.grid()
+# mean_along_layers_uu = np.mean(uu_ELIMINA, axis=2)
+# mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
+# uu_mean = mean_along_neurons_uu
 
-plt.show()
+# plt.figure('SS evolution')
+# plt.semilogy(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.legend()
+# plt.title('SS')
+# plt.grid()
+
+# plt.figure('UU (Weights) evolution')
+# plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#     plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.legend()
+# plt.title('UU')
+# plt.grid()
+
+# plt.show()
