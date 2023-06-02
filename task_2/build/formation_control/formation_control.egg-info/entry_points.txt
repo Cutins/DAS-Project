@@ -1,3 +1,0 @@
-[console_scripts]
-the_agent = formation_control.the_agent:main
-
