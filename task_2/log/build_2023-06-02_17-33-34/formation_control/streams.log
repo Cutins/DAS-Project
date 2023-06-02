@@ -1,0 +1,24 @@
+[1.043s] Invoking command in '/home/giulia/Desktop/Project2/src/formation_control': PYTHONPATH=/home/giulia/Desktop/Project2/build/formation_control/prefix_override:/home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/formation_control build --build-base /home/giulia/Desktop/Project2/build/formation_control/build install --record /home/giulia/Desktop/Project2/build/formation_control/install.log --install-scripts $base/lib/formation_control --single-version-externally-managed
+[1.357s] running egg_info
+[1.358s] writing ../../build/formation_control/formation_control.egg-info/PKG-INFO
+[1.358s] writing dependency_links to ../../build/formation_control/formation_control.egg-info/dependency_links.txt
+[1.358s] writing entry points to ../../build/formation_control/formation_control.egg-info/entry_points.txt
+[1.359s] writing requirements to ../../build/formation_control/formation_control.egg-info/requires.txt
+[1.359s] writing top-level names to ../../build/formation_control/formation_control.egg-info/top_level.txt
+[1.402s] reading manifest file '../../build/formation_control/formation_control.egg-info/SOURCES.txt'
+[1.403s] writing manifest file '../../build/formation_control/formation_control.egg-info/SOURCES.txt'
+[1.404s] running build
+[1.404s] running build_py
+[1.404s] copying formation_control/the_agent.py -> /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control
+[1.406s] running install
+[1.406s] running install_lib
+[1.408s] copying /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control/the_agent.py -> /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control
+[1.409s] byte-compiling /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control/the_agent.py to the_agent.cpython-38.pyc
+[1.413s] running install_data
+[1.414s] running install_egg_info
+[1.417s] removing '/home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control-0.0.0-py3.8.egg-info' (and everything under it)
+[1.417s] Copying ../../build/formation_control/formation_control.egg-info to /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control-0.0.0-py3.8.egg-info
+[1.419s] running install_scripts
+[1.443s] Installing the_agent script to /home/giulia/Desktop/Project2/install/formation_control/lib/formation_control
+[1.444s] writing list of installed files to '/home/giulia/Desktop/Project2/build/formation_control/install.log'
+[1.478s] Invoked command in '/home/giulia/Desktop/Project2/src/formation_control' returned '0': PYTHONPATH=/home/giulia/Desktop/Project2/build/formation_control/prefix_override:/home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/formation_control build --build-base /home/giulia/Desktop/Project2/build/formation_control/build install --record /home/giulia/Desktop/Project2/build/formation_control/install.log --install-scripts $base/lib/formation_control --single-version-externally-managed

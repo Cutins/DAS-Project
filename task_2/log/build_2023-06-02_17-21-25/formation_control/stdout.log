@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/formation_control/formation_control.egg-info
+writing ../../build/formation_control/formation_control.egg-info/PKG-INFO
+writing dependency_links to ../../build/formation_control/formation_control.egg-info/dependency_links.txt
+writing entry points to ../../build/formation_control/formation_control.egg-info/entry_points.txt
+writing requirements to ../../build/formation_control/formation_control.egg-info/requires.txt
+writing top-level names to ../../build/formation_control/formation_control.egg-info/top_level.txt
+writing manifest file '../../build/formation_control/formation_control.egg-info/SOURCES.txt'
+reading manifest file '../../build/formation_control/formation_control.egg-info/SOURCES.txt'
+writing manifest file '../../build/formation_control/formation_control.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/giulia/Desktop/Project2/build/formation_control/build
+creating /home/giulia/Desktop/Project2/build/formation_control/build/lib
+creating /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control
+copying formation_control/the_agent.py -> /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control
+copying formation_control/__init__.py -> /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control
+running install
+running install_lib
+creating /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control
+copying /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control/the_agent.py -> /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control
+copying /home/giulia/Desktop/Project2/build/formation_control/build/lib/formation_control/__init__.py -> /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control
+byte-compiling /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control/the_agent.py to the_agent.cpython-38.pyc
+byte-compiling /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/giulia/Desktop/Project2/install/formation_control/share/ament_index
+creating /home/giulia/Desktop/Project2/install/formation_control/share/ament_index/resource_index
+creating /home/giulia/Desktop/Project2/install/formation_control/share/ament_index/resource_index/packages
+copying resource/formation_control -> /home/giulia/Desktop/Project2/install/formation_control/share/ament_index/resource_index/packages
+copying package.xml -> /home/giulia/Desktop/Project2/install/formation_control/share/formation_control
+running install_egg_info
+Copying ../../build/formation_control/formation_control.egg-info to /home/giulia/Desktop/Project2/install/formation_control/lib/python3.8/site-packages/formation_control-0.0.0-py3.8.egg-info
+running install_scripts
+Installing the_agent script to /home/giulia/Desktop/Project2/install/formation_control/lib/formation_control
+writing list of installed files to '/home/giulia/Desktop/Project2/build/formation_control/install.log'
