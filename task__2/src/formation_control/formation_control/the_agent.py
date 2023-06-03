@@ -17,10 +17,12 @@ class Agent(Node):
         self.pos = np.array(self.get_parameter('pos_init').value)
         self.max_iters = self.get_parameter('max_iters').value
         self.distances = self.get_parameter('distances').value
-        self.integration_step = self.get_parameter('integration_step').value
+        self.comm_time = self.get_parameter('comm_time').value
+        self.euler_step = self.get_parameter('euler_step').value
         self.neighs = np.nonzero(self.distances)[0]
         self.kk = 0
-
+        self.counter = 0
+        
         # CREATE TOPIC
         self.publisher = self.create_publisher(msg_type=MsgFloat, 
                                                 topic=f'/topic_{self.id}',
@@ -34,8 +36,7 @@ class Agent(Node):
                                     qos_profile=10)
             
         # CREATE TIMER FOR SYNCH
-        timer_period = 1e-1
-        self.timer = self.create_timer(timer_period_sec=timer_period,
+        self.timer = self.create_timer(timer_period_sec = self.comm_time,
                                        callback=self.timer_callback)
 
         # MASSAGES BUFFER 
@@ -49,7 +50,7 @@ class Agent(Node):
         self.received_msgs[int(id)].append((int(kk), np.array([x, y, z])))
 
 
-    def compute_dynamics(self, data, integration_step):
+    def compute_dynamics(self, data):
         delta_pos = np.zeros((3,))
         for neigh in data.keys():
             
@@ -59,44 +60,45 @@ class Agent(Node):
 
             # Formation Control Law
             formation_potential = (np.linalg.norm(self.pos - neigh_pos, ord=1)**2 - neigh_dist**2) * (self.pos - neigh_pos)
-            barrier_potential = 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=1)**2)
+            barrier_potential = - 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=1)**2)
             
-            delta_pos = delta_pos - formation_potential + barrier_potential
-
-        # Euler Discretization
-        delta_pos = integration_step * delta_pos
+            delta_pos = delta_pos - (formation_potential + barrier_potential)
 
         return delta_pos
 
 
     def timer_callback(self):
+        self.counter += 1
         if self.kk > 0: 
 
             all_received = all([self.received_msgs[neigh] != [] for neigh in self.neighs])
             if all_received:
                 all_synch = all([self.received_msgs[neigh][0][0] == self.kk-1 for neigh in self.neighs])
                 if all_synch:
-
+                    #print(self.received_msgs)
                     # Read Data from neighbors
                     data = {neigh: {'pos': self.received_msgs[neigh].pop(0)[1],
                                     'dist': self.distances[neigh]} for neigh in self.neighs}
 
                     # Dynamic Integration
-                    delta_pos = self.compute_dynamics(data, self.integration_step)
+                    delta_pos = self.compute_dynamics(data)
                     
-                    # Update Agent Position
-                    self.pos += delta_pos
+                    # Update Agent Position and Euler Discretization
+                    # self.pos += ((self.counter * self.integration_step)*0.1) * delta_pos
+                    self.pos += self.euler_step * delta_pos
+                    print(self.counter)
+                    self.counter = 0
 
-                    if self.id == 0 and self.kk >=1:
-                        plt.scatter(self.pos[0], self.pos[1], marker= 'o')
-                        for neigh in self.neighs:
-                            plt.scatter(data[neigh]['pos'][0], data[neigh]['pos'][1])
-                        plt.xlim(-3,3)
-                        plt.ylim(-3,3)
-                        plt.grid()
-                        plt.show(block=False)
-                        plt.pause(0.1)
-                        plt.clf()
+                    # if self.id == 0 and self.kk >=1:
+                    #     plt.scatter(self.pos[0], self.pos[1], marker= 'o')
+                    #     for neigh in self.neighs:
+                    #         plt.scatter(data[neigh]['pos'][0], data[neigh]['pos'][1])
+                    #     plt.xlim(-3,3)
+                    #     plt.ylim(-3,3)
+                    #     plt.grid()
+                    #     plt.show(block=False)
+                    #     # plt.pause(0.1)
+                    #     # plt.clf()
 
                     # if self.id == 0 and self.kk == 1:
                     #     fig = plt.figure()

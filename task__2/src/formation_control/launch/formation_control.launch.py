@@ -2,12 +2,15 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 import numpy as np
 import networkx as nx
+import os
+from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 50
+MAXITERS = 500
 N = 5
 pos_init = (np.random.rand(N, 3) - 0.5)
 pos_init[:, 2] = 0.
-dt = 1e-2
+comm_time = 0.1 # Comunication time
+euler_step = 0.01 # Integration step
 L = 2
 
 if N == 4: # Square
@@ -40,6 +43,22 @@ if N == 6: #Hexagon
 def generate_launch_description():
     launch_description = [] # Append here your nodes
 
+    # RVIZ Node
+
+    # initialize launch description with rviz executable
+    rviz_config_dir = get_package_share_directory('formation_control')
+    rviz_config_file = os.path.join(rviz_config_dir, 'rviz_config.rviz')
+
+    launch_description.append(
+        Node(
+            package='rviz2',
+            executable='rviz2', 
+            arguments=['-d', rviz_config_file],
+            # output='screen',
+            # prefix='xterm -title "rviz2" -hold -e'
+        )
+    )
+
     for i in range(N):
 
         launch_description.append(
@@ -52,10 +71,25 @@ def generate_launch_description():
                                 'pos_init': pos_init[i].tolist(),
                                 'distances': distances[i], 
                                 'max_iters': MAXITERS,
-                                'integration_step': dt
+                                'comm_time': comm_time,
+                                'euler_step': euler_step
                                 }],
                 output='screen',
                 prefix=f'xterm -title "agent_{i}" -hold -e',
             ))
+        
+        # Launch visualizer
+        launch_description.append(
+            Node(
+                package='formation_control',
+                namespace=f'agent_{i}',
+                executable='visualizer',
+                parameters=[{
+                    'agent_id':i,
+                    'comm_time':comm_time,
+                    # 'n_leaders':n_leaders,
+                    }]
+                )
+            )
 
     return LaunchDescription(launch_description)

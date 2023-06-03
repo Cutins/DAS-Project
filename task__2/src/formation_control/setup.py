@@ -1,4 +1,5 @@
 from setuptools import setup
+from glob import glob
 
 package_name = 'formation_control'
 
@@ -10,6 +11,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name, glob('launch/*.launch.py')),
+        ('share/' + package_name, glob('resource/*.rviz')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,7 +23,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'the_agent = formation_control.the_agent:main'
+            'the_agent = formation_control.the_agent:main',
+            'visualizer = formation_control.visualizer:main'
         ],
     },
 )
