@@ -5,12 +5,12 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 500
+MAXITERS = 50000
 N = 5
 pos_init = (np.random.rand(N, 3) - 0.5)
 pos_init[:, 2] = 0.
-comm_time = 0.1 # Comunication time
-euler_step = 0.01 # Integration step
+comm_time = 1/30 # Comunication time
+euler_step = 0.001 # Integration step
 L = 2
 
 if N == 4: # Square

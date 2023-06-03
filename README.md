@@ -23,4 +23,7 @@ DOMANDE PER PICHIERRI:
 - Nell'inizializzazione del Gradient Trackind come calcolo ss[0]?
     La nostra idea era runnare tutta la rete e trovare la ss, cioè il gradient per tutti i layer e per tutti i neuroni
     Inizializziamo su una singola immagine o su tutto un minibatch per ogni agente?
-- 
+# ROS
+- Come definire le distanze in 3D (Va bene la norma 1 NOOOO)
+- Come mai non sono così perfette le formazioni?
+

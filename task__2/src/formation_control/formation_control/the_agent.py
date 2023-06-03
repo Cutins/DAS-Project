@@ -59,10 +59,11 @@ class Agent(Node):
             neigh_dist = data[neigh]['dist']
 
             # Formation Control Law
-            formation_potential = (np.linalg.norm(self.pos - neigh_pos, ord=1)**2 - neigh_dist**2) * (self.pos - neigh_pos)
-            barrier_potential = - 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=1)**2)
+            formation_potential = (np.linalg.norm(self.pos - neigh_pos, ord=2)**2 - neigh_dist**2) * (self.pos - neigh_pos)# + (self.pos[2])
+            barrier_potential = - 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=2)**2)
             
             delta_pos = delta_pos - (formation_potential + barrier_potential)
+            #delta_pos = delta_pos - formation_potential 
 
         return delta_pos
 
