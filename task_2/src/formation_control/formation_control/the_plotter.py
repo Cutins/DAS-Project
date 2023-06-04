@@ -14,7 +14,8 @@ class Plot(Node):
                         automatically_declare_parameters_from_overrides=True)
         
         self.max_iters = self.get_parameter('max_iters').value
-        self.n_agents = self.get_parameter('n_agents').value
+        # self.n_agents = self.get_parameter('n_agents').value
+        self.n_agents = np.sqrt(len(self.get_parameter('distance_matrix').value)).astype(int)
         self.distance_matrix = np.array(self.get_parameter('distance_matrix').value).reshape((self.n_agents, self.n_agents))
         self.comm_time = self.get_parameter('comm_time').value
         print(f'Distance matrix:\n{self.distance_matrix}')
@@ -22,6 +23,7 @@ class Plot(Node):
         # self.n_agents = self.distance_matrix.shape[0]
         self.pos = np.zeros((self.max_iters, self.n_agents, 3))
         self.potential = np.zeros((self.max_iters, self.n_agents))
+        self.distnace_error = np.zeros((self.max_iters, self.n_agents))
         self.kk = 0
 
         # SUBSCRIBE TO NEIGHBORS
@@ -63,7 +65,8 @@ class Plot(Node):
                 for agent in range(self.n_agents):
                     self.pos[self.kk, agent] = self.received_msgs[agent].pop(0)[1]
                     neighs = np.nonzero(self.distance_matrix[agent])[0]
-                    self.potential[self.kk, agent] = np.sum([(np.linalg.norm(self.pos[agent] - self.pos[neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2) for neigh in neighs])
+                    self.potential[self.kk, agent] = np.sum([1/4*(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2)**2 for neigh in neighs])
+                    self.distnace_error[self.kk, agent] = np.sum([(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2) - self.distance_matrix[agent][neigh]) for neigh in neighs])
                 
 
                 self.kk += 1
@@ -81,19 +84,28 @@ class Plot(Node):
                     #     plt.legend()
                     #     plt.grid()
                                             
-                    # plt.figure('Potential')
+                    plt.figure('Potential')
                     for agent in range(self.n_agents):
-                        plt.figure(f'Potential agent_{agent}')
-                        plt.plot(range(self.max_iters), self.potential[:,agent], label=f'Potential of agent {agent}') 
-                        plt.legend()
-                        plt.grid()
+                        plt.plot(range(self.max_iters), self.potential[:,agent], ':', label=f'Potential of agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.potential, axis=-1), label=f'Formation potential', linewidth = 2) 
+                    plt.legend()
+                    plt.grid()
+
+
+                                                                
+                    plt.figure('Error distance')
+                    for agent in range(self.n_agents):
+                        plt.plot(range(self.max_iters), self.distnace_error[:,agent], ':', label=f'Potential of agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.distnace_error, axis=-1), label=f'Formation potential', linewidth = 2) 
+                    plt.legend()
+                    plt.grid()
 
                     # plt.figure('Position')
-                    for agent in range(self.n_agents):
-                        plt.figure(f'Position agent_{agent}')
-                        plt.plot(self.pos[:,agent][0], self.pos[:,agent][1], label=f'Position of agent {agent}')
-                        plt.legend()
-                        plt.grid()
+                    # for agent in range(self.n_agents):
+                    #     plt.figure(f'Position agent_{agent}')
+                    #     plt.scatter(self.pos[:,agent][0], self.pos[:,agent][1], label=f'Position of agent {agent}')
+                    #     plt.legend()
+                    #     plt.grid()
 
                     plt.show()
                         

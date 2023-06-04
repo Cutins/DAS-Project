@@ -101,7 +101,7 @@ def generate_launch_description():
             executable='the_plotter',
             parameters=[{ # dictionary
                             'max_iters': MAXITERS,
-                            'n_agents': N,
+                            # 'n_agents': N,
                             'distance_matrix': flattened_distances,
                             'comm_time': comm_time
                             }],

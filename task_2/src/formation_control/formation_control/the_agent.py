@@ -63,7 +63,7 @@ class Agent(Node):
             barrier_potential = - 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=2)**2)
             
             delta_pos = delta_pos - (formation_potential + barrier_potential)
-            #delta_pos = delta_pos - formation_potential 
+            # delta_pos = delta_pos - formation_potential 
 
         return delta_pos
 
