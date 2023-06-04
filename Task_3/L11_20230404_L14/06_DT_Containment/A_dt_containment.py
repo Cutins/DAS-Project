@@ -83,6 +83,7 @@ BB_kron = np.concatenate((BB_kron, np.zeros((NN*n_x,n_leaders*n_x))), axis = 0)
 
 A = -LL_ext
 B = BB_kron
+print(BB_kron.shape)
 
 ################################################
 # CONTAINMENT Dynamics
