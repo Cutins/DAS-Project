@@ -95,8 +95,8 @@ XX[:,0] = XX_init.T
 
 # Leaders input: null, sinusoidal
 (amp, omega, phi) = (6, 2, 0)
-UU = waves(amp, omega, phi, horizon, n_x, n_leaders)
-# UU = np.zeros((n_leaders*n_x, len(horizon)))
+# UU = waves(amp, omega, phi, horizon, n_x, n_leaders)
+UU = np.zeros((n_leaders*n_x, len(horizon)))
 
 for tt in range(len(horizon)-1):
 	XX[:, tt + 1] = XX[:, tt] + dt*(A @ XX[:, tt] + B @ UU[:, tt])
