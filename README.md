@@ -34,4 +34,5 @@ TO DO:
 - Come definire le distanze in 3D
 - Come mai il potenziale non va a 0?
 - Come mai i follower non vanno nel convex hull
+- Come gestire la comunicazione (launch file e agente) affinche sia realmente Distribuito?
 
