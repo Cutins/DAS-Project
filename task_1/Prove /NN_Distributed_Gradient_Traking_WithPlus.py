@@ -22,7 +22,7 @@ np.random.seed(SEED)
 TARGET = 3
 SIZE = (4, 4)
 N_AGENTS = 5
-SAMPLES_PER_AGENT = 800
+SAMPLES_PER_AGENT = 80
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -246,7 +246,7 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 100
 STEP_SIZE = 1
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
