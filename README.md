@@ -27,4 +27,5 @@ DOMANDE PER PICHIERRI:
 - Come definire le distanze in 3D (Va bene la norma 1 NOOOO)
 - Come mai non sono così perfette le formazioni?
 - Come mai il potenziale non va a 0?
+- Come faccio ad impostare gli assi di riferimento in Rviz e in automatico la visuolizzazione in asse
 

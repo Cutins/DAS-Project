@@ -26,6 +26,7 @@ class Agent(Node):
         self.LL_PI = self.get_parameter('laplacian_PI').value
         if self.type == 0:
             self.LL_PI = np.array([[self.LL_PI[row*int(len(self.LL_PI)/self.n_dim)+col] for col in range(int(len(self.LL_PI)/self.n_dim))] for row in range(self.n_dim)])
+        print(self.LL_PI)
         self.linear_u = self.get_parameter('linear_u').value
         self.kk = 0
         self.counter = 0
@@ -91,7 +92,12 @@ class Agent(Node):
             delta_pos = self.LL_PI @ state
             delta_pos = np.array([delta_pos[dim, dim] for dim in range(self.n_dim)])
             
+            delta_pos = delta_pos*0.1
+            
         else: # Leader
+            for neigh in self.neighs:
+                neigh_pos = self.received_msgs[neigh].pop(0)[1]
+
             delta_pos = np.array(self.linear_u)
             
         return delta_pos
@@ -108,10 +114,15 @@ class Agent(Node):
 
                 if all_synch:
                     
-                    if self.kk < self.max_iters//2: # Formation dynamics      
+                    if self.kk < self.max_iters//8: # Formation dynamics   
+                        print('Inside Formation')   
                         delta_pos = self.formation_dynamics()
                         
                     else:   # Containment dynamics
+                        if self.type == 0: # Follower
+                            print('FOLLOWER - Inside Containment')
+                        else:
+                            print('LEADER - Inside Containment')
                         delta_pos = self.containment_dynamics()
                     
                     # Update Agent Position and Euler Discretization

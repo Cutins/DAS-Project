@@ -5,18 +5,20 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 1000
-N = 6
+MAXITERS = 5000
+N = 5
 n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, n_dim) - 0.5)
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
 euler_step = 0.001 # Integration step
+euler_step = 0.01 # Integration step
 L = 2
 
 
 
 ################################# FORMATION ########################################
+# distances = [[1] * N if riga < 2 else [0] * N for riga in range(N)]
 if N == 4: # Square
     D = np.sqrt(2)*L
     distances = [
@@ -44,21 +46,29 @@ if N == 6: #Hexagon
                 [H, D, 0, L, 0, L],
                 [L, 0, D, 0, L, 0]]
     
+
+    
     
 ################################ CONTAINMENT DYNAMICS ########################################
 
 adj = np.array(distances) > 0
 degree_out = np.sum(adj, axis=-1)
 D_out = np.eye(N) * degree_out
-n_follower = int(N/2)
+# n_follower = int(N/2)
+n_follower = int(2)
 n_leader = N - n_follower
 
 agent_types = np.zeros((N,1))
 agent_types[n_leader:] = 1
 
 L_out = D_out - adj
+print(f'Autovalori di L_out\n{np.linalg.eigvals(L_out)}')
+print(f'MAtrice L_out\n{L_out}')
 L_f     = L_out[:n_follower, :n_follower]
 L_fl    = L_out[:n_follower, n_follower:]
+
+print(f'Autovalori di L_f\n{np.linalg.eigvals(L_f)}')
+# print(f'Autovalori di L_fl\n{np.linalg.eigvals(L_fl)}')
 
 # Laplacian dynamics
 LL = np.zeros((N, N))
@@ -69,20 +79,27 @@ LL[:n_follower, n_follower:] = L_fl
 LL_kron = np.kron(LL, np.eye(n_dim)) # Shape: 3N x 3N
 
 ## followers integral Action
-k_integral = 0
+K_INTEGRAL = 0
 
 LL_kron_dim = LL_kron.shape[0] # [n_dim * N]
 LL_PI = np.zeros((2*LL_kron_dim, 2*LL_kron_dim))
 LL_PI[:LL_kron_dim, :LL_kron_dim] = LL_kron
-LL_PI[:LL_kron_dim, LL_kron_dim:] = LL_kron * k_integral
+LL_PI[:LL_kron_dim, LL_kron_dim:] = LL_kron * K_INTEGRAL
 LL_PI[LL_kron_dim:, :LL_kron_dim] = 0
-LL_PI[LL_kron_dim:, LL_kron_dim:] = - np.eye(LL_kron_dim)
+# LL_PI[LL_kron_dim:, LL_kron_dim:] = - np.eye(LL_kron_dim)
+LL_PI[LL_kron_dim:, LL_kron_dim:] = np.eye(LL_kron_dim)
 LL_PI = -LL_PI
-print(LL_PI[(n_dim*0):(n_dim*(0+1))].flatten().tolist())
+
+print(f'Autovalori di LL_PI\n{np.linalg.eigvals(LL_PI)}')
+# print(LL_PI[(n_dim*0):(n_dim*(0+1))].flatten().tolist())
+
 ################################ LEADER DYNAMICS ########################################
 # Initialize a linear input along x
 proportionial_u = np.zeros((n_dim))
-proportionial_u[0] = 1
+proportionial_u[0] = 0
+proportionial_u[1] = 0
+proportionial_u[2] = 0
+
 
 def generate_launch_description():
     launch_description = [] # Append here your nodes
@@ -178,7 +195,8 @@ def generate_launch_description():
                 parameters=[{
                     'agent_id':i,
                     'comm_time':comm_time,
-                    # 'n_leaders':n_leaders,
+                    'n_follower' : n_follower,
+                    # 'n_leader' : n_leader,
                     }]
                 )
             )

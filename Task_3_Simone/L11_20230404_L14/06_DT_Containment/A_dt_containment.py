@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from functions import waves, animation
 
+from pprint import pprint
+
 np.random.seed(5)
 
 # Bool vars
@@ -85,6 +87,9 @@ A = -LL_ext
 B = BB_kron
 print(BB_kron.shape)
 
+print(f'Autovalori di A\n{np.linalg.eigvals(A)}')
+pprint(f'Matrice A\n{A}')
+pprint(f'Matrice B\n{B}')
 ################################################
 # CONTAINMENT Dynamics
 
