@@ -447,9 +447,9 @@ mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
 uu_mean = mean_along_neurons_uu
 
 plt.figure('SS evolution')
-plt.semilogy(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
+plt.plot(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
 for agent in range(N_AGENTS):
-    plt.semilogy(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
+    plt.plot(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('SS')

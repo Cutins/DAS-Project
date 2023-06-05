@@ -19,13 +19,19 @@ TO DO:
 - CAPIRE PERCHÈ NON CONVERGONO LE UU
 
 
-DOMANDE PER PICHIERRI:
+
+
+
+###### DOMANDE PER PICHIERRI  #############
+# Neural Network
 - Nell'inizializzazione del Gradient Trackind come calcolo ss[0]?
     La nostra idea era runnare tutta la rete e trovare la ss, cioè il gradient per tutti i layer e per tutti i neuroni
     Inizializziamo su una singola immagine o su tutto un minibatch per ogni agente?
+- Come mostrare se le UU vanno al consenso o meno?
+- Come modificare la struttura della rete per gestire le immagini 28X28
+
 # ROS
-- Come definire le distanze in 3D (Va bene la norma 1 NOOOO)
-- Come mai non sono così perfette le formazioni?
+- Come definire le distanze in 3D
 - Come mai il potenziale non va a 0?
-- Come faccio ad impostare gli assi di riferimento in Rviz e in automatico la visuolizzazione in asse
+- Come mai i follower non vanno nel convex hull
 

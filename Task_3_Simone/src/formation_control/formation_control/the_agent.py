@@ -26,7 +26,7 @@ class Agent(Node):
         self.LL_PI = self.get_parameter('laplacian_PI').value
         if self.type == 0:
             self.LL_PI = np.array([[self.LL_PI[row*int(len(self.LL_PI)/self.n_dim)+col] for col in range(int(len(self.LL_PI)/self.n_dim))] for row in range(self.n_dim)])
-        print(self.LL_PI)
+        print(f'LL_PI:\n{self.LL_PI}')
         self.linear_u = self.get_parameter('linear_u').value
         self.kk = 0
         self.counter = 0
@@ -75,20 +75,25 @@ class Agent(Node):
             # delta_pos = delta_pos - formation_potential 
 
             self.pos_i[neigh] = neigh_pos
+        self.pos_i[self.id] = self.pos
 
         return delta_pos
 
 
     def containment_dynamics(self):
         if self.type == 0: # Follower
+            off = self.n_agents * self.n_dim
             state = np.zeros((2*self.n_agents*self.n_dim, self.n_dim))
+            state[self.id:self.id+self.n_dim] = self.pos * np.eye(self.n_dim)
+            state[(self.id+off):(self.id+off)+self.n_dim] = self.pos_i[self.id] * np.eye(self.n_dim)
             
             for neigh in self.neighs:
                 neigh_pos = self.received_msgs[neigh].pop(0)[1]
-                off = self.n_agents * self.n_dim + neigh
                 state[neigh:neigh+self.n_dim] = neigh_pos * np.eye(self.n_dim)
-                state[off:off+self.n_dim] = self.pos_i[neigh] * np.eye(self.n_dim)
+                state[(off+neigh):(off+neigh)+self.n_dim] = self.pos_i[neigh] * np.eye(self.n_dim)
                 self.pos_i[neigh] = neigh_pos
+            self.pos_i[self.id] = self.pos
+
             delta_pos = self.LL_PI @ state
             delta_pos = np.array([delta_pos[dim, dim] for dim in range(self.n_dim)])
             

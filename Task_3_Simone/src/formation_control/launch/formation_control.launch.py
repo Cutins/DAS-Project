@@ -11,7 +11,7 @@ n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, n_dim) - 0.5)
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
-euler_step = 0.001 # Integration step
+# euler_step = 0.001 # Integration step
 euler_step = 0.01 # Integration step
 L = 2
 
