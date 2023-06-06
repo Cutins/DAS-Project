@@ -208,6 +208,7 @@ def adjoint_dynamics(ltp, xt, ut):
 
     lt = df_dx @ ltp # Adjoint equation
     delta_ut_vec = df_du @ ltp
+    print(delta_ut_vec.shape)
     delta_ut = np.reshape(delta_ut_vec,(D_NEURONS, D_NEURONS+1))
 
     return lt, delta_ut

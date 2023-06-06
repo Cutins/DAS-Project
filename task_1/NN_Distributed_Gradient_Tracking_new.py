@@ -24,8 +24,8 @@ save_weights = True
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (28, 28)
-N_AGENTS = 10
+SIZE = (4, 4)
+N_AGENTS = 5
 SAMPLES_PER_AGENT = 40 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
@@ -187,7 +187,8 @@ def forward_pass(x0, uu_list):
     # Repeate the inference dynamics for all the layers
     for l_idx, uu in enumerate(uu_list):
         xx.append(inference_dynamics(xx[l_idx], uu))
-
+    print([x for x in xx])
+    #quit(0)
     return xx
   
 
@@ -200,7 +201,6 @@ def adjoint_dynamics(llambda_tp, xt, ut):
 
     dim = np.tile([in_neurons+1], out_neurons)
     cs_idx = np.append(0, np.cumsum(dim))
-
     for n in range(out_neurons):
         xtp = xt@ut[n, 1:] + ut[n, 0]
         dSigma = activation_fn_derivative(xtp)
@@ -269,17 +269,17 @@ BATCH_SIZE = 4 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
-network = [28*28, 28, 1]
+network = [4*4, 4, 1]
 n_layers = len(network)
 # xx = [np.zeros(shape=(n_neurons,)) for n_neurons in network] # shape[network.shape]
 uu = [1e-2 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
 ss = [np.zeros_like(ul) for ul in uu]
-batch_grad = [np.zeros_like(ul) for ul in uu]
+old_grad = [np.zeros_like(ul) for ul in uu]
 
 
 uu = [[uu for _ in range(N_AGENTS)] for _ in range(N_BATCH*EPOCHS+1)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
-ss = [[ss for _ in range(N_AGENTS)] for _ in range(N_BATCH*(EPOCHS+1))] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
-batch_grad = [[batch_grad for _ in range(N_AGENTS)] for _ in range(N_BATCH)] # shape[N_BATCH, N_AGENTS, weights.shape]
+ss = [[ss for _ in range(N_AGENTS)] for _ in range(N_BATCH*(EPOCHS+N_BATCH))] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+old_grad = [[old_grad for _ in range(N_AGENTS)] for _ in range(N_BATCH)] # shape[N_BATCH, N_AGENTS, weights.shape]
 
 prediction = np.zeros((N_AGENTS, SAMPLES))
 
@@ -312,11 +312,11 @@ for batch_num in range(N_BATCH):
 
             # Gradient accumulation
             for layer in range(n_layers-1):
-                batch_grad[batch_num][agent][layer] += grad[layer] / BATCH_SIZE
+                old_grad[batch_num][agent][layer] += grad[layer] / BATCH_SIZE
 
         for layer in range(n_layers-1): 
-            ss[batch_num][agent][layer] = batch_grad[batch_num][agent][layer]
-        
+            ss[batch_num][agent][layer] = old_grad[batch_num][agent][layer]
+
 ###############################################################################
 # Training
 for epoch in range(EPOCHS):
@@ -338,6 +338,7 @@ for epoch in range(EPOCHS):
                 for neigh in neighs:
                     uu[kk+1][agent][layer] += WW[agent, neigh] * uu[kk][neigh][layer]
 
+            batch_grad = [np.zeros_like(ul) for ul in uu[0][agent]]
             for batch_el in range(BATCH_SIZE):
                 idx = (batch_num*BATCH_SIZE) + batch_el
                 
@@ -348,25 +349,29 @@ for epoch in range(EPOCHS):
                 # Forward pass
                 xx = forward_pass(images_train[agent, idx], uu[kk+1][agent])
                 prediction[agent, idx] = xx[-1] # prediction <= value of the first neuron in the last layer
-
+                print(xx[-1])
                 # Loss evalutation
                 loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
-
+                #print(out_grad)
+                quit(0)
                 # Backward pass
-                print(out_grad)
                 _, grad = backward_pass(xx, uu[kk+1][agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
                 for layer in range(n_layers-1):
-                    batch_grad[batch_num][agent][layer] += grad[layer] / BATCH_SIZE
+                    batch_grad[layer] += grad[layer] / BATCH_SIZE
 
-            NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad[kk+N_BATCH][agent]) / N_BATCH
-
+            for layer in range(n_layers-1):
+                NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad[layer]) / N_BATCH
+            
             # Gradient Tracking Algorithm - SS Update
             for layer in range(n_layers-1):
-                ss[kk+N_BATCH, agent, layer] = (WW[agent, agent] * ss[kk, agent, layer]) + (batch_grad[kk+N_BATCH, agent, layer] - batch_grad[kk, agent, layer])
+                ss[kk+N_BATCH][agent][layer] = (WW[agent, agent] * ss[kk][agent][layer]) + (batch_grad[layer] - old_grad[batch_num][agent][layer])
                 for neigh in neighs:
-                    ss[kk+N_BATCH, agent, layer] += WW[agent, neigh] * ss[kk, neigh, layer]
+                    ss[kk+N_BATCH][agent][layer] += WW[agent, neigh] * ss[kk][neigh][layer]
+
+            for layer in range(n_layers-1):
+                old_grad[batch_num][agent][layer] = batch_grad[layer]
             
 
 # Computes the mean error over uu
