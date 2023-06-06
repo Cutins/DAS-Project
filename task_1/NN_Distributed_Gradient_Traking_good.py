@@ -198,7 +198,7 @@ def adjoint_dynamics(ltp, xt, ut):
 
     dim = np.tile([D_NEURONS+1], D_NEURONS)
     cs_idx = np.append(0, np.cumsum(dim))
-  
+    print(xt.shape, ut.shape)
     for l in range(D_NEURONS):
         xl = xt@ut[l, 1:] + ut[l, 0]
         dSigma = activation_fn_derivative(xl)

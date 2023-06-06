@@ -36,3 +36,15 @@ TO DO:
 - Come mai i follower non vanno nel convex hull
 - Come gestire la comunicazione (launch file e agente) affinche sia realmente Distribuito?
 
+
+
+###### RICEVIMENTO PICHIERRI  #############
+# NN
+- Salavare la ss per i mini_batch
+
+# ROS
+- Aggiungere il movimento dei leader direttamente nella formula
+- Il codice dei grafici è fatto male, va salvato prima tutti i vicini posizione per potenziale
+- Aggiungere un agente definito come "the_obstacole"
+- Conteinmnet da vedere la Laplaciana
+- Salvare la config di Rviz2

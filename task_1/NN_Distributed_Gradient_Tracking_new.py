@@ -24,7 +24,7 @@ save_weights = True
 ###############################################################################
 # DataFrame Settings
 TARGET = 3
-SIZE = (4, 4)
+SIZE = (28, 28)
 N_AGENTS = 10
 SAMPLES_PER_AGENT = 40 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
@@ -193,14 +193,15 @@ def forward_pass(x0, uu_list):
 
 # Adjoint dynamics
 def adjoint_dynamics(llambda_tp, xt, ut):
-    n_neurons = xt.shape[0]
-    df_dx = np.zeros((n_neurons, n_neurons))
-    df_du = np.zeros(((n_neurons+1)*n_neurons, n_neurons))
+    out_neurons = ut.shape[0]
+    in_neurons = ut.shape[1] - 1
+    df_dx = np.zeros((in_neurons, out_neurons))
+    df_du = np.zeros(((in_neurons+1)*out_neurons, out_neurons))
 
-    dim = np.tile([n_neurons+1], n_neurons)
+    dim = np.tile([in_neurons+1], out_neurons)
     cs_idx = np.append(0, np.cumsum(dim))
-  
-    for n in range(n_neurons):
+
+    for n in range(out_neurons):
         xtp = xt@ut[n, 1:] + ut[n, 0]
         dSigma = activation_fn_derivative(xtp)
 
@@ -209,7 +210,7 @@ def adjoint_dynamics(llambda_tp, xt, ut):
 
     llambda_t = df_dx @ llambda_tp # Adjoint equation
     delta_ut_vec = df_du @ llambda_tp
-    delta_ut = np.reshape(delta_ut_vec,(n_neurons, n_neurons+1))
+    delta_ut = np.reshape(delta_ut_vec,(out_neurons, in_neurons+1))
 
     return llambda_t, delta_ut
 
@@ -277,7 +278,7 @@ batch_grad = [np.zeros_like(ul) for ul in uu]
 
 
 uu = [[uu for _ in range(N_AGENTS)] for _ in range(N_BATCH*EPOCHS+1)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
-ss = [[ss for _ in range(N_AGENTS)] for _ in range(N_BATCH*EPOCHS+1)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+ss = [[ss for _ in range(N_AGENTS)] for _ in range(N_BATCH*(EPOCHS+1))] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
 batch_grad = [[batch_grad for _ in range(N_AGENTS)] for _ in range(N_BATCH)] # shape[N_BATCH, N_AGENTS, weights.shape]
 
 prediction = np.zeros((N_AGENTS, SAMPLES))
@@ -299,22 +300,22 @@ for batch_num in range(N_BATCH):
     for agent in range(N_AGENTS):
         for batch_el in range(BATCH_SIZE):
             idx = (batch_num*BATCH_SIZE) + batch_el
-
+            
             # Forward pass
-            xx = forward_pass(images_train[agent, idx], uu[batch_num, agent])
+            xx = forward_pass(images_train[agent, idx], uu[batch_num][agent])
 
             # Loss evaluation
             loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
 
             # Backward pass
-            _, grad = backward_pass(xx, uu[batch_num, agent], out_grad) # out_grad = llambdaT
+            _, grad = backward_pass(xx, uu[batch_num][agent], out_grad) # out_grad = llambdaT
 
             # Gradient accumulation
             for layer in range(n_layers-1):
-                batch_grad[batch_num, agent, layer] += grad[layer] / BATCH_SIZE
+                batch_grad[batch_num][agent][layer] += grad[layer] / BATCH_SIZE
 
         for layer in range(n_layers-1): 
-            ss[batch_num, agent, layer] = batch_grad[batch_num, agent, layer]
+            ss[batch_num][agent][layer] = batch_grad[batch_num][agent][layer]
         
 ###############################################################################
 # Training
@@ -325,7 +326,6 @@ for epoch in range(EPOCHS):
     for batch_num in range(N_BATCH):
         kk = epoch*N_BATCH+batch_num
 
-        kk_for_ss = kk - N_BATCH 
         # Quando calcoli UU usi SS in k
         # quando salvi SS la salvi in avanti di N_BATCH
 
@@ -334,9 +334,9 @@ for epoch in range(EPOCHS):
 
             # Gradient Tracking Algorithm - Weights Update
             for layer in range(n_layers-1):
-                uu[kk+1, agent, layer] = (WW[agent, agent] * uu[kk, agent, layer]) - (STEP_SIZE * ss[kk, agent, layer])
+                uu[kk+1][agent][layer] = (WW[agent, agent] * uu[kk][agent][layer]) - (STEP_SIZE * ss[kk][agent][layer])
                 for neigh in neighs:
-                    uu[kk+1, agent, layer] += WW[agent, neigh] * uu[kk, neigh, layer]
+                    uu[kk+1][agent][layer] += WW[agent, neigh] * uu[kk][neigh][layer]
 
             for batch_el in range(BATCH_SIZE):
                 idx = (batch_num*BATCH_SIZE) + batch_el
@@ -346,35 +346,28 @@ for epoch in range(EPOCHS):
                     break
 
                 # Forward pass
-                xx = forward_pass(images_train[agent, idx], uu_plus[agent])
-                prediction[agent,idx] = xx[-1, 0] # prediction <= value of the first neuron in the last layer
+                xx = forward_pass(images_train[agent, idx], uu[kk+1][agent])
+                prediction[agent, idx] = xx[-1] # prediction <= value of the first neuron in the last layer
 
                 # Loss evalutation
-                out_grad = np.zeros((D_NEURONS)) # Initialize output gradient to 0 (for output regression)
-                loss, out_grad[0] = cost_fn(labels_train[agent, idx], prediction[agent,idx])
+                loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
 
                 # Backward pass
-                _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
+                print(out_grad)
+                _, grad = backward_pass(xx, uu[kk+1][agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
-                batch_grad_plus += grad / BATCH_SIZE
+                for layer in range(n_layers-1):
+                    batch_grad[batch_num][agent][layer] += grad[layer] / BATCH_SIZE
 
-            NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad_plus) / N_BATCH
+            NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad[kk+N_BATCH][agent]) / N_BATCH
 
             # Gradient Tracking Algorithm - SS Update
-            ss_plus[agent] = (WW[agent, agent] * ss[agent]) + (batch_grad_plus - batch_grad[agent])
-            for neigh in neighs:
-                ss_plus[agent] += WW[agent, neigh] * ss[neigh]
+            for layer in range(n_layers-1):
+                ss[kk+N_BATCH, agent, layer] = (WW[agent, agent] * ss[kk, agent, layer]) + (batch_grad[kk+N_BATCH, agent, layer] - batch_grad[kk, agent, layer])
+                for neigh in neighs:
+                    ss[kk+N_BATCH, agent, layer] += WW[agent, neigh] * ss[kk, neigh, layer]
             
-            batch_grad[agent] = batch_grad_plus
-        
-        # SYNCHRONOUS UPDATE
-        for agent in range(N_AGENTS): 
-            uu[agent] = uu_plus[agent]
-            ss[agent] = ss_plus[agent]
-
-            ss_ELIMINA[epoch,agent] = ss[agent]     # ELIMINAMI
-            uu_ELIMINA[epoch, agent] = uu[agent]    # ELIMINAMI
 
 # Computes the mean error over uu
 uu_mean = np.mean(uu, axis=0)
@@ -459,31 +452,31 @@ plt.legend()
 plt.title('norm_gradient_J')
 plt.grid()
 
-# ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
-mean_along_layers_ss = np.mean(ss_ELIMINA, axis=2)
-mean_along_neurons_ss = np.mean(mean_along_layers_ss, axis=(2,3))
-ss_mean = mean_along_neurons_ss
+# # ss_ELIMINA = np.zeros((EPOCHS, N_AGENTS, T_LAYERS-1, D_NEURONS, D_NEURONS+1))
+# mean_along_layers_ss = np.mean(ss_ELIMINA, axis=2)
+# mean_along_neurons_ss = np.mean(mean_along_layers_ss, axis=(2,3))
+# ss_mean = mean_along_neurons_ss
 
-mean_along_layers_uu = np.mean(uu_ELIMINA, axis=2)
-mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
-uu_mean = mean_along_neurons_uu
+# mean_along_layers_uu = np.mean(uu_ELIMINA, axis=2)
+# mean_along_neurons_uu = np.mean(mean_along_layers_uu, axis=(2,3))
+# uu_mean = mean_along_neurons_uu
 
-plt.figure('SS evolution')
-plt.plot(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-    plt.plot(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.legend()
-plt.title('SS')
-plt.grid()
+# plt.figure('SS evolution')
+# plt.plot(range(EPOCHS), np.mean(ss_mean, axis=1), label='Total SS Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#     plt.plot(range(EPOCHS), ss_mean[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.legend()
+# plt.title('SS')
+# plt.grid()
 
-plt.figure('UU (Weights) evolution')
-plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
-for agent in range(N_AGENTS):
-    plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
-plt.xlabel(r'Epochs')
-plt.legend()
-plt.title('UU')
-plt.grid()
+# plt.figure('UU (Weights) evolution')
+# plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
+# for agent in range(N_AGENTS):
+#     plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
+# plt.xlabel(r'Epochs')
+# plt.legend()
+# plt.title('UU')
+# plt.grid()
 
-plt.show()
+# plt.show()
