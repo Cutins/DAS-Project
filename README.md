@@ -1,22 +1,10 @@
 # DAS-Project
-Project of Distributed Autonomous Systems course
-
-Modifiche del 2023/05/10
-- Implementato Gradient Tracking
-
-Modifiche del 2023/05/30
-- Implementato nuovo DataSet bilanciato
-- Completato Task 1_2
-
 
 TO DO:
-- Inserire il Save di uu in Distirbuted Algorithm
-- Plottare l'evoluzione della norma di SS e UU
-- Salvare per mostrare al prof al ricevimento la UU e relativi grafici
-- Creare il file .py per solo i Test Set
-- Plottere la differenza tra la Media e i singoli agenti di UU, questo deve andare a 0
-
-- CAPIRE PERCHÈ NON CONVERGONO LE UU
+- Fare lo stopping criteria quando: Derivata = 0 e distanza dalla media = 0
+- Nuova dinamica, i leader si muovono solo con Input
+- Giocare con gli input
+- Aggiungere un agente definito come "the_obstacole"
 
 
 
@@ -48,3 +36,4 @@ TO DO:
 - Aggiungere un agente definito come "the_obstacole"
 - Conteinmnet da vedere la Laplaciana
 - Salvare la config di Rviz2
+- shape 3D

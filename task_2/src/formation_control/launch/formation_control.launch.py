@@ -5,8 +5,8 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 400
-N = 5
+MAXITERS = 500
+N = 6
 pos_init = (np.random.rand(N, 3) - 0.5)
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
