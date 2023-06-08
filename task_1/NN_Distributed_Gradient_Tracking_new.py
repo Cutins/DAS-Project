@@ -26,8 +26,8 @@ save_weights = True
 # DataFrame Settings
 TARGET = 3
 SIZE = (28, 28)
-N_AGENTS = 10
-SAMPLES_PER_AGENT = 40 # Multiple of Minibatch Size 
+N_AGENTS = 15
+SAMPLES_PER_AGENT = 8 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -62,7 +62,7 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 T_LAYERS = 2        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -265,11 +265,12 @@ def accuracy(xT,Y):
 # Training parameters
 EPOCHS = 200
 STEP_SIZE = 1e-1
-BATCH_SIZE = 4 # Dimension of the minibatch set
+BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
-network = [28*28, 28, 1]
+# network = [28*28, 28, 1]
+network = [(SIZE[0]*SIZE[1]), int(np.sqrt(SIZE[0]*SIZE[1])) , 1]
 n_layers = len(network)
 # xx = [np.zeros(shape=(n_neurons,)) for n_neurons in network] # shape[network.shape]
 uu = [1e-2 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
@@ -300,6 +301,10 @@ for batch_num in range(N_BATCH):
     for agent in range(N_AGENTS):
         for batch_el in range(BATCH_SIZE):
             idx = (batch_num*BATCH_SIZE) + batch_el
+
+            # Skip if samples are finished (last minibatch)
+            if idx >= SAMPLES_PER_AGENT:
+                break
             
             # Forward pass
             xx = forward_pass(images_train[agent, idx], uu[0][agent])
@@ -373,6 +378,8 @@ print('\n\nTRAINING SET\n')
 for agent in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+        if idx >= SAMPLES_PER_AGENT:    # Skip if samples are finished (last minibatch)
+            break
         print(f"[Agent {agent}] Label for Image {idx} was {labels_train[agent,idx]} and is classified as {prediction[agent,idx]:.4f}")
     print()
 
@@ -380,6 +387,8 @@ print('\n\nTEST SET\n')
 for agent in range(N_AGENTS):
     for batch_el in range(BATCH_SIZE):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
+        if idx >= SAMPLES_PER_AGENT:    # Skip if samples are finished (last minibatch)
+            break
         print(f"[Agent {agent}] Label for the SAME Image {idx} was {labels_test[0, idx]} and is classified as {forward_pass(images_test[0, idx], uu[-1][agent])[-1][0]:.4f}")
     print()
 
@@ -449,22 +458,48 @@ plt.grid()
 
 
 # Computes the mean error over uu
-plt.figure()
+plt.figure('mean error over UU')
 uu_mean = [np.mean([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*EPOCHS+1)]
 #plt.plot([uu_mean[t] for t in range(N_BATCH*EPOCHS+1)])
 for agent in range(N_AGENTS):
     plt.plot([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) - uu_mean[t] for t in range(N_BATCH*EPOCHS+1)], linestyle=':')
+plt.xlabel(r'Epochs')
+plt.title('Mean error over u')
+plt.grid()
+
+
+plt.figure('UU evolution')
+uu_mean = [np.mean([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*EPOCHS+1)]
+plt.plot([uu_mean[t] for t in range(int((N_BATCH*EPOCHS+1)/10))], label='UU mean', linewidth = 3)
+for agent in range(N_AGENTS):
+    plt.plot([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(int((N_BATCH*EPOCHS+1)/10))], linestyle=':')
+plt.xlabel(r'Epochs')
+plt.title('UU for the first 10% of epochs')
+plt.grid()
+
+
+plt.figure('Wheight of single connection')
+for agent in range(N_AGENTS):
+    plt.plot([uu[t][agent][-1][0][1] for t in range(int((N_BATCH*EPOCHS+1)/10))], linewidth = 0.5)
+plt.xlabel(r'Epochs')
+plt.title('Wheight of last neurons')
+plt.grid()
 
 
 plt.figure('SS evolution')
-plt.plot([np.mean([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*(EPOCHS+1))], label='Total SS Evolution', linewidth = 3)
+plt.semilogy([np.mean([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*(EPOCHS+1))], label='SS mean', linewidth = 3)
 for agent in range(N_AGENTS):
-    plt.plot([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(N_BATCH*(EPOCHS+1))], linestyle = ':')
+    plt.semilogy([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(N_BATCH*(EPOCHS+1))], linestyle = ':')
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('SS')
 plt.grid()
 plt.show()
+
+
+# shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+# plt.figure('uu of first neuron of second layer')
+# plt.plot([uu[t][agent][1,]])
 
 # plt.figure('UU (Weights) evolution')
 # plt.plot(range(EPOCHS*N_BATCH), np.mean(uu, axis=(1,2)), label='Total UU Evolution', linewidth = 3)
