@@ -1,12 +1,7 @@
 # DAS-Project
 
 TO DO:
-- Plot di tutte le uu che devono andare al consenso
-- Pescare un neurone a caso dalla rete e vedere le uu di tutti gli agenti per quel neurone. Devono andare al consenso.
-
-- Fare lo stopping criteria quando: Derivata = 0 e distanza dalla media = 0
-- Nuova dinamica, i leader si muovono solo con Input
-- Giocare con gli input
+- Giocare con gli input, tipo cerchio 
 - Aggiungere un agente definito come "the_obstacole"
 
 

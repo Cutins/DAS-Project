@@ -7,22 +7,11 @@ from ament_index_python.packages import get_package_share_directory
 
 MAXITERS = 500
 N = 6
-n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, 3) - 0.5)
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
-euler_step = 0.005 # Integration step
+euler_step = 0.001 # Integration step
 L = 2
-
-# Moving leaders parte
-n_follower = int(N/2)+1
-n_leader = N-n_follower
-
-agent_types = np.zeros((N,1)) # Followers -> 0
-agent_types[n_leader:] = 1 # Leaders -> 1
-
-input = np.zeros((n_dim))
-input[0] = 0.5
 
 if N == 4: # Square
     D = np.sqrt(2)*L
@@ -71,46 +60,23 @@ def generate_launch_description():
     )
 
 
-    for i_foll in range(n_follower):
+    for i in range(N):
 
         launch_description.append(
             Node(
                 package='formation_control',
-                namespace =f'agent_{i_foll}',
+                namespace =f'agent_{i}',
                 executable='the_agent',
                 parameters=[{ # dictionary
-                                'agent_id': i_foll, 
-                                'pos_init': pos_init[i_foll].tolist(),
-                                'distances': distances[i_foll], 
+                                'agent_id': i, 
+                                'pos_init': pos_init[i].tolist(),
+                                'distances': distances[i], 
                                 'max_iters': MAXITERS,
                                 'comm_time': comm_time,
-                                'euler_step': euler_step,
-                                'type' : 0, # Follower
-                                'input' : input.tolist(),
+                                'euler_step': euler_step
                                 }],
                 output='screen',
-                prefix=f'xterm -title "agent_{i_foll}" -hold -e',
-            ))
-        
-    for i in range(n_leader):
-        i_lead = n_follower+i
-        launch_description.append(
-            Node(
-                package='formation_control',
-                namespace =f'agent_{i_lead}',
-                executable='the_agent',
-                parameters=[{ # dictionary
-                                'agent_id': i_lead, 
-                                'pos_init': pos_init[i_lead].tolist(),
-                                'distances': distances[i_lead], 
-                                'max_iters': MAXITERS,
-                                'comm_time': comm_time,
-                                'euler_step': euler_step,
-                                'type' : 1, # Leader
-                                'input' : input.tolist(),
-                                }],
-                output='screen',
-                prefix=f'xterm -title "agent_{i_lead}" -hold -e',
+                prefix=f'xterm -title "agent_{i}" -hold -e',
             ))
         
         # Launch visualizer
@@ -127,7 +93,7 @@ def generate_launch_description():
                 )
             )
         
-    # Plotter Node
+
     flattened_distances = [item for sublist in distances for item in sublist]
     launch_description.append(
         Node(
@@ -135,6 +101,7 @@ def generate_launch_description():
             executable='the_plotter',
             parameters=[{ # dictionary
                             'max_iters': MAXITERS,
+                            # 'n_agents': N,
                             'distance_matrix': flattened_distances,
                             'comm_time': comm_time
                             }],

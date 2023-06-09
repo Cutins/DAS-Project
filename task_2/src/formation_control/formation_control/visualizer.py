@@ -14,6 +14,7 @@ class Visualizer(Node):
         # Get parameters from launcher
         self.agent_id = self.get_parameter('agent_id').value
         self.comm_time = self.get_parameter('comm_time').value
+        self.n_follower = self.get_parameter('n_follower').value
 
 
         #######################################################################################
@@ -77,9 +78,9 @@ class Visualizer(Node):
             marker.scale.z = scale
 
             # Specify the color of the marker as RGBA
-            color = [1.0, 0.0, 0.0, 1.0]
-            if self.agent_id == 0:
-                color = [0.0, 0.5, 0.5, 1.0]
+            color = [1.0, 0.0, 0.0, 1.0]   # Red - Follower
+            if self.agent_id >= self.n_follower:
+                color = [0.0, 0.5, 0.5, 1.0]    # Blue - Leader
 
             marker.color.r = color[0]
             marker.color.g = color[1]

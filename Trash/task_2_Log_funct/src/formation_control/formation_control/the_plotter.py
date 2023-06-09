@@ -26,13 +26,6 @@ class Plot(Node):
         self.barrier_potential = np.zeros((self.max_iters, self.n_agents))
         self.total_potential = np.zeros((self.max_iters, self.n_agents))
         self.kk = 0
-        self.test =  np.zeros((self.max_iters, self.n_agents))
-        self.testall = np.zeros((self.max_iters))
-
-        # CREATE TOPIC
-        self.publisher = self.create_publisher(msg_type=MsgFloat, 
-                                                topic=f'/topic_{self.id}',
-                                                qos_profile=10)        
 
         # SUBSCRIBE TO NEIGHBORS
         for agent in range(self.n_agents):
@@ -71,17 +64,7 @@ class Plot(Node):
                     self.formation_potential[self.kk, agent] = np.sum([1/4*(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2)**2 for neigh in neighs])
                     self.barrier_potential[self.kk, agent] = np.sum([-np.log(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2) for neigh in neighs])
                     self.total_potential[self.kk, agent] = self.formation_potential[self.kk, agent] + self.barrier_potential[self.kk, agent]
-        
-
-                    # Switch to moving leaders
-                if self.kk > 5:
-                    for agent in range(self.n_agents):
-                        if np.abs(self.formation_potential[self.kk-5, agent]-self.formation_potential[self.kk, agent]) < 0.5e-1:
-                            self.test[self.kk, agent] = 1
-                    if np.all(self.test[self.kk]):
-                        self.testall[self.kk] = 50
-                        print("OKAY...LET'S GO")
-
+                    
                 self.kk += 1
 
                 # Check Termination
@@ -91,8 +74,7 @@ class Plot(Node):
                     plt.figure('Formation potential')
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Formation Potential of agent {agent}') 
-                        plt.plot(range(self.max_iters), self.testall[:], label='test', linewidth=5)
-                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2)
+                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2) 
                     plt.legend()
                     plt.grid()
 

@@ -26,6 +26,14 @@ class Plot(Node):
         self.barrier_potential = np.zeros((self.max_iters, self.n_agents))
         self.total_potential = np.zeros((self.max_iters, self.n_agents))
         self.kk = 0
+        self.formation =  np.zeros((self.max_iters, self.n_agents))
+        self.all_in_formation = np.zeros((self.max_iters))
+        self.start_moving = 0
+
+        # Create a Topic to comunicate at the agent that they're in formation
+        self.publisher = self.create_publisher(msg_type=MsgFloat, 
+                                                topic='/topic_Manager',
+                                                qos_profile=10)
 
         # SUBSCRIBE TO NEIGHBORS
         for agent in range(self.n_agents):
@@ -64,9 +72,27 @@ class Plot(Node):
                     self.formation_potential[self.kk, agent] = np.sum([1/4*(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2)**2 for neigh in neighs])
                     self.barrier_potential[self.kk, agent] = np.sum([-np.log(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2) for neigh in neighs])
                     self.total_potential[self.kk, agent] = self.formation_potential[self.kk, agent] + self.barrier_potential[self.kk, agent]
-                    
-                self.kk += 1
+        
 
+                # Switch to moving leaders
+                if self.kk > 5:
+                    # Check if derivative is equal to zero
+                    for agent in range(self.n_agents):
+                        if np.abs(self.formation_potential[self.kk-5, agent]-self.formation_potential[self.kk, agent]) < 0.5e-1:
+                            self.formation[self.kk, agent] = 1
+                    # If all agents have the derivative equal to zero
+                    if np.all(self.formation[self.kk]):
+                        self.all_in_formation[self.kk] = 50
+                        if self.start_moving == 0: # Detect rising edge, first time we reach formation 
+                            print("\n\n-------FORMATION-------\n\n")
+                            self.start_moving = 1.0
+                            msg = MsgFloat()
+                            msg.data = [self.start_moving]
+                            self.publisher.publish(msg)
+
+
+
+                self.kk += 1
                 # Check Termination
                 if self.kk == self.max_iters:
                     print('\nSTART PLOTTING')
@@ -74,7 +100,8 @@ class Plot(Node):
                     plt.figure('Formation potential')
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Formation Potential of agent {agent}') 
-                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2) 
+                    plt.plot(range(self.max_iters), self.all_in_formation[:], label='All agents in formation', linewidth = 0.5)
+                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2)
                     plt.legend()
                     plt.grid()
 
