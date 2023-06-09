@@ -4,7 +4,7 @@ TO DO:
 - Giocare con gli input, tipo cerchio 
 - Aggiungere un agente definito come "the_obstacole"
 
-
+- inserire U lineare, aggiungere finestra di 'obstacole'
 
 
 

@@ -5,26 +5,30 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 2000
+MAXITERS = 1000
 N = 6
 n_dim = 3 # State dimension
-pos_init = (np.random.rand(N, 3) - 0.5)
+pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
 euler_step = 0.005 # Integration step
 L = 2
 
-# Moving leaders parte
-n_follower = int(N/2)+1
-n_leader = N-n_follower
+# Moving leaders
+agent_types = np.zeros((N)) # Followers -> 0
+for i in range(N):
+    if i%2 == 1:
+        agent_types[i] = 1 # Leaders -> 1
 
-agent_types = np.zeros((N,1)) # Followers -> 0
-agent_types[n_leader:] = 1 # Leaders -> 1
 
-input = np.zeros((n_dim))
-input[0] = 5
-input[1] = 0
-input[2] = 0
+# n_leaders = int(N/2) + (N%2)
+# agent_types[n_follower:] = 1 # Leaders -> 1
+
+# input = np.zeros((n_dim))
+# input[0] = 5
+# input[1] = 0
+# input[2] = 0
+input = 3   # Raggio del cercio
 
 if N == 4: # Square
     D = np.sqrt(2)*L
@@ -73,49 +77,68 @@ def generate_launch_description():
     )
 
 
-    for i_foll in range(n_follower):
-
-        launch_description.append(
-            Node(
-                package='formation_control',
-                namespace =f'agent_{i_foll}',
-                executable='the_agent',
-                parameters=[{ # dictionary
-                                'agent_id': i_foll, 
-                                'pos_init': pos_init[i_foll].tolist(),
-                                'distances': distances[i_foll], 
-                                'max_iters': MAXITERS,
-                                'comm_time': comm_time,
-                                'euler_step': euler_step,
-                                'type' : 0, # Follower
-                                'input' : input.tolist(),
-                                }],
-                output='screen',
-                prefix=f'xterm -title "agent_{i_foll}" -hold -e',
-            ))
+    # for i_foll in range(n_follower):
+    #     launch_description.append(
+    #         Node(
+    #             package='formation_control',
+    #             namespace =f'agent_{i_foll}',
+    #             executable='the_agent',
+    #             parameters=[{ # dictionary
+    #                             'agent_id': i_foll, 
+    #                             'pos_init': pos_init[i_foll].tolist(),
+    #                             'distances': distances[i_foll], 
+    #                             'max_iters': MAXITERS,
+    #                             'comm_time': comm_time,
+    #                             'euler_step': euler_step,
+    #                             'type' : 0, # Follower
+    #                             'input' : input#.tolist(),
+    #                             }],
+    #             output='screen',
+    #             prefix=f'xterm -title "agent_{i_foll}" -hold -e',
+    #         ))
         
-    for i in range(n_leader):
-        i_lead = n_follower+i
-        launch_description.append(
-            Node(
-                package='formation_control',
-                namespace =f'agent_{i_lead}',
-                executable='the_agent',
-                parameters=[{ # dictionary
-                                'agent_id': i_lead, 
-                                'pos_init': pos_init[i_lead].tolist(),
-                                'distances': distances[i_lead], 
-                                'max_iters': MAXITERS,
-                                'comm_time': comm_time,
-                                'euler_step': euler_step,
-                                'type' : 1, # Leader
-                                'input' : input.tolist(),
-                                }],
-                output='screen',
-                prefix=f'xterm -title "agent_{i_lead}" -hold -e',
-            ))
+    # for i in range(n_leader):
+    #     i_lead = n_follower+i
+    #     launch_description.append(
+    #         Node(
+    #             package='formation_control',
+    #             namespace =f'agent_{i_lead}',
+    #             executable='the_agent',
+    #             parameters=[{ # dictionary
+    #                             'agent_id': i_lead, 
+    #                             'pos_init': pos_init[i_lead].tolist(),
+    #                             'distances': distances[i_lead], 
+    #                             'max_iters': MAXITERS,
+    #                             'comm_time': comm_time,
+    #                             'euler_step': euler_step,
+    #                             'type' : 1, # Leader
+    #                             'input' : input#.tolist(),
+    #                             }],
+    #             output='screen',
+    #             prefix=f'xterm -title "agent_{i_lead}" -hold -e',
+    #         ))
     
     for i in range(N):
+        # Agents
+        launch_description.append(
+            Node(
+                package='formation_control',
+                namespace =f'agent_{i}',
+                executable='the_agent',
+                parameters=[{ # dictionary
+                                'agent_id': i, 
+                                'pos_init': pos_init[i].tolist(),
+                                'distances': distances[i], 
+                                'max_iters': MAXITERS,
+                                'comm_time': comm_time,
+                                'euler_step': euler_step,
+                                'type' : agent_types[i],
+                                'input' : input#.tolist(),
+                                }],
+                output='screen',
+                prefix=f'xterm -title "agent_{i}" -hold -e',
+            ))
+        
         # Launch visualizer
         launch_description.append(
             Node(
@@ -125,7 +148,7 @@ def generate_launch_description():
                 parameters=[{
                     'agent_id':i,
                     'comm_time':comm_time,
-                    'n_follower' : n_follower,
+                    'agent_types' : agent_types.tolist(),
                     }]
                 )
             )

@@ -20,7 +20,8 @@ class Agent(Node):
         self.comm_time = self.get_parameter('comm_time').value
         self.euler_step = self.get_parameter('euler_step').value
         self.type = self.get_parameter('type').value # Leader = 1
-        self.input = np.array(self.get_parameter('input').value)
+        # self.input = np.array(self.get_parameter('input').value)
+        self.input = self.get_parameter('input').value
         self.neighs = np.nonzero(self.distances)[0]
         self.kk = 0
         self.counter = 0
@@ -60,6 +61,7 @@ class Agent(Node):
     # MANAGER
     def listener_callback_manager(self, msg):
         self.start_moving = msg.data
+        self.k_start_moving = self.kk
 
 
     def formation_dynamics(self):
@@ -77,7 +79,46 @@ class Agent(Node):
             delta_pos = delta_pos - (formation_d_potential + barrier_d_potential)
 
         return delta_pos
+    
+    def circle_trajectory (self, time, amplitude, frequency = 1, phase = 0):
+        omega_n = ((2*np.pi)/(self.max_iters - self.k_start_moving))
+        x = amplitude * np.cos((frequency *omega_n *time) + phase)
+        y = amplitude * np.sin((frequency *omega_n *time) + phase)
+        z = 0
 
+        gradient = np.array([x, y, z])
+        return gradient
+
+
+    def waves(self, amp, omega, phi, t):
+        """
+        This function generates a sinusoidal input trajectory
+
+        Input:
+            - amp, omega, phi = sine parameter u = amp*sin(omega*t + phi)
+            - n_agents = number of agents
+            - n_x = agent dimension
+            - t = time variable
+
+        Output:
+            - u = input trajectory
+
+        """
+
+        u_x = amp*np.sin(omega*t+phi)
+        u_y = 0
+        u_z = 0
+        u = [u_x, u_y, u_z]
+        return np.array(u)
+
+
+    def linear_trajectory (self, amplitude):
+        x = amplitude
+        y = 0
+        z = 0
+
+        gradient = np.array([x, y, z])
+        return gradient
 
     def timer_callback(self):
         self.counter += 1
@@ -93,7 +134,10 @@ class Agent(Node):
 
                     # Leaders moving
                     if self.start_moving and self.type: # Leader
-                        delta_pos = delta_pos + self.input
+                        # discrete_time = self.kk - self.k_start_moving
+                        # delta_pos = delta_pos + self.waves(amp= self.input, omega= omega_n, phi= 0, t= discrete_time)
+                        # delta_pos = delta_pos + (self.circle_trajectory(discrete_time, self.input))
+                        delta_pos = delta_pos + self.linear_trajectory(self.input)
 
                     self.pos += self.euler_step * delta_pos
                     print(f'Counter:\n{self.counter}')

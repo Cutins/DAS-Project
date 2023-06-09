@@ -100,7 +100,7 @@ class Plot(Node):
                     plt.figure('Formation potential')
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Formation Potential of agent {agent}') 
-                    plt.plot(range(self.max_iters), self.all_in_formation[:], label='All agents in formation', linewidth = 0.5)
+                    plt.plot(range(self.max_iters), self.all_in_formation[:], label='All agents in formation', color ='r', linewidth = 0.5)
                     plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2)
                     plt.legend()
                     plt.grid()
