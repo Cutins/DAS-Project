@@ -26,8 +26,8 @@ save_weights = True
 # DataFrame Settings
 TARGET = 3
 SIZE = (28, 28)
-N_AGENTS = 15
-SAMPLES_PER_AGENT = 8 # Multiple of Minibatch Size 
+N_AGENTS = 5
+SAMPLES_PER_AGENT = 64 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -273,7 +273,7 @@ N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 network = [(SIZE[0]*SIZE[1]), int(np.sqrt(SIZE[0]*SIZE[1])) , 1]
 n_layers = len(network)
 # xx = [np.zeros(shape=(n_neurons,)) for n_neurons in network] # shape[network.shape]
-uu = [1e-2 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
+uu = [1e-4 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
 ss = [np.zeros_like(ul) for ul in uu]
 old_grad = [np.zeros_like(ul) for ul in uu]
 
@@ -487,9 +487,9 @@ plt.grid()
 
 
 plt.figure('SS evolution')
-plt.semilogy([np.mean([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*(EPOCHS+1))], label='SS mean', linewidth = 3)
+plt.semilogy([np.mean([np.sum([np.sum([np.sum(np.abs(ss[e*N_BATCH+b][agent][layer])) / ss[e*N_BATCH+b][agent][layer].size for layer in range(n_layers-1)]) for b in range(N_BATCH)]) for agent in range(N_AGENTS)]) for e in range(EPOCHS)], label='SS mean', linewidth = 3)
 for agent in range(N_AGENTS):
-    plt.semilogy([np.sum([np.sum(np.abs(ss[t][agent][layer])) / ss[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(N_BATCH*(EPOCHS+1))], linestyle = ':')
+    plt.semilogy([np.sum([np.sum([np.sum(np.abs(ss[e*N_BATCH+b][agent][layer])) / ss[e*N_BATCH+b][agent][layer].size for layer in range(n_layers-1)]) for b in range(N_BATCH)]) for e in range(EPOCHS)], linestyle = ':')
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('SS')
