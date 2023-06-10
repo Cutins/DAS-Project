@@ -273,7 +273,7 @@ N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 network = [(SIZE[0]*SIZE[1]), int(np.sqrt(SIZE[0]*SIZE[1])) , 1]
 n_layers = len(network)
 # xx = [np.zeros(shape=(n_neurons,)) for n_neurons in network] # shape[network.shape]
-uu = [1e-4 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
+uu = [1e-2 * np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
 ss = [np.zeros_like(ul) for ul in uu]
 old_grad = [np.zeros_like(ul) for ul in uu]
 
