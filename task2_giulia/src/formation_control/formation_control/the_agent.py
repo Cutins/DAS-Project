@@ -19,10 +19,9 @@ class Agent(Node):
         self.distances = self.get_parameter('distances').value
         self.comm_time = self.get_parameter('comm_time').value
         self.euler_step = self.get_parameter('euler_step').value
-        self.type = np.array(self.get_parameter('type').value) # Leader = 1
-        # self.input = np.array(self.get_parameter('input').value)
-        self.move = self.get_parameter('move').value
         self.neighs = np.nonzero(self.distances)[0]
+        self.type = np.array(self.get_parameter('type').value )# 0 -> follower, 1 -> leader
+        self.u_lin = np.array(self.get_parameter('u_lin').value)
         self.kk = 0
         self.counter = 0
         self.start_moving = 0
@@ -32,7 +31,7 @@ class Agent(Node):
                                                 topic=f'/topic_{self.id}',
                                                 qos_profile=10)
 
-        # SUBSCRIBE TO NEIGHBORS and MANAGER
+        # SUBSCRIBE TO NEIGHBORS AND MANAGER
         for neigh in self.neighs:
             self.create_subscription(msg_type=MsgFloat,
                                     topic=f'/topic_{neigh}',
@@ -73,72 +72,33 @@ class Agent(Node):
             neigh_dist = self.distances[neigh]
 
             # Formation Control Law
-            formation_d_potential = (np.linalg.norm(self.pos - neigh_pos, ord=2)**2 - neigh_dist**2) * (self.pos - neigh_pos)
-            barrier_d_potential = - (2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=2)**2))
-
-            delta_pos = delta_pos - (formation_d_potential + barrier_d_potential)
+            formation_potential = (np.linalg.norm(self.pos - neigh_pos, ord=2)**2 - neigh_dist**2) * (self.pos - neigh_pos)# + (self.pos[2])
+            barrier_potential = - 2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=2)**2)
+            
+            delta_pos = delta_pos - (formation_potential + barrier_potential)
 
         return delta_pos
-    
-    def circle_trajectory (self, time, amplitude, frequency = 1, phase = 0):
-        omega_n = ((2*np.pi)/(self.max_iters - self.k_start_moving))
-        x = amplitude * np.cos((frequency *omega_n *time) + phase)
-        y = amplitude * np.sin((frequency *omega_n *time) + phase)
-        z = 0
 
-        gradient = np.array([x, y, z])
-        return gradient
-
-
-    def waves(self, amp, omega, phi, t):
-        """
-        This function generates a sinusoidal input trajectory
-
-        Input:
-            - amp, omega, phi = sine parameter u = amp*sin(omega*t + phi)
-            - n_agents = number of agents
-            - n_x = agent dimension
-            - t = time variable
-
-        Output:
-            - u = input trajectory
-
-        """
-
-        u_x = amp*np.sin(omega*t+phi)
-        u_y = 0
-        u_z = 0
-        u = [u_x, u_y, u_z]
-        return np.array(u)
-
-
-    def linear_trajectory (self, amplitude):
-        x = amplitude
-        y = 0
-        z = 0
-
-        gradient = np.array([x, y, z])
-        return gradient
 
     def timer_callback(self):
         self.counter += 1
+        
         if self.kk > 0: 
-
             all_received = all([self.received_msgs[neigh] != [] for neigh in self.neighs])
+
             if all_received:
                 all_synch = all([self.received_msgs[neigh][0][0] == self.kk-1 for neigh in self.neighs])
-                if all_synch:
 
+                if all_synch:
+                    
                     # Formation
                     delta_pos = self.formation_dynamics()
 
                     # Leaders moving
-                    if self.start_moving and self.type: # Leader
-                        # discrete_time = self.kk - self.k_start_moving
-                        # delta_pos = delta_pos + self.waves(amp= self.input, omega= omega_n, phi= 0, t= discrete_time)
-                        # delta_pos = delta_pos + (self.circle_trajectory(discrete_time, self.input))
-                        delta_pos = delta_pos + self.linear_trajectory(self.move)
+                    if self.start_moving and (self.type == 1):
+                        delta_pos = delta_pos + self.u_lin
 
+                    # Update Agent Position and Euler Discretization
                     self.pos += self.euler_step * delta_pos
                     print(f'Counter:\n{self.counter}')
                     self.counter = 0
@@ -168,6 +128,7 @@ class Agent(Node):
             self.kk += 1
             self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\n\t\tx: {msg.data[2]:.4f}\n\t\ty: {msg.data[3]:.4f}\n\t\tz: {msg.data[4]:.4f}")
         
+
 
 def main():
     rclpy.init()
