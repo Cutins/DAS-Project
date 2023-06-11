@@ -5,7 +5,7 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 1000
+MAXITERS = 5000
 N = 6
 n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, 3) - 0.5) *0.1
@@ -59,10 +59,16 @@ if N == 6: #Hexagon
     
 
 ######### The obstacle #########
-N_obstacles = 2
+N_obstacles = 8
 pos_obs = np.zeros((N_obstacles, n_dim))
-pos_obs[0] = [2, 5, 0]
-pos_obs[1] = [-2, 5, 0]
+for i in range(N_obstacles):
+    if i%2 == 0: #even
+        pos_obs[i] = [2+(i/2), 4, 0]
+    else:   #odd
+        pos_obs[i] = [-2-(i/2), 4, 0]
+
+# pos_obs[0] = [2, 5, 0]
+# pos_obs[1] = [-2, 5, 0]
 
 
 
@@ -192,8 +198,8 @@ def generate_launch_description():
                                 'pos_init': pos_obs[i].tolist(),
                                 'comm_time': comm_time,
                                 }],
-                output='screen',
-                prefix=f'xterm -title "obstacle_{i}" -hold -e',
+                # output='screen',
+                # prefix=f'xterm -title "obstacle_{i}" -hold -e',
             )
         )
 

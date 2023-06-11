@@ -35,7 +35,7 @@ class Obstacle(Node):
         msg.data = [float(self.id), x, y, z]
         self.publisher.publish(msg)
 
-        self.get_logger().info(f"Obstacle {int(msg.data[0]):d}\n\tPosition:\n\t\tx: {msg.data[1]:.4f}\n\t\ty: {msg.data[2]:.4f}\n\t\tz: {msg.data[3]:.4f}")
+        # self.get_logger().info(f"Obstacle {int(msg.data[0]):d}\n\tPosition:\n\t\tx: {msg.data[1]:.4f}\n\t\ty: {msg.data[2]:.4f}\n\t\tz: {msg.data[3]:.4f}")
         
 
 def main():
