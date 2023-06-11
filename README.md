@@ -2,9 +2,9 @@
 
 TO DO:
 - Giocare con gli input, tipo cerchio 
-- Aggiungere un agente definito come "the_obstacole"
+- Aggiungere un agente definito come "the_obstacle"
 
-- inserire U lineare, aggiungere finestra di 'obstacole'
+- inserire U lineare, aggiungere finestra di 'obstacle'
 
 
 

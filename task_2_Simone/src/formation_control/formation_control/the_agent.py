@@ -27,12 +27,15 @@ class Agent(Node):
         self.counter = 0
         self.start_moving = 0
         
+        self.N_obstacles = self.get_parameter('N_obstacles').value
+        self.pos_obs = np.zeros((self.N_obstacles, self.pos.shape[0]))
+
         # CREATE TOPIC
         self.publisher = self.create_publisher(msg_type=MsgFloat, 
                                                 topic=f'/topic_{self.id}',
                                                 qos_profile=10)
 
-        # SUBSCRIBE TO NEIGHBORS and MANAGER
+        # SUBSCRIBE TO NEIGHBORS and MANAGER and OBSTACLE
         for neigh in self.neighs:
             self.create_subscription(msg_type=MsgFloat,
                                     topic=f'/topic_{neigh}',
@@ -43,6 +46,12 @@ class Agent(Node):
                                 topic='/topic_Manager',
                                 callback=self.listener_callback_manager,
                                 qos_profile=10)
+        
+        for obstacle in range(self.N_obstacles):
+            self.create_subscription(msg_type=MsgFloat,
+                                    topic=f'/topic_obstacle_{obstacle}',
+                                    callback=self.listener_callback_obstacle,
+                                    qos_profile=10)
             
         # CREATE TIMER FOR SYNCH
         self.timer = self.create_timer(timer_period_sec = self.comm_time,
@@ -53,6 +62,7 @@ class Agent(Node):
 
         print(f"Setup of agent {self.id} completed.")
 
+
     # NEIGHBORS
     def listener_callback(self, msg):
         id, kk, x, y, z = msg.data
@@ -62,6 +72,12 @@ class Agent(Node):
     def listener_callback_manager(self, msg):
         self.start_moving = msg.data
         self.k_start_moving = self.kk
+
+    # OBSTACLE
+    def listener_callback_obstacle(self, msg):
+        id, x, y, z = msg.data
+        self.pos_obs[int(id)] = [x, y, z]
+
 
 
     def formation_dynamics(self):
@@ -80,6 +96,14 @@ class Agent(Node):
 
         return delta_pos
     
+    def obstacle_avoidance(self):
+        delta_pos = np.zeros((3,))
+        for obstacle in range(self.N_obstacles):
+            obstacle_d_potential = - (2* (self.pos - self.pos_obs[obstacle])/(np.linalg.norm(self.pos - self.pos_obs[obstacle], ord=2)**2))
+            delta_pos = delta_pos - (obstacle_d_potential)
+        
+        return delta_pos
+
     def circle_trajectory (self, time, amplitude, frequency = 1, phase = 0):
         omega_n = ((2*np.pi)/(self.max_iters - self.k_start_moving))
         x = amplitude * np.cos((frequency *omega_n *time) + phase)
@@ -113,8 +137,8 @@ class Agent(Node):
 
 
     def linear_trajectory (self, amplitude):
-        x = amplitude
-        y = 0
+        x = 0
+        y = amplitude
         z = 0
 
         gradient = np.array([x, y, z])
@@ -138,6 +162,10 @@ class Agent(Node):
                         # delta_pos = delta_pos + self.waves(amp= self.input, omega= omega_n, phi= 0, t= discrete_time)
                         # delta_pos = delta_pos + (self.circle_trajectory(discrete_time, self.move))
                         delta_pos = delta_pos + self.linear_trajectory(self.move)
+                        # delta_pos = delta_pos + self.obstacle_avoidance()
+
+                    if self.start_moving and (self.type == 0): # Follower
+                        delta_pos = delta_pos + self.obstacle_avoidance()
 
                     self.pos += self.euler_step * delta_pos
                     print(f'Counter:\n{self.counter}')
