@@ -1,28 +1,27 @@
-import rclpy
 import numpy as np
+import rclpy
 from rclpy.node import Node
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Pose
 from std_msgs.msg import Float32MultiArray as MsgFloat
 
-class Visualizer(Node):
+class Visualizer_obstacle(Node):
 
     def __init__(self):
-        super().__init__('visualizer',
+        super().__init__('visualizer_obstacle',
                             allow_undeclared_parameters=True,
                             automatically_declare_parameters_from_overrides=True)
         
         # Get parameters from launcher
         self.agent_id = self.get_parameter('agent_id').value
         self.comm_time = self.get_parameter('comm_time').value
-        self.type = np.array(self.get_parameter('type').value )# 0 -> follower, 1 -> leader
 
 
         #######################################################################################
         # Let's subscribe to the topic we want to visualize
         
         self.subscription = self.create_subscription(MsgFloat, 
-                                                     f'/topic_{self.agent_id}',
+                                                     f'/topic_obstacle_{self.agent_id}',
                                                      self.listener_callback, 
                                                      qos_profile=10)
 
@@ -31,7 +30,7 @@ class Visualizer(Node):
         # Create the publisher that will communicate with Rviz
         self.timer = self.create_timer(timer_period_sec=self.comm_time, callback=self.publish_data)
         self.publisher = self.create_publisher(Marker, 
-                                               f'/visualization_topic', 
+                                               f'/visualization_topic_obstacle', 
                                                qos_profile=1)
 
         # Initialize the current_pose method (in this example you can also use list or np.array)                                         
@@ -40,10 +39,9 @@ class Visualizer(Node):
 
     def listener_callback(self, msg):
         # store (and rearrange) the received message
-        self.current_pose.position.x = msg.data[2]
-        # self.current_pose.position.x = 0.2*self.agent_id # fix x coordinate
-        self.current_pose.position.y = msg.data[3]
-        self.current_pose.position.z = msg.data[4]
+        self.current_pose.position.x = msg.data[1]
+        self.current_pose.position.y = msg.data[2]
+        self.current_pose.position.z = msg.data[3]
             
     def publish_data(self):
         if self.current_pose.position is not None:
@@ -56,7 +54,7 @@ class Visualizer(Node):
             marker.header.stamp = self.get_clock().now().to_msg()
 
             # Select the type of marker
-            marker.type = Marker.SPHERE
+            marker.type = Marker.CUBE
 
             # set the pose of the marker (orientation is omitted in this example)
             marker.pose.position.x = self.current_pose.position.x
@@ -67,7 +65,7 @@ class Visualizer(Node):
             marker.action = Marker.ADD
 
             # Select the namespace of the marker
-            marker.ns = 'agents'
+            marker.ns = 'obstacle'
 
             # Let the marker be unique by setting its id
             marker.id = self.agent_id
@@ -79,10 +77,13 @@ class Visualizer(Node):
             marker.scale.z = scale
 
             # Specify the color of the marker as RGBA
-            if self.type == 0:
-                color = [1.0, 0.0, 0.0, 1.0] # Red - Followers
-            else:
-                color = [0.0, 0.5, 0.5, 1.0] # Blue - Leaders
+            # if self.agent_id == 0:
+            #     color = [1.0, 0.0, 0.0, 1.0]   # Red - Follower
+            # if self.agent_id == 1:
+            #     color = [0.0, 0.5, 0.5, 1.0]    # Blue - Leader
+
+            color = [0.0, 1.0, 0.0, 1.0]   # Green
+
 
             marker.color.r = color[0]
             marker.color.g = color[1]
@@ -95,12 +96,12 @@ class Visualizer(Node):
 def main():
     rclpy.init()
 
-    visualizer = Visualizer()
+    visualizer_obstacle = Visualizer_obstacle()
 
     try:
-        rclpy.spin(visualizer)
+        rclpy.spin(visualizer_obstacle)
     except KeyboardInterrupt:
-        print("----- Visualizer stopped cleanly -----")
+        print("----- Visualizer_obstacle stopped cleanly -----")
     finally:
         rclpy.shutdown() 
 
