@@ -26,7 +26,7 @@ save_weights = True
 TARGET = 3
 SIZE = (4, 4)
 N_AGENTS = 10
-SAMPLES_PER_AGENT = 40 # Multiple of Minibatch Size 
+SAMPLES_PER_AGENT = 16 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -198,7 +198,6 @@ def adjoint_dynamics(ltp, xt, ut):
 
     dim = np.tile([D_NEURONS+1], D_NEURONS)
     cs_idx = np.append(0, np.cumsum(dim))
-    print(xt.shape, ut.shape)
     for l in range(D_NEURONS):
         xl = xt@ut[l, 1:] + ut[l, 0]
         dSigma = activation_fn_derivative(xl)
@@ -208,7 +207,6 @@ def adjoint_dynamics(ltp, xt, ut):
 
     lt = df_dx @ ltp # Adjoint equation
     delta_ut_vec = df_du @ ltp
-    print(delta_ut_vec.shape)
     delta_ut = np.reshape(delta_ut_vec,(D_NEURONS, D_NEURONS+1))
 
     return lt, delta_ut
@@ -250,9 +248,9 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 50
+EPOCHS = 500
 STEP_SIZE = 1
-BATCH_SIZE = 4 # Dimension of the minibatch set
+BATCH_SIZE = 16 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
