@@ -24,10 +24,10 @@ save_weights = True
 
 ###############################################################################
 # DataFrame Settings
-TARGET = 3
-SIZE = (28, 28)
-N_AGENTS = 5
-SAMPLES_PER_AGENT = 64 # Multiple of Minibatch Size 
+TARGET = 8
+SIZE = (16, 16)
+N_AGENTS = 10
+SAMPLES_PER_AGENT = 4 # Multiple of Minibatch Size 
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -62,7 +62,7 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 T_LAYERS = 2        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
@@ -263,9 +263,9 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 200
+EPOCHS = 300
 STEP_SIZE = 1e-1
-BATCH_SIZE = 8 # Dimension of the minibatch set
+BATCH_SIZE = 4 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
 # Network Variables
@@ -470,9 +470,9 @@ plt.grid()
 
 plt.figure('UU evolution')
 uu_mean = [np.mean([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*EPOCHS+1)]
-plt.plot([uu_mean[t] for t in range(int((N_BATCH*EPOCHS+1)/10))], label='UU mean', linewidth = 3)
+plt.plot([uu_mean[t] for t in range(int((N_BATCH*EPOCHS+1)/1))], label='UU mean', linewidth = 3)
 for agent in range(N_AGENTS):
-    plt.plot([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(int((N_BATCH*EPOCHS+1)/10))], linestyle=':')
+    plt.plot([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(int((N_BATCH*EPOCHS+1)/1))], linestyle=':')
 plt.xlabel(r'Epochs')
 plt.title('UU for the first 10% of epochs')
 plt.grid()
@@ -480,7 +480,7 @@ plt.grid()
 
 plt.figure('Wheight of single connection')
 for agent in range(N_AGENTS):
-    plt.plot([uu[t][agent][-1][0][1] for t in range(int((N_BATCH*EPOCHS+1)/10))], linewidth = 0.5)
+    plt.plot([uu[t][agent][-1][0][1] for t in range(int((N_BATCH*EPOCHS+1)/1))], linewidth = 0.5)
 plt.xlabel(r'Epochs')
 plt.title('Wheight of last neurons')
 plt.grid()
