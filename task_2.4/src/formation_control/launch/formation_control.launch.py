@@ -67,8 +67,6 @@ for i in range(N_obstacles):
     else:   #odd
         pos_obs[i] = [-2-(i/2), 4, 0]
 
-# pos_obs[0] = [2, 5, 0]
-# pos_obs[1] = [-2, 5, 0]
 
 
 

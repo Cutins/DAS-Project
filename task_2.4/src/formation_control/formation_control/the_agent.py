@@ -27,6 +27,7 @@ class Agent(Node):
         self.counter = 0
         self.start_moving = 0
         
+        # For obstacle avoidance
         self.N_obstacles = self.get_parameter('N_obstacles').value
         self.pos_obs = np.zeros((self.N_obstacles, self.pos.shape[0]))
 

@@ -2,8 +2,9 @@
 
 TO DO:
 - Giocare con gli input, tipo cerchio 
-- Inserire i plot in .csv
 - Implementare la tecnica 'Bearing'
+- Muovere gli obstacole 
+- Implementare il 'Creazy choir'
 
 
 
