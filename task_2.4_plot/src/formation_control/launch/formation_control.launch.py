@@ -197,6 +197,7 @@ def generate_launch_description():
                                 'obstacle_id': i, 
                                 'pos_init': pos_obs[i].tolist(),
                                 'comm_time': comm_time,
+                                'N_agents' : N,
                                 }],
                 # output='screen',
                 # prefix=f'xterm -title "obstacle_{i}" -hold -e',

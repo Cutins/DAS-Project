@@ -24,10 +24,10 @@ save_weights = True
 
 ###############################################################################
 # DataFrame Settings
-TARGET = 8
+TARGET = 7
 SIZE = (28, 28)
 N_AGENTS = 5
-SAMPLES_PER_AGENT = 256 # Multiple of Minibatch Size 
+SAMPLES_PER_AGENT = 256 # Multiple of Minibatch Size
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # Load DataFrame
@@ -459,7 +459,7 @@ if save_weights:
 # # PLOT
 # ###############################################################################
 
-plt.plot()
+plot_folder_name = 'plot_Test_2'
 
 plt.figure('Cost function')
 plt.plot(range(EPOCHS), np.mean(J, axis=1), label='Total Normalized Cost Evolution', linewidth=2)
@@ -470,6 +470,9 @@ plt.ylabel(r'J')
 plt.legend()
 plt.title('J')
 plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'J.png')
+plt.savefig(plot_path)
 
 
 plt.figure('Norm of Cost function')
@@ -480,6 +483,9 @@ plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('norm_gradient_J')
 plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'norm_gradient_J.png')
+plt.savefig(plot_path)
 
 
 # Computes the mean error over uu
@@ -490,6 +496,9 @@ for agent in range(N_AGENTS):
 plt.xlabel(r'Epochs')
 plt.title('Weights magnitude - Weights mean magnitude')
 plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Weights_mean.png')
+plt.savefig(plot_path)
 
 
 plt.figure('Single weight')
@@ -499,6 +508,9 @@ for agent in range(N_AGENTS):
 plt.xlabel(r'Epochs')
 plt.title('Weight per agent - Weight mean value across agents')
 plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Single_weight.png')
+plt.savefig(plot_path)
 
 
 plt.figure('SS evolution')
@@ -509,4 +521,48 @@ plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('SS magnitude')
 plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'SS_evolution.png')
+plt.savefig(plot_path)
+
+
+
+#Reduced plots
+# Computes the mean error over uu
+plt.figure('Weights (uu) 60 Epochs')
+weights_mag_mean = np.mean(weights_mag, axis=-1)
+for agent in range(N_AGENTS):
+    plt.plot(weights_mag[0:60, agent] - weights_mag_mean[0:60], linewidth=0.5)
+plt.xlabel(r'Epochs')
+plt.title('Weights magnitude - Weights mean magnitude')
+plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Weights_mean-60.png')
+plt.savefig(plot_path)
+
+
+plt.figure('Single weight 60 Epochs')
+weight_val_mean = np.mean(weight_val, axis=-1)
+for agent in range(N_AGENTS):
+    plt.plot(weight_val[0:60, agent] - weight_val_mean[0:60], linewidth=0.5)
+plt.xlabel(r'Epochs')
+plt.title('Weight per agent - Weight mean value across agents')
+plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Single_weight-60.png')
+plt.savefig(plot_path)
+
+
+plt.figure('SS evolution 60 Epochs')
+plt.semilogy(np.mean(ss_mag[0:60], axis=-1), label='SS mean', linewidth=2)
+for agent in range(N_AGENTS):
+    plt.semilogy(ss_mag[0:60, agent], linewidth = 0.5)
+plt.xlabel(r'Epochs')
+plt.legend()
+plt.title('SS magnitude')
+plt.grid()
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'SS_evolution-60.png')
+plt.savefig(plot_path)
+
 plt.show()
