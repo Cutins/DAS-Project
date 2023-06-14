@@ -20,7 +20,7 @@ for ii in range(NN):
     Tlist.append(xx_csv[ii].shape[1])
 
 n_x = xx_csv[ii].shape[0]
-print(n_x)
+print(f'Number of dimensions = {n_x}')
 Tmax = min(Tlist)
 
 xx = np.zeros((NN*n_x,Tmax))
@@ -56,7 +56,7 @@ if 1 and n_x == 2: # animation
         plt.axis('equal')
         
         plt.show(block=False)
-        plt.pause(0.1)
+        plt.pause(0.001)
         if tt < Tmax - dt - 1:
             plt.clf()
     plt.show()
