@@ -8,6 +8,7 @@ import signal
 import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+N_obstacle = 8
 
 _, _, files = next(os.walk("./_csv_file"))
 NN = len(files)
@@ -20,7 +21,7 @@ for ii in range(NN):
     Tlist.append(xx_csv[ii].shape[1])
 
 n_x = xx_csv[ii].shape[0]
-print(n_x)
+print(f'Number of dimensions = {n_x}')
 Tmax = min(Tlist)
 
 xx = np.zeros((NN*n_x,Tmax))
@@ -31,11 +32,12 @@ for ii in range(NN):
         xx[index_ii,:] = xx_csv[ii][jj][:Tmax] # useful to remove last samples
 
 plt.figure()
-for x in xx:
+for x in xx[0:n_x*(NN-N_obstacle)]:
     plt.plot(range(Tmax), x)  
 
 block_var = False if n_x < 3 else True
 plt.show(block=block_var)
+
 
 
 if 1 and n_x == 2: # animation 
@@ -43,20 +45,28 @@ if 1 and n_x == 2: # animation
     dt = 3 # sub-sampling of the plot horizon
     for tt in range(0,Tmax,dt):
         xx_tt = xx[:,tt].T
-        for ii in range(NN):
+        for ii in range((NN-N_obstacle)):
             index_ii =  ii*n_x + np.arange(n_x)
             xx_ii = xx_tt[index_ii]
             plt.plot(xx_ii[0],xx_ii[1], marker='o', markersize=15, fillstyle='none', color = 'tab:red')
 
+        if N_obstacle:
+            for ii in range(N_obstacle):
+                ii = (NN-N_obstacle) + ii
+                index_ii =  ii*n_x + np.arange(n_x)
+                xx_ii = xx_tt[index_ii]
+                plt.plot(xx_ii[0],xx_ii[1], marker='s', markersize=10, fillstyle='none', color = 'tab:green')
+
 
         axes_lim = (np.min(xx)-1,np.max(xx)+1)
         plt.xlim(axes_lim); plt.ylim(axes_lim)
-        plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T)
+        # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T) #Dovresti printare fino a NN-(numero di obstacle)
+        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T) #Dovresti printare fino a NN-(numero di obstacle)
 
         plt.axis('equal')
         
         plt.show(block=False)
-        plt.pause(0.1)
+        plt.pause(0.001)
         if tt < Tmax - dt - 1:
             plt.clf()
     plt.show()

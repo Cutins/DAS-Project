@@ -117,7 +117,7 @@ class Agent(Node):
             obstacle_d_potential = - (2* (self.pos - self.pos_obs[obstacle])/(np.linalg.norm(self.pos - self.pos_obs[obstacle], ord=2)**2))
             delta_pos = delta_pos - (obstacle_d_potential)
         
-        return (delta_pos)
+        return delta_pos
 
     def circle_trajectory (self, time, amplitude, frequency = 1, phase = 0):
         omega_n = ((2*np.pi)/(self.max_iters - self.k_start_moving))
