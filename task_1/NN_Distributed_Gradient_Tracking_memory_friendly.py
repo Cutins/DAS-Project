@@ -264,7 +264,7 @@ def accuracy(xT,Y):
 
 # Training parameters
 EPOCHS = 1000
-STEP_SIZE = 1e-1
+STEP_SIZE = 1e-2
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 
@@ -273,19 +273,28 @@ N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
 network = [(SIZE[0]*SIZE[1]), int(np.sqrt(SIZE[0]*SIZE[1])) , 1]
 n_layers = len(network)
 # xx = [np.zeros(shape=(n_neurons,)) for n_neurons in network] # shape[network.shape]
-uu = [np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
+uu = [1e-1*np.random.randn(network[layer_idx+1], network[layer_idx]+1) for layer_idx in range(len(network)-1)]
 ss = [np.zeros_like(ul) for ul in uu]
 old_grad = [np.zeros_like(ul) for ul in uu]
 
 
-uu = [[deepcopy(uu) for _ in range(N_AGENTS)] for _ in range(N_BATCH*EPOCHS+1)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
-ss = [[deepcopy(ss) for _ in range(N_AGENTS)] for _ in range(N_BATCH*(EPOCHS+1))] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+uu = [deepcopy(uu) for _ in range(N_AGENTS)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+uu_plus = deepcopy(uu)
+
+ss = [[deepcopy(ss) for _ in range(N_AGENTS)] for _ in range(N_BATCH)] # shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
+ss_plus = deepcopy(ss)
+
 old_grad = [[deepcopy(old_grad) for _ in range(N_AGENTS)] for _ in range(N_BATCH)] # shape[N_BATCH, N_AGENTS, weights.shape]
 
 prediction = np.zeros((N_AGENTS, SAMPLES))
 
 J = np.zeros((EPOCHS, N_AGENTS)) # Cost function
 NormGradientJ = np.zeros((EPOCHS, N_AGENTS))
+
+# Values to plot
+weight_val = np.zeros((EPOCHS, N_AGENTS))
+weights_mag = np.zeros((EPOCHS, N_AGENTS))
+ss_mag = np.zeros((EPOCHS, N_AGENTS))
 
 # Initialization for Accuracy
 successes_train = np.zeros((N_AGENTS))
@@ -307,13 +316,13 @@ for batch_num in range(N_BATCH):
                 break
             
             # Forward pass
-            xx = forward_pass(images_train[agent, idx], uu[0][agent])
+            xx = forward_pass(images_train[agent, idx], uu[agent])
             #print(xx[-1])
             # Loss evaluation
             loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
 
             # Backward pass
-            _, grad = backward_pass(xx, uu[0][agent], out_grad) # out_grad = llambdaT
+            _, grad = backward_pass(xx, uu[agent], out_grad) # out_grad = llambdaT
 
             # Gradient accumulation
             for layer in range(n_layers-1):
@@ -326,7 +335,7 @@ for batch_num in range(N_BATCH):
 # Training
 for epoch in range(EPOCHS):
     # Early stopping if training is not leading to better results
-    if epoch >= 11 and np.all([np.mean(J[e]) > np.mean(J[epoch-11]) - 0.001 for e in range(epoch-10, epoch)]):
+    if epoch >= 200 and np.all([np.mean(J[e]) > np.mean(J[epoch-11]) for e in range(epoch-10, epoch)]):
         break
 
     if epoch % 1 == 0 and epoch != 0:
@@ -340,11 +349,11 @@ for epoch in range(EPOCHS):
 
             # Gradient Tracking Algorithm - Weights Update
             for layer in range(n_layers-1):
-                uu[kk+1][agent][layer] = (WW[agent, agent] * uu[kk][agent][layer]) - (STEP_SIZE * ss[kk][agent][layer])
+                uu_plus[agent][layer] = (WW[agent, agent] * uu[agent][layer]) - (STEP_SIZE * ss[batch_num][agent][layer])
                 for neigh in neighs:
-                    uu[kk+1][agent][layer] += WW[agent, neigh] * uu[kk][neigh][layer]
+                    uu_plus[agent][layer] += WW[agent, neigh] * uu[neigh][layer]
 
-            batch_grad = [np.zeros_like(ul) for ul in uu[kk][agent]]
+            batch_grad = [np.zeros_like(ul) for ul in uu[agent]]
             for batch_el in range(BATCH_SIZE):
                 idx = (batch_num*BATCH_SIZE) + batch_el
                 
@@ -353,30 +362,42 @@ for epoch in range(EPOCHS):
                     break
 
                 # Forward pass
-                xx = forward_pass(images_train[agent, idx], uu[kk+1][agent])
+                xx = forward_pass(images_train[agent, idx], uu_plus[agent])
                 prediction[agent, idx] = xx[-1] # prediction <= value of the first neuron in the last layer
                 
                 # Loss evalutation
                 loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
 
                 # Backward pass
-                _, grad = backward_pass(xx, uu[kk+1][agent], out_grad) # out_grad = llambdaT
+                _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
 
                 J[epoch, agent] += loss / SAMPLES_PER_AGENT
                 for layer in range(n_layers-1):
                     batch_grad[layer] += grad[layer] / BATCH_SIZE
 
             for layer in range(n_layers-1):
-                NormGradientJ[epoch, agent] += np.linalg.norm(batch_grad[layer] / batch_grad[layer].size) / N_BATCH
+                NormGradientJ[epoch, agent] += (np.abs(batch_grad[layer]).sum() / batch_grad[layer].size) / N_BATCH
             
             # Gradient Tracking Algorithm - SS Update
             for layer in range(n_layers-1):
-                ss[kk+N_BATCH][agent][layer] = (WW[agent, agent] * ss[kk][agent][layer]) + (batch_grad[layer] - old_grad[batch_num][agent][layer])
+                ss_plus[batch_num][agent][layer] = (WW[agent, agent] * ss[batch_num][agent][layer]) + (batch_grad[layer] - old_grad[batch_num][agent][layer])
                 for neigh in neighs:
-                    ss[kk+N_BATCH][agent][layer] += WW[agent, neigh] * ss[kk][neigh][layer]
+                    ss_plus[batch_num][agent][layer] += WW[agent, neigh] * ss[batch_num][neigh][layer]
 
             for layer in range(n_layers-1):
-                old_grad[batch_num][agent][layer] = batch_grad[layer] 
+                old_grad[batch_num][agent][layer] = batch_grad[layer]
+        
+        # Synch update
+        for agent in range(N_AGENTS):
+            for layer in range(n_layers-1):
+                uu[agent][layer] = uu_plus[agent][layer]
+                ss[batch_num][agent][layer] = ss_plus[batch_num][agent][layer]
+
+    for agent in range(N_AGENTS):
+        weight_val[epoch][agent] = uu[agent][-1][0, 1]
+        weights_mag[epoch][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
+        ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
+
 
 print('\n\nTRAINING SET\n')
 for agent in range(N_AGENTS):
@@ -393,7 +414,7 @@ for agent in range(N_AGENTS):
         idx = ((N_BATCH-1)*BATCH_SIZE) + batch_el
         if idx >= SAMPLES_PER_AGENT:    # Skip if samples are finished (last minibatch)
             break
-        print(f"[Agent {agent}] Label for the SAME Image {idx} was {labels_test[0, idx]} and is classified as {forward_pass(images_test[0, idx], uu[-1][agent])[-1][0]:.4f}")
+        print(f"[Agent {agent}] Label for the SAME Image {idx} was {labels_test[0, idx]} and is classified as {forward_pass(images_test[0, idx], uu[agent])[-1][0]:.4f}")
     print()
 
 
@@ -415,7 +436,7 @@ for agent in range(N_AGENTS):
 print('\n------------------TEST SCORES-----------------')
 for agent in range(N_AGENTS):
     for img in range(SAMPLES_PER_AGENT):
-        output = forward_pass(images_test[0, img], uu[-1][agent])
+        output = forward_pass(images_test[0, img], uu[agent])
         success, error = accuracy(output[-1][0], labels_test[0, img])
         successes_test[agent] += success
         errors_test[agent] += error
@@ -432,7 +453,7 @@ if save_weights:
     weights_file = f'Grad_Track-weights_{SIZE[0]}x{SIZE[1]}_E{EPOCHS}_S{SAMPLES}_B{BATCH_SIZE}.pkl'
     weights_path = os.path.join(os.getcwd(), 'task_1/weights', weights_file)
     with open(weights_path, 'wb') as f:
-        pickle.dump(uu[-1][0], f)
+        pickle.dump(uu[0], f)
                 
 # ###############################################################################
 # # PLOT
@@ -441,9 +462,9 @@ if save_weights:
 plt.plot()
 
 plt.figure('Cost function')
-plt.plot(range(EPOCHS), np.mean(J, axis=1), label='Total Normalized Cost Evolution', linewidth = 3)
+plt.plot(range(EPOCHS), np.mean(J, axis=1), label='Total Normalized Cost Evolution', linewidth=2)
 for agent in range(N_AGENTS):
-     plt.plot(range(EPOCHS), J[:, agent], linestyle = ':')
+     plt.plot(range(EPOCHS), J[:, agent], linewidth=0.5)
 plt.xlabel(r'Epochs')
 plt.ylabel(r'J')
 plt.legend()
@@ -452,9 +473,9 @@ plt.grid()
 
 
 plt.figure('Norm of Cost function')
-plt.semilogy(range(EPOCHS), np.mean(NormGradientJ, axis=-1), label='Total Gradient Evolution', linewidth = 3)
+plt.semilogy(range(EPOCHS), np.mean(NormGradientJ, axis=-1), label='Total Gradient Evolution', linewidth=2)
 for agent in range(N_AGENTS):
-    plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linestyle = ':')
+    plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], linewidth=0.5)
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('norm_gradient_J')
@@ -462,66 +483,30 @@ plt.grid()
 
 
 # Computes the mean error over uu
-plt.figure('UU error')
-uu_mean = [np.mean([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for agent in range(N_AGENTS)]) for t in range(N_BATCH*EPOCHS+1)]
-#plt.plot([uu_mean[t] for t in range(N_BATCH*EPOCHS+1)])
+plt.figure('Weights (uu) magnitude difference')
+weights_mag_mean = np.mean(weights_mag, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot([(np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) - uu_mean[t]) / uu_mean[t] for t in range(0, N_BATCH*EPOCHS+1, N_BATCH)], linestyle=':')
+    plt.plot(weights_mag[:, agent] - weights_mag_mean, linewidth=0.5)
 plt.xlabel(r'Epochs')
-plt.title('UU magnitude - UU_mean magnitude (scaled)')
+plt.title('Weights magnitude - Weights mean magnitude')
 plt.grid()
 
 
-# plt.figure('UU evolution')
-# plt.plot([uu_mean[t] for t in range(0, N_BATCH*(EPOCHS//10)+1, N_BATCH)], label='UU mean', linewidth = 2)
-# for agent in range(N_AGENTS):
-#     plt.plot([np.sum([np.sum(np.abs(uu[t][agent][layer])) / uu[t][agent][layer].size for layer in range(n_layers-1)]) for t in range(0, N_BATCH*(EPOCHS//10)+1, N_BATCH)], linestyle=':')
-# plt.xlabel(r'Epochs')
-# plt.title('UU for the first 10% of epochs')
-# plt.grid()
-
-
-plt.figure('Wheight of single connection')
-uu_single_mean = [np.mean([np.sum(np.abs(uu[t][agent][-1][0, 1])) for agent in range(N_AGENTS)]) for t in range(N_BATCH*EPOCHS+1)]
+plt.figure('Single weight')
+weight_val_mean = np.mean(weight_val, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot([(uu[t][agent][-1][0, 1] - uu_single_mean[t]) / uu_single_mean[t] for t in range(0, N_BATCH*EPOCHS+1, N_BATCH)], linewidth = 0.5)
+    plt.plot(weight_val[:, agent] - weight_val_mean, linewidth=0.5)
 plt.xlabel(r'Epochs')
-plt.title('Difference between the wheight of last neurons and its mean value (scaled)')
+plt.title('Weight per agent - Weight mean value across agents')
 plt.grid()
 
 
 plt.figure('SS evolution')
-plt.semilogy([np.mean([np.sum([np.sum([np.sum(np.abs(ss[e*N_BATCH+b][agent][layer])) / ss[e*N_BATCH+b][agent][layer].size for layer in range(n_layers-1)]) for b in range(N_BATCH)]) for agent in range(N_AGENTS)]) for e in range(EPOCHS)], label='SS mean', linewidth = 3)
+plt.semilogy(np.mean(ss_mag, axis=-1), label='SS mean', linewidth=2)
 for agent in range(N_AGENTS):
-    plt.semilogy([np.sum([np.sum([np.sum(np.abs(ss[e*N_BATCH+b][agent][layer])) / ss[e*N_BATCH+b][agent][layer].size for layer in range(n_layers-1)]) for b in range(N_BATCH)]) for e in range(EPOCHS)], linestyle = ':')
+    plt.semilogy(ss_mag[:, agent], linewidth = 0.5)
 plt.xlabel(r'Epochs')
 plt.legend()
 plt.title('SS magnitude')
 plt.grid()
 plt.show()
-
-
-# shape[EPOCHS*N_BATCH, N_AGENTS, weights.shape]
-# plt.figure('uu of first neuron of second layer')
-# plt.plot([uu[t][agent][1,]])
-
-# plt.figure('UU (Weights) evolution')
-# plt.plot(range(EPOCHS*N_BATCH), np.mean(uu, axis=(1,2)), label='Total UU Evolution', linewidth = 3)
-# for agent in range(N_AGENTS):
-#     plt.plot(range(EPOCHS*N_BATCH), np.mean(uu, axis=2)[:][agent], linestyle = ':')
-# plt.xlabel(r'Epochs')
-# plt.legend()
-# plt.title('SS')
-# plt.grid()
-
-# plt.show()
-
-
-# # plt.figure('UU (Weights) evolution')
-# # plt.plot(range(EPOCHS), np.mean(uu_mean, axis=1), label='Total UU Evolution', linewidth = 3)
-# # for agent in range(N_AGENTS):
-# #     plt.plot(range(EPOCHS), uu_mean[:, agent], linestyle = ':')
-# # plt.xlabel(r'Epochs')
-# # plt.legend()
-# # plt.title('UU')
-# # plt.grid()
