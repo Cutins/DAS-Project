@@ -5,13 +5,8 @@ TO DO:
 - Muovere gli obstacole, contro gli altri obstacle
 - Diminiscing step-size (cambiare la batch-size)
 
-- e-mail notarnicola
 - Test_3
 - Ripulire / commentare i codici
-
-REPORT:
-# Task 1
-
 
 
 
