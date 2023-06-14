@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.14)  14 JUN 2023 14:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.14)  14 JUN 2023 15:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -663,20 +663,20 @@ File: l3backend-pdftex.def 2023-04-19 L3 backend support: PDF output (pdfTeX)
 (report_group_25.aux)
 \openout1 = `report_group_25.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
 
 (/home/giulia/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -734,7 +734,7 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 <./figs/logo_unibo.png, id=4, 766.865pt x 401.5pt>
 File: ./figs/logo_unibo.png Graphic file (type png)
 <use ./figs/logo_unibo.png>
-Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 49.
+Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 50.
 (pdftex.def)             Requested size: 207.05632pt x 108.40643pt.
 
 [1
@@ -765,12 +765,12 @@ Chapter 1.
 <./figs/mnist.png, id=26, 225.84375pt x 225.84375pt>
 File: ./figs/mnist.png Graphic file (type png)
 <use ./figs/mnist.png>
-Package pdftex.def Info: ./figs/mnist.png  used on input line 108.
+Package pdftex.def Info: ./figs/mnist.png  used on input line 109.
 (pdftex.def)             Requested size: 112.92159pt x 112.92159pt.
 [6
 
  <./figs/mnist.png>]
-Overfull \hbox (15.34207pt too wide) in paragraph at lines 128--129
+Overfull \hbox (15.34207pt too wide) in paragraph at lines 129--130
 \OT1/cmr/m/n/10.95 order to efficiently train our neural network we have equali
 zed the representation
  []
@@ -785,10 +785,10 @@ No file report_group_25.bbl.
 
 ] (report_group_25.aux) ) 
 Here is how much of TeX's memory you used:
- 19551 strings out of 478346
- 406008 string characters out of 5840784
- 1866851 words of memory out of 5000000
- 39271 multiletter control sequences out of 15000+600000
+ 19602 strings out of 478346
+ 406704 string characters out of 5840784
+ 1870851 words of memory out of 5000000
+ 39322 multiletter control sequences out of 15000+600000
  520514 words of font info for 63 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  84i,9n,89p,647b,955s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -804,7 +804,7 @@ msfonts/cm/cmr17.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/am
 sfonts/cm/cmr8.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsf
 onts/cm/cmtt10.pfb>
-Output written on report_group_25.pdf (10 pages, 233086 bytes).
+Output written on report_group_25.pdf (10 pages, 234916 bytes).
 PDF statistics:
  96 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

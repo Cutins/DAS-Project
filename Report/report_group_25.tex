@@ -22,6 +22,7 @@
 \usepackage{xcolor}
 
 \tikzstyle{node}=[thick,circle,draw=blue,minimum size=22,inner sep=0.5,outer sep=0.6]
+\tikzstyle{pixel}=[thick,rectangle,draw=black,fill=white,minimum size=22,inner sep=0.5,outer sep=0.6]
 \tikzstyle{node in}=[node,green!20!black,draw=green!30!black,fill=green!25]
 \tikzstyle{node hidden}=[node,blue!20!black,draw=blue!30!black,fill=blue!20]
 \tikzstyle{node out}=[node,red!20!black,draw=red!30!black,fill=red!20]
@@ -132,12 +133,13 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 % NEURAL NETWORK SCHEME
 \begin{figure}
 \centering
-\begin{tikzpicture}[x=4.2cm,y=1.4cm]
+\begin{tikzpicture}[x=3.5cm,y=1.4cm]
 
 \readlist\Nnod{5,3,1} % array of number of nodes per layer
 \readlist\Nstr{n,m,k} 
 \readlist\Cstr{\strut x,\strut x,{}} 
 \def\yshift{0.5} % shift last node for dots
+
 
 \foreachitem \N \in \Nnod{ 
 \def\lay{\Ncnt} 
@@ -146,6 +148,7 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 \foreach \i [evaluate={\c=int(\i==\N); \y=\N/2-\i-\c*\yshift;
 \index=(\i<\N?int(\i):"\Nstr[\lay]");
 \x=\lay; \n=\nstyle;}] in {1,...,\N}{
+
 
 % NODES
 \ifnum\lay=1 % First Layer
@@ -180,8 +183,16 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
     \path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.5] {$\vdots$};
     \fi
 }
+
+%PIXELS
+% Place pixels upstream of the first layer
+\foreach \i in {1,...,\Nnod[1]}{
+  \node[pixel] (P\i) at (0,\Nnod[1]/2-\i) {$p_\i$};
+  \draw[connect] (P\i) -- (N1-\i);
+}
   
   % LABELS
+% \pixel[above=5,align=center,black] at (N1-1.90) {flatten\\[-0.2em]image}
   \node[above=5,align=center,green!60!black] at (N1-1.90) {input\\[-0.2em]layer};
   \node[above=2,align=center,blue!60!black] at (N2-1.90) {hidden \\[-0.2em]layer};
   \node[above=10,align=center,red!60!black] at (N\Nnodlen-1.90) {output\\[-0.2em]layer};
@@ -190,6 +201,31 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 \caption{Scheme of the neural network for image classification}
 \label{NN_scheme}
 \end{figure}
+
+
+\begin{tikzpicture}
+  \def\scale{0.5} % Scala del disegno
+
+  % Piani principali
+  \filldraw[fill=blue!20] (0,0,0) -- (4*\scale,0,0) -- (4*\scale,0,3*\scale) -- (0,0,3*\scale) -- cycle;
+  \filldraw[fill=red!20] (4*\scale,0,0) -- (4*\scale,4*\scale,0) -- (4*\scale,4*\scale,3*\scale) -- (4*\scale,0,3*\scale) -- cycle;
+  \filldraw[fill=green!20] (0,0,3*\scale) -- (4*\scale,0,3*\scale) -- (4*\scale,4*\scale,3*\scale) -- (0,4*\scale,3*\scale) -- cycle;
+
+  % Linee perimetrali
+  \draw (0,0,0) -- (4*\scale,0,0) -- (4*\scale,4*\scale,0) -- (0,4*\scale,0) -- cycle;
+  \draw (0,0,0) -- (0,0,3*\scale) -- (0,4*\scale,3*\scale) -- (0,4*\scale,0);
+  \draw (0,4*\scale,0) -- (4*\scale,4*\scale,0) -- (4*\scale,4*\scale,3*\scale) -- (0,4*\scale,3*\scale);
+  \draw (4*\scale,4*\scale,0) -- (4*\scale,0,0);
+  \draw (4*\scale,0,0) -- (4*\scale,0,3*\scale) -- (4*\scale,4*\scale,3*\scale);
+
+  % Etichette
+  \node at (2*\scale,-0.6*\scale,0) {Piano XY};
+  \node at (4.8*\scale,2*\scale,0) {Piano YZ};
+  \node at (4*\scale,4.8*\scale,1.5*\scale) {Piano XZ};
+
+\end{tikzpicture}
+
+
 
 The structure we have choose to develop for the neural network is a tapered one, represented in figure \ref{NN_scheme}. 
 The first layer is composed by $784$ neurons, that is the dimension of the flattened image we give as input in the network. In this way each neurons of the first layer gets a single pixel as input. The second layer, the hidden one, has $28$ neurons since an higher number of neurons was useless in order to accomplish our task, while it increases a lot the computational effort required to train the network. The last layer has just one single neuron since we are asked to perform a binary classification, and so just a number between $0$ and $1$ is required as prediction.
