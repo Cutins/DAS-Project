@@ -3,7 +3,7 @@
 TO DO:
 - Giocare con gli input, tipo cerchio 
 - Implementare la tecnica 'Bearing'
-- Muovere gli obstacole 
+- Muovere gli obstacole
 - Implementare il 'Creazy choir'
 
 
