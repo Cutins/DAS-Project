@@ -42,6 +42,7 @@ plt.show(block=block_var)
 
 if 1 and n_x == 2: # animation 
     plt.figure()
+    plt.title('Animation XY')
     dt = 3 # sub-sampling of the plot horizon
     for tt in range(0,Tmax,dt):
         xx_tt = xx[:,tt].T
