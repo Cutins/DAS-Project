@@ -1,0 +1,8 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Introduction}{5}{}%
+\contentsline {chapter}{\numberline {1}Distributed classification via Neural Network}{6}{}%
+\contentsline {section}{\numberline {1.1}Initial setup}{6}{}%
+\contentsline {section}{\numberline {1.2}Neural Network structure}{7}{}%
+\contentsline {chapter}{\numberline {2}Formation Control}{9}{}%
+\contentsline {chapter}{Conclusions}{10}{}%
+\contentsline {chapter}{Bibliography}{10}{}%
