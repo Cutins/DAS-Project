@@ -459,7 +459,7 @@ if save_weights:
 # # PLOT
 # ###############################################################################
 
-plot_folder_name = 'plot_Test_2'
+plot_folder_name = 'Test_3'
 
 plt.figure('Cost function')
 plt.plot(range(EPOCHS), np.mean(J, axis=1), label='Total Normalized Cost Evolution', linewidth=2)
@@ -471,7 +471,7 @@ plt.legend()
 plt.title('J')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'J.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'J.png')
 plt.savefig(plot_path)
 
 
@@ -484,7 +484,7 @@ plt.legend()
 plt.title('norm_gradient_J')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'norm_gradient_J.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'norm_gradient_J.png')
 plt.savefig(plot_path)
 
 
@@ -497,7 +497,7 @@ plt.xlabel(r'Epochs')
 plt.title('Weights magnitude - Weights mean magnitude')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Weights_mean.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'Weights_mean.png')
 plt.savefig(plot_path)
 
 
@@ -509,7 +509,7 @@ plt.xlabel(r'Epochs')
 plt.title('Weight per agent - Weight mean value across agents')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Single_weight.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'Single_weight.png')
 plt.savefig(plot_path)
 
 
@@ -522,7 +522,7 @@ plt.legend()
 plt.title('SS magnitude')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'SS_evolution.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'SS_evolution.png')
 plt.savefig(plot_path)
 
 
@@ -537,7 +537,7 @@ plt.xlabel(r'Epochs')
 plt.title('Weights magnitude - Weights mean magnitude')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Weights_mean-60.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'Weights_mean-60.png')
 plt.savefig(plot_path)
 
 
@@ -549,7 +549,7 @@ plt.xlabel(r'Epochs')
 plt.title('Weight per agent - Weight mean value across agents')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'Single_weight-60.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'Single_weight-60.png')
 plt.savefig(plot_path)
 
 
@@ -562,7 +562,7 @@ plt.legend()
 plt.title('SS magnitude')
 plt.grid()
 # Salvataggio del grafico come file immagine
-plot_path = os.path.join(os.getcwd(), 'task_1', plot_folder_name, 'SS_evolution-60.png')
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'SS_evolution-60.png')
 plt.savefig(plot_path)
 
 plt.show()

@@ -1,10 +1,17 @@
 # DAS-Project
 
 TO DO:
-- Giocare con gli input, tipo cerchio 
 - Implementare la tecnica 'Bearing'
-- Muovere gli obstacole
-- Implementare il 'Creazy choir'
+- Muovere gli obstacole, contro gli altri obstacle
+- Diminiscing step-size (cambiare la batch-size)
+
+- e-mail notarnicola
+- Test_3
+- Ripulire / commentare i codici
+
+REPORT:
+# Task 1
+
 
 
 
