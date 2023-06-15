@@ -1,0 +1,53 @@
+------------------TEST SCORES-----------------
+
+AGENT:  0
+Correctly classified point:  247.0
+Wrong classified point:  9.0
+Accuracy: 96.4844
+
+AGENT:  1
+Correctly classified point:  247.0
+Wrong classified point:  9.0
+Accuracy: 96.4844
+
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  2
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  3
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  4
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+
+
+
+
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  2
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  3
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
+
+AGENT:  4
+Correctly classified point:  248.0
+Wrong classified point:  8.0
+Accuracy: 96.8750
