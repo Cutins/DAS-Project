@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.14)  14 JUN 2023 15:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.15)  15 JUN 2023 14:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -486,166 +486,17 @@ File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
 es/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )))
-(/home/giulia/.miktex/texmfs/install/tex/latex/neuralnetwork/neuralnetwork.sty
-Package: neuralnetwork 2013/07/18 v1.0 Neural network diagrams, Mark Kuckian Co
-wan, mark@battlesnake.co.uk
-
-(/home/giulia/.miktex/texmfs/install/tex/latex/environ/environ.sty
-Package: environ 2014/05/04 v0.3 A new way to define environments
-
-(/home/giulia/.miktex/texmfs/install/tex/latex/trimspaces/trimspaces.sty
-Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
-))
-(/home/giulia/.miktex/texmfs/install/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count296
-)
-(/home/giulia/.miktex/texmfs/install/tex/latex/xkeyval/xkeyval.sty
-Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/xkeyval/xkeyval.tex
-(/home/giulia/.miktex/texmfs/install/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks39
-\XKV@tempa@toks=\toks40
-)
-\XKV@depth=\count297
-File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))
-(/home/giulia/.miktex/texmfs/install/tex/latex/algorithmicx/algorithmicx.sty
-Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
-
-(/home/giulia/.miktex/texmfs/install/tex/latex/base/ifthen.sty
-Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
-)
-Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count298
-\c@ALG@rem=\count299
-\c@ALG@nested=\count300
-\ALG@tlm=\skip53
-\ALG@thistlm=\skip54
-\c@ALG@Lnr=\count301
-\c@ALG@blocknr=\count302
-\c@ALG@storecount=\count303
-\c@ALG@tmpcounter=\count304
-\ALG@tmplength=\skip55
-) (/home/giulia/.miktex/texmfs/install/tex/latex/mathtools/mathtools.sty
-Package: mathtools 2022/06/29 v1.29 mathematical typesetting tools
-
-(/home/giulia/.miktex/texmfs/install/tex/latex/tools/calc.sty
-Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count305
-\calc@Bcount=\count306
-\calc@Adimen=\dimen259
-\calc@Bdimen=\dimen260
-\calc@Askip=\skip56
-\calc@Bskip=\skip57
-LaTeX Info: Redefining \setlength on input line 80.
-LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count307
-\calc@Cskip=\skip58
-)
-(/home/giulia/.miktex/texmfs/install/tex/latex/mathtools/mhsetup.sty
-Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
-)
-\g_MT_multlinerow_int=\count308
-\l_MT_multwidth_dim=\dimen261
-\origjot=\skip59
-\l_MT_shortvdotswithinadjustabove_dim=\dimen262
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen263
-\l_MT_above_intertext_sep=\dimen264
-\l_MT_below_intertext_sep=\dimen265
-\l_MT_above_shortintertext_sep=\dimen266
-\l_MT_below_shortintertext_sep=\dimen267
-\xmathstrut@box=\box66
-\xmathstrut@dim=\dimen268
-)
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.code.tex
-File: tikzlibraryshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.geometric.code.tex
-File: tikzlibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.geometric.code.tex
-File: pgflibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.misc.code.tex
-File: tikzlibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.misc.code.tex
-File: pgflibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.symbols.code.tex
-File: tikzlibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.symbols.code.tex
-File: pgflibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.arrows.code.tex
-File: tikzlibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.arrows.code.tex
-File: pgflibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.callouts.code.tex
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.callouts.code.tex))
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/librari
-es/tikzlibraryshapes.multipart.code.tex
-File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibrar
-yshapes.multipart.code.tex
-File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfnodepartlowerbox=\box67
-\pgfnodeparttwobox=\box68
-\pgfnodepartthreebox=\box69
-\pgfnodepartfourbox=\box70
-\pgfnodeparttwentybox=\box71
-\pgfnodepartnineteenbox=\box72
-\pgfnodeparteighteenbox=\box73
-\pgfnodepartseventeenbox=\box74
-\pgfnodepartsixteenbox=\box75
-\pgfnodepartfifteenbox=\box76
-\pgfnodepartfourteenbox=\box77
-\pgfnodepartthirteenbox=\box78
-\pgfnodeparttwelvebox=\box79
-\pgfnodepartelevenbox=\box80
-\pgfnodeparttenbox=\box81
-\pgfnodepartninebox=\box82
-\pgfnodeparteightbox=\box83
-\pgfnodepartsevenbox=\box84
-\pgfnodepartsixbox=\box85
-\pgfnodepartfivebox=\box86
-))))
 (/home/giulia/.miktex/texmfs/install/tex/latex/listofitems/listofitems.sty
 (/home/giulia/.miktex/texmfs/install/tex/generic/listofitems/listofitems.tex
-\loi_cnt_foreach_nest=\count309
-\loi_nestcnt=\count310
+\loi_cnt_foreach_nest=\count296
+\loi_nestcnt=\count297
 )
 Package: listofitems 2019/08/21 v1.63 Grab items in lists using user-specified 
 sep char (CT)
 )
-(/home/giulia/.miktex/texmfs/install/tex/generic/pgf/libraries/pgflibraryarrows
-.meta.code.tex
-File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowinset=\dimen269
-\pgfarrowlength=\dimen270
-\pgfarrowwidth=\dimen271
-\pgfarrowlinewidth=\dimen272
-)
 (/home/giulia/.miktex/texmfs/install/tex/latex/contour/contour.sty
 Package: contour 2004/11/18 v2.14 Print contoured text (HH, MH)
-\con@length=\skip60
+\con@length=\skip53
 
 Loading configuration file `contour.cfg'.
 (/home/giulia/.miktex/texmfs/install/tex/latex/contour/contour.cfg
@@ -657,40 +508,40 @@ File: pdftex.cnt 2004/11/18 v2.14 Print contoured text (HH, MH)
 ))
 (/home/giulia/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-04-19 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count311
-\l__pdf_internal_box=\box87
+\l__color_backend_stack_int=\count298
+\l__pdf_internal_box=\box66
 )
 (report_group_25.aux)
 \openout1 = `report_group_25.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
 
 (/home/giulia/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count312
-\scratchdimen=\dimen273
-\scratchbox=\box88
-\nofMPsegments=\count313
-\nofMParguments=\count314
-\everyMPshowfont=\toks41
-\MPscratchCnt=\count315
-\MPscratchDim=\dimen274
-\MPnumerator=\count316
-\makeMPintoPDFobject=\count317
-\everyMPtoPDFconversion=\toks42
+\scratchcounter=\count299
+\scratchdimen=\dimen259
+\scratchbox=\box67
+\nofMPsegments=\count300
+\nofMParguments=\count301
+\everyMPshowfont=\toks39
+\MPscratchCnt=\count302
+\MPscratchDim=\dimen260
+\MPnumerator=\count303
+\makeMPintoPDFobject=\count304
+\everyMPtoPDFconversion=\toks40
 ) (/home/giulia/.miktex/texmfs/install/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 (/home/giulia/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
@@ -734,7 +585,7 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 <./figs/logo_unibo.png, id=4, 766.865pt x 401.5pt>
 File: ./figs/logo_unibo.png Graphic file (type png)
 <use ./figs/logo_unibo.png>
-Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 50.
+Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 46.
 (pdftex.def)             Requested size: 207.05632pt x 108.40643pt.
 
 [1
@@ -765,12 +616,12 @@ Chapter 1.
 <./figs/mnist.png, id=26, 225.84375pt x 225.84375pt>
 File: ./figs/mnist.png Graphic file (type png)
 <use ./figs/mnist.png>
-Package pdftex.def Info: ./figs/mnist.png  used on input line 109.
+Package pdftex.def Info: ./figs/mnist.png  used on input line 105.
 (pdftex.def)             Requested size: 112.92159pt x 112.92159pt.
 [6
 
  <./figs/mnist.png>]
-Overfull \hbox (15.34207pt too wide) in paragraph at lines 129--130
+Overfull \hbox (15.34207pt too wide) in paragraph at lines 125--126
 \OT1/cmr/m/n/10.95 order to efficiently train our neural network we have equali
 zed the representation
  []
@@ -785,10 +636,10 @@ No file report_group_25.bbl.
 
 ] (report_group_25.aux) ) 
 Here is how much of TeX's memory you used:
- 19602 strings out of 478346
- 406704 string characters out of 5840784
- 1870851 words of memory out of 5000000
- 39322 multiletter control sequences out of 15000+600000
+ 15630 strings out of 478346
+ 313510 string characters out of 5840784
+ 1865851 words of memory out of 5000000
+ 35438 multiletter control sequences out of 15000+600000
  520514 words of font info for 63 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  84i,9n,89p,647b,955s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -804,7 +655,7 @@ msfonts/cm/cmr17.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/am
 sfonts/cm/cmr8.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsf
 onts/cm/cmtt10.pfb>
-Output written on report_group_25.pdf (10 pages, 234916 bytes).
+Output written on report_group_25.pdf (10 pages, 233103 bytes).
 PDF statistics:
  96 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

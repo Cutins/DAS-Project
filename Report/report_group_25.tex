@@ -12,13 +12,9 @@
 \graphicspath{{./figs/}}
 \usepackage{float}
 \usepackage{tikz}
-\usepackage{neuralnetwork}
 \usepackage{listofitems} % for \readlist to create arrays
-\usetikzlibrary{arrows.meta} % for arrow size
 \usepackage[outline]{contour} %
 
-
-%\tikzset{>=latex} % for LaTeX arrow head
 \usepackage{xcolor}
 
 \tikzstyle{node}=[thick,circle,draw=blue,minimum size=22,inner sep=0.5,outer sep=0.6]
@@ -184,13 +180,13 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
     \fi
 }
 
-%PIXELS
-% Place pixels upstream of the first layer
-\foreach \i in {1,...,\Nnod[1]}{
-  \node[pixel] (P\i) at (0,\Nnod[1]/2-\i) {$p_\i$};
-  \draw[connect] (P\i) -- (N1-\i);
-}
-  
+%%PIXELS
+%% Place pixels upstream of the first layer
+%\foreach \i in {1,...,\Nnod[1]}{
+%  \node[pixel] (P\i) at (0,\Nnod[1]/2-\i) {$p_\i$};
+%  \draw[connect] (P\i) -- (N1-\i);
+%}
+%  
   % LABELS
 % \pixel[above=5,align=center,black] at (N1-1.90) {flatten\\[-0.2em]image}
   \node[above=5,align=center,green!60!black] at (N1-1.90) {input\\[-0.2em]layer};
@@ -201,30 +197,6 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 \caption{Scheme of the neural network for image classification}
 \label{NN_scheme}
 \end{figure}
-
-
-\begin{tikzpicture}
-  \def\scale{0.5} % Scala del disegno
-
-  % Piani principali
-  \filldraw[fill=blue!20] (0,0,0) -- (4*\scale,0,0) -- (4*\scale,0,3*\scale) -- (0,0,3*\scale) -- cycle;
-  \filldraw[fill=red!20] (4*\scale,0,0) -- (4*\scale,4*\scale,0) -- (4*\scale,4*\scale,3*\scale) -- (4*\scale,0,3*\scale) -- cycle;
-  \filldraw[fill=green!20] (0,0,3*\scale) -- (4*\scale,0,3*\scale) -- (4*\scale,4*\scale,3*\scale) -- (0,4*\scale,3*\scale) -- cycle;
-
-  % Linee perimetrali
-  \draw (0,0,0) -- (4*\scale,0,0) -- (4*\scale,4*\scale,0) -- (0,4*\scale,0) -- cycle;
-  \draw (0,0,0) -- (0,0,3*\scale) -- (0,4*\scale,3*\scale) -- (0,4*\scale,0);
-  \draw (0,4*\scale,0) -- (4*\scale,4*\scale,0) -- (4*\scale,4*\scale,3*\scale) -- (0,4*\scale,3*\scale);
-  \draw (4*\scale,4*\scale,0) -- (4*\scale,0,0);
-  \draw (4*\scale,0,0) -- (4*\scale,0,3*\scale) -- (4*\scale,4*\scale,3*\scale);
-
-  % Etichette
-  \node at (2*\scale,-0.6*\scale,0) {Piano XY};
-  \node at (4.8*\scale,2*\scale,0) {Piano YZ};
-  \node at (4*\scale,4.8*\scale,1.5*\scale) {Piano XZ};
-
-\end{tikzpicture}
-
 
 
 The structure we have choose to develop for the neural network is a tapered one, represented in figure \ref{NN_scheme}. 
