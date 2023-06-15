@@ -8,16 +8,16 @@ import signal
 import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-N_obstacle = 8
+N_obstacle = 0
 
-_, _, files = next(os.walk("./_csv_file"))
+_, _, files = next(os.walk("./DAS-Project/task_2.2/_csv_file"))
 NN = len(files)
 
 xx_csv = {}
 Tlist = []
 
 for ii in range(NN):
-    xx_csv[ii] = np.genfromtxt("_csv_file/agent_{}.csv".format(ii), delimiter=',').T
+    xx_csv[ii] = np.genfromtxt("DAS-Project/task_2.2/_csv_file/agent_{}.csv".format(ii), delimiter=',').T
     Tlist.append(xx_csv[ii].shape[1])
 
 n_x = xx_csv[ii].shape[0]

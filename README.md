@@ -77,6 +77,7 @@ TO DO:
 
 
 # ROS
+- Fare il plot_csv opne
 - Fare Task_2.2 dove si vede bene il collision avoidance (Posizione iniziale in asse)
     Testarla con molte shape diverse
 - Task 2.3 provare movimento a cerchio e wavesAMENT_PREFIX_PATH 
