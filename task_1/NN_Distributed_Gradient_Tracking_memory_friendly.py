@@ -62,7 +62,7 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 T_LAYERS = 2        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
