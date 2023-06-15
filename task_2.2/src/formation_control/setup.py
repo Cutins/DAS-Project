@@ -26,8 +26,6 @@ setup(
             'the_agent = formation_control.the_agent:main',
             'visualizer = formation_control.visualizer:main',
             'the_plotter = formation_control.the_plotter:main',
-            'the_obstacle = formation_control.the_obstacle:main',
-            'visualizer_for_obstacle = formation_control.visualizer_for_obstacle:main',
         ],
     },
 )

@@ -7,6 +7,16 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray as MsgFloat
 
+
+def writer(file_name, string):
+    """
+      inner function for logging
+    """
+    file = open(file_name, "a") # "a" is for append
+    file.write(string)
+    file.close()
+
+
 class Agent(Node):
     def __init__(self):
         super().__init__('agent',
@@ -26,7 +36,13 @@ class Agent(Node):
         self.kk = 0
         self.counter = 0
         self.start_moving = 0
-        
+
+        ####### create logging file ######
+        self.file_name = "_csv_file/agent_{}.csv".format(self.id)
+        file = open(self.file_name, "w+") # 'w+' needs to create file and open in writing mode if doesn't exist
+        file.close()
+
+
         # CREATE TOPIC
         self.publisher = self.create_publisher(msg_type=MsgFloat, 
                                                 topic=f'/topic_{self.id}',
@@ -156,9 +172,15 @@ class Agent(Node):
                     self.publisher.publish(msg)
 
                     self.kk += 1
-
                     self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\n\t\tx: {msg.data[2]:.4f}\n\t\ty: {msg.data[3]:.4f}\n\t\tz: {msg.data[4]:.4f}")
 
+                    ######## LOG files #######
+                    # save on file
+                    data_for_csv = msg.data.tolist().copy()
+                    data_for_csv = [str(round(element,4)) for element in data_for_csv[2:4]]
+                    data_for_csv = ','.join(data_for_csv)
+                    writer(self.file_name,data_for_csv+'\n')
+                    
         else: 
             msg = MsgFloat()
             x, y, z = self.pos
@@ -168,6 +190,12 @@ class Agent(Node):
             self.kk += 1
             self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\n\t\tx: {msg.data[2]:.4f}\n\t\ty: {msg.data[3]:.4f}\n\t\tz: {msg.data[4]:.4f}")
         
+            ######## LOG files #######
+            # save on file
+            data_for_csv = msg.data.tolist().copy()
+            data_for_csv = [str(round(element,4)) for element in data_for_csv[2:4]]
+            data_for_csv = ','.join(data_for_csv)
+            writer(self.file_name,data_for_csv+'\n')
 
 def main():
     rclpy.init()

@@ -55,18 +55,6 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /visualization_topic
       Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: Obstacle_Marker
-      Namespaces:
-        obstacle: true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /visualization_topic_obstacle
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 243; 243; 243
@@ -146,6 +134,3 @@ Window Geometry:
   Width: 1011
   X: 478
   Y: 82
-
-
-visualization_topic
