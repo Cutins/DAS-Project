@@ -4,5 +4,6 @@
 \contentsline {section}{\numberline {1.1}Initial setup}{6}{}%
 \contentsline {section}{\numberline {1.2}Neural Network structure}{7}{}%
 \contentsline {chapter}{\numberline {2}Formation Control}{9}{}%
-\contentsline {chapter}{Conclusions}{10}{}%
-\contentsline {chapter}{Bibliography}{10}{}%
+\contentsline {section}{\numberline {2.1}Distance-based formation}{9}{}%
+\contentsline {chapter}{Conclusions}{11}{}%
+\contentsline {chapter}{Bibliography}{11}{}%

@@ -14,8 +14,8 @@
 \usepackage{tikz}
 \usepackage{listofitems} % for \readlist to create arrays
 \usepackage[outline]{contour} %
-
 \usepackage{xcolor}
+
 
 \tikzstyle{node}=[thick,circle,draw=blue,minimum size=22,inner sep=0.5,outer sep=0.6]
 \tikzstyle{pixel}=[thick,rectangle,draw=black,fill=white,minimum size=22,inner sep=0.5,outer sep=0.6]
@@ -209,7 +209,43 @@ The first layer is composed by $784$ neurons, that is the dimension of the flatt
 
 
 \chapter{Formation Control}
-ciao
+ In the second task we were asked to implement in ROS2 a discrete version of a Formation Control law for a team of $N$ robots.
+
+\section{Distance-based formation}
+The aim of the task was to obtain a desired geometric formation among a group of $N$ autonomous agents, by acting on the relative positions of agents in order to achieve a specified formation pattern.
+The desired formation can be encoded in terms of an undirected graph, called \textit{formation graph}, whose set of vertices is indexed by the team members $\mathcal{N} =\{ 1, \cdots, N\}$, and whose set of edges $E=\{(i,j) \in \mathcal{N} \times \mathcal{N} | \, j \in \mathcal{N}_i\}$ contains pairs of vertices. Each edge $(i,j) \in E$ is assigned a scalar parameter $d_{ij} = d_{ji} > 0$, representing the distance at which agents $i,j$ should converge to.
+
+An example could be a desired formation with hexagon shape with the following \textit{distances matrix}:
+\begin{equation}
+d =
+\begin{bmatrix}
+0 & L & 0 & D & H & L \\
+L & 0 & L & 0 & D & 0 \\
+0 & L & 0 & L & 0 & D \\
+D & 0 & L & 0 & L & 0 \\
+H & D & 0 & L & 0 & L \\
+L & 0 & D & 0 & L & 0
+\end{bmatrix}
+\end{equation}
+
+\bigskip
+The desired distance value serve as reference value for the control law. The control law computes control signals for each agent based on its current position and the position of the neighboring agents, aiming to drive the agents towards the desired formation.
+The neighbors of a certain agent $i$ can be extracted from the $i$-th row of the distances matrix, by taking the indexes of the elements with $d_j > 0$.
+
+One way to approach distance-based formation control involves the usage of potential functions, similar to the following one:
+\begin{equation}
+V_{ij}(x)  = \frac{1}{4} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)^2
+\end{equation}
+
+This kind of potential function represents the energy associated with the relative positions of the agents. By minimizing this potential function, the agents can achieve and maintain the desired formation.
+As a consequence, the control law we have implemented for each agent $i$ is the following:
+\begin{equation}
+\dot{x}_i(t) = f_i(x(t)) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j )
+\end{equation}
+
+
+- Undirected connected graph
+- Collision avoidance
   
 
 %%%%%%%%%% Conclusions %%%%%%%%%%
