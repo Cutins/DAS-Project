@@ -16,7 +16,6 @@
 \usepackage[outline]{contour} %
 \usepackage{xcolor}
 
-
 \tikzstyle{node}=[thick,circle,draw=blue,minimum size=22,inner sep=0.5,outer sep=0.6]
 \tikzstyle{pixel}=[thick,rectangle,draw=black,fill=white,minimum size=22,inner sep=0.5,outer sep=0.6]
 \tikzstyle{node in}=[node,green!20!black,draw=green!30!black,fill=green!25]
@@ -30,6 +29,14 @@
 }
 \def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 
 \begin{document}
@@ -208,33 +215,34 @@ The first layer is composed by $784$ neurons, that is the dimension of the flatt
 
 
 
-\chapter{Formation Control}
- In the second task we were asked to implement in ROS2 a discrete version of a Formation Control law for a team of $N$ robots.
+\chapter{Formation Control} 
+ In the second task we were asked to implement in ROS2 a discrete-time version of a \textbf{formation control law} for a team of $N$ robots.
 
 \section{Distance-based formation}
-The aim of the task was to obtain a desired geometric formation among a group of $N$ autonomous agents, by acting on the relative positions of agents in order to achieve a specified formation pattern.
-The desired formation can be encoded in terms of an undirected graph, called \textit{formation graph}, whose set of vertices is indexed by the team members $\mathcal{N} =\{ 1, \cdots, N\}$, and whose set of edges $E=\{(i,j) \in \mathcal{N} \times \mathcal{N} | \, j \in \mathcal{N}_i\}$ contains pairs of vertices. Each edge $(i,j) \in E$ is assigned a scalar parameter $d_{ij} = d_{ji} > 0$, representing the distance at which agents $i,j$ should converge to.
-
-An example could be a desired formation with hexagon shape with the following \textit{distances matrix}:
-\begin{equation}
-d =
-\begin{bmatrix}
-0 & L & 0 & D & H & L \\
-L & 0 & L & 0 & D & 0 \\
-0 & L & 0 & L & 0 & D \\
-D & 0 & L & 0 & L & 0 \\
-H & D & 0 & L & 0 & L \\
-L & 0 & D & 0 & L & 0
-\end{bmatrix}
-\end{equation}
+The aim of the task was to obtain a desired geometric formation among a group of $N$ autonomous agents, by acting on the relative positions of agents.
 
 \bigskip
+The desired formation can be encoded in terms of an undirected graph, called \textit{formation graph}, whose set of vertices is indexed by the team agents $\mathcal{N} =\{ 1, \cdots, N\}$, and whose set of edges $E=\{(i,j) \in \mathcal{N} \times \mathcal{N} | \, j \in \mathcal{N}_i\}$ contains pairs of agents. Each edge $(i,j) \in E$ is assigned a scalar parameter $d_{ij} = d_{ji} > 0$, representing the distance at which agents $i,j$ should converge to. 
+
+An example could be a predefined formation with hexagon shape with the following \textit{distances matrix}:
+\begin{equation}
+d_{ij} =
+\begin{bmatrix}
+0 & l & 0 & d & h & l \\
+l & 0 & l & 0 & d & 0 \\
+0 & l & 0 & l & 0 & d \\
+d & 0 & l & 0 & l & 0 \\
+h & d & 0 & l & 0 & l \\
+l & 0 & d & 0 & l & 0
+\end{bmatrix}
+\end{equation}
 The desired distance value serve as reference value for the control law. The control law computes control signals for each agent based on its current position and the position of the neighboring agents, aiming to drive the agents towards the desired formation.
 The neighbors of a certain agent $i$ can be extracted from the $i$-th row of the distances matrix, by taking the indexes of the elements with $d_j > 0$.
 
-One way to approach distance-based formation control involves the usage of potential functions, similar to the following one:
+By denoting the position of agent $i \in \{1, \cdots, N\}$ at time $t>0$ with $x_i(t) \in \mathbb{R}^3$, one way to approach distance-based formation control involves the usage of \textbf{potential functions}, similar to the following one:
 \begin{equation}
 V_{ij}(x)  = \frac{1}{4} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)^2
+\label{Formation_potential}
 \end{equation}
 
 This kind of potential function represents the energy associated with the relative positions of the agents. By minimizing this potential function, the agents can achieve and maintain the desired formation.
@@ -243,10 +251,60 @@ As a consequence, the control law we have implemented for each agent $i$ is the 
 \dot{x}_i(t) = f_i(x(t)) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j )
 \end{equation}
 
+Since we were required to work in discrete time, we denote with $p_i^k \in \mathbb{R}^3$ the discretized version of $x_i(t)$ at time $k$ and, once we have computed the dynamics update for agent $i$ we discretize with Euler formula in the following way:
+\begin{equation}
+p_i^{k+1} = p_i^{k} + \Delta f_i(p^k)
+\end{equation}
+where $\Delta > 0$ is the sampling period.
 
-- Undirected connected graph
-- Collision avoidance
-  
+\section{ROS2 implementation}
+The solution proposed in previous section has been implemented in ROS2 environment with a code written in Python language.
+
+\bigskip
+By means of a launch file (named \texttt{formation\_control.launch.py}) we can generate the desired number of agents and give them the required informations in order to accomplish the target formation. In particular for each agent the launch file generates a ROS2 node that executes the file named \texttt{the\_agent.py}. Each node gets the following main parameters from the launch file:
+\begin{itemize}
+\item id: a number from $0$ to $N$ associated to the agent's identity
+\item initial position, randomly generated
+\item distances: each agent gets only "its" row of the distances matrix. In this way it will be able to know who are its neighbors and the distances he has to keep from them in the desired configuration
+\item maximum number of dynamics update
+\end{itemize}
+This file manages the dynamic evolution of the agent and the communication with the other ones (the neighbors' ones). For what regards the communication, we have used a publisher-subscriber protocol implemented in ROS2: each node communicates its position only to its neighbors. The communication between nodes is made using a topic for each edge defined in the formation graph. In order to write to a topic or to read from it, the node must know the name of the topic he want to access.
+
+\bigskip
+We have developed also a plotter agent (\texttt{the\_plotter.py}) that can read from its topic the actual positions of all the other agents in order to visualize the evolution of the trajectories of the whole formation.
+
+\section{Collision avoidance}
+The control laws typically consists of two components: attraction and repulsion. The attraction component pulls the agents towards their desired positions relative to their neighbors, while the repulsion component prevents collision by creating a repulsive force when the agents get too close to each other.
+
+The control law that models the agent's dynamics had, up to now, just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure (METTERE FIGURA DI UNA COLLISION). 
+
+\bigskip
+For this reason the task 2.2 asked to introduce a second potential to avoid agent's collision. In order to do that the following proper barrier function has been used:
+\begin{equation}
+V_{ij}(x) = - \log( \lVert x_i - x_j \rVert ^2)
+\label{Collision_barrier}
+\end{equation}
+
+As a result, the control law has a new term due to this potential that is the following one:
+\begin{equation}
+\dot{x}_i(t) = - 2\sum_{j \in \mathcal{N}_i} \frac{(x_i-x_j)}{\bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)}
+\end{equation}
+
+And the total control law becomes:
+\begin{equation}
+\dot{x}_i(t) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) + 2 \frac{(x_i-x_j)}{\bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)}
+\end{equation}
+
+
+
+\section{Moving formation and leaders control}
+At this point robots are partitioned in two groups, namely leaders and followes.
+Distance constrains  are invariant to both translation and rotation of the formation, so the distance-based approach can be applied to realize translational and rotational formation maneuvers. 
+
+\section{Obstacle avoidance}
+
+
+
 
 %%%%%%%%%% Conclusions %%%%%%%%%%
 \chapter*{Conclusions}

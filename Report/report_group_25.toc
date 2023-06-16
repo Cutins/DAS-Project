@@ -1,9 +1,13 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Introduction}{5}{}%
-\contentsline {chapter}{\numberline {1}Distributed classification via Neural Network}{6}{}%
-\contentsline {section}{\numberline {1.1}Initial setup}{6}{}%
-\contentsline {section}{\numberline {1.2}Neural Network structure}{7}{}%
-\contentsline {chapter}{\numberline {2}Formation Control}{9}{}%
-\contentsline {section}{\numberline {2.1}Distance-based formation}{9}{}%
-\contentsline {chapter}{Conclusions}{11}{}%
-\contentsline {chapter}{Bibliography}{11}{}%
+\contentsline {chapter}{Introduction}{5}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Distributed classification via Neural Network}{6}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Initial setup}{6}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Neural Network structure}{7}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Formation Control}{9}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Distance-based formation}{9}{section.2.1}%
+\contentsline {section}{\numberline {2.2}ROS2 implementation}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Collision avoidance}{11}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Moving formation and leaders control}{11}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Obstacle avoidance}{12}{section.2.5}%
+\contentsline {chapter}{Conclusions}{13}{chapter*.6}%
+\contentsline {chapter}{Bibliography}{13}{chapter*.6}%

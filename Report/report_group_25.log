@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.15)  15 JUN 2023 15:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  16 JUN 2023 18:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -506,94 +506,215 @@ contour: Using driver file `pdftex.cnt'.
 (/home/giulia/.miktex/texmfs/install/tex/latex/contour/pdftex.cnt
 File: pdftex.cnt 2004/11/18 v2.14 Print contoured text (HH, MH)
 ))
-(/home/giulia/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2023-04-19 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count298
-\l__pdf_internal_box=\box66
-)
-(report_group_25.aux)
-\openout1 = `report_group_25.aux'.
-
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-
-(/home/giulia/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count299
-\scratchdimen=\dimen259
-\scratchbox=\box67
-\nofMPsegments=\count300
-\nofMParguments=\count301
-\everyMPshowfont=\toks39
-\MPscratchCnt=\count302
-\MPscratchDim=\dimen260
-\MPnumerator=\count303
-\makeMPintoPDFobject=\count304
-\everyMPtoPDFconversion=\toks40
-) (/home/giulia/.miktex/texmfs/install/tex/latex/epstopdf-pkg/epstopdf-base.sty
-Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-(/home/giulia/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
-Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-)
-(/home/giulia/.miktex/texmfs/install/tex/latex/grfext/grfext.sty
-Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
-
-(/home/giulia/.miktex/texmfs/install/tex/generic/kvdefinekeys/kvdefinekeys.sty
-Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-)) (/home/giulia/.miktex/texmfs/install/tex/latex/kvoptions/kvoptions.sty
-Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+(/home/giulia/.miktex/texmfs/install/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2023-04-22 v7.00x Hypertext links for LaTeX
 
 (/home/giulia/.miktex/texmfs/install/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 )
-(/home/giulia/.miktex/texmfs/install/tex/latex/kvsetkeys/kvsetkeys.sty
-Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-))
+(/home/giulia/.miktex/texmfs/install/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
 (/home/giulia/.miktex/texmfs/install/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-(/home/giulia/.miktex/texmfs/install/tex/generic/iftex/iftex.sty
-Package: iftex 2022/02/03 v1.0f TeX engine tests
+(/home/giulia/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
+(/home/giulia/.miktex/texmfs/install/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/home/giulia/.miktex/texmfs/install/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/latex/hyperref/nameref.sty
+Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/home/giulia/.miktex/texmfs/install/tex/generic/gettitlestring/gettitlestring.
+sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+ (/home/giulia/.miktex/texmfs/install/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count298
+)
+(/home/giulia/.miktex/texmfs/install/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count299
+)
+\@linkdim=\dimen259
+\Hy@linkcounter=\count300
+\Hy@pagecounter=\count301
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2023-04-22 v7.00x Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/home/giulia/.miktex/texmfs/install/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count302
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/hyperref/puenc.def
+File: puenc.def 2023-04-22 v7.00x Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4182.
+Package hyperref Info: Link nesting OFF on input line 4187.
+Package hyperref Info: Hyper index ON on input line 4190.
+Package hyperref Info: Plain pages OFF on input line 4197.
+Package hyperref Info: Backreferencing OFF on input line 4202.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4449.
+\c@Hy@tempcnt=\count303
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4787.
+\XeTeXLinkMargin=\dimen260
+
+(/home/giulia/.miktex/texmfs/install/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/home/giulia/.miktex/texmfs/install/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count304
+\Field@Width=\dimen261
+\Fld@charsize=\dimen262
+Package hyperref Info: Hyper figures OFF on input line 6066.
+Package hyperref Info: Link nesting OFF on input line 6071.
+Package hyperref Info: Hyper index ON on input line 6074.
+Package hyperref Info: backreferencing OFF on input line 6081.
+Package hyperref Info: Link coloring OFF on input line 6086.
+Package hyperref Info: Link coloring with OCG OFF on input line 6091.
+Package hyperref Info: PDF/A mode OFF on input line 6096.
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count305
+\c@Item=\count306
+\c@Hfootnote=\count307
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2023-04-22 v7.00x Hyperref driver for pdfTeX
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count308
+\c@bookmark@seq@number=\count309
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/rerunfilecheck/rerunfilecheck.st
+y
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+
+(/home/giulia/.miktex/texmfs/install/tex/generic/uniquecounter/uniquecounter.st
+y
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+85.
+)
+\Hy@SectionHShift=\skip54
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 39.
+
+(/home/giulia/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2023-04-19 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count310
+\l__pdf_internal_box=\box66
+)
+(report_group_25.aux)
+\openout1 = `report_group_25.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+
+(/home/giulia/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count311
+\scratchdimen=\dimen263
+\scratchbox=\box67
+\nofMPsegments=\count312
+\nofMParguments=\count313
+\everyMPshowfont=\toks39
+\MPscratchCnt=\count314
+\MPscratchDim=\dimen264
+\MPnumerator=\count315
+\makeMPintoPDFobject=\count316
+\everyMPtoPDFconversion=\toks40
+) (/home/giulia/.miktex/texmfs/install/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
-Package grfext Info: Graphics extension search list:
-(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 504.
-
 (/home/giulia/.miktex/texmfs/install/tex/latex/00miktex/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-<./figs/logo_unibo.png, id=4, 766.865pt x 401.5pt>
+Package hyperref Info: Link coloring ON on input line 42.
+
+(report_group_25.out) (report_group_25.out)
+\@outlinefile=\write4
+\openout4 = `report_group_25.out'.
+
+<./figs/logo_unibo.png, id=53, 766.865pt x 401.5pt>
 File: ./figs/logo_unibo.png Graphic file (type png)
 <use ./figs/logo_unibo.png>
-Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 46.
+Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 53.
 (pdftex.def)             Requested size: 207.05632pt x 108.40643pt.
-
-[1
+ [1
 
 {/home/giulia/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map} <./figs/logo_uni
 bo.png (PNG copy)>] [2] [3
 
-] (report_group_25.toc
+]
+(report_group_25.toc
 LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
 
 (/home/giulia/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
@@ -604,8 +725,8 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 (/home/giulia/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
-\tf@toc=\write4
-\openout4 = `report_group_25.toc'.
+\tf@toc=\write5
+\openout5 = `report_group_25.toc'.
 
  [4
 
@@ -613,15 +734,15 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ]
 Chapter 1.
-<./figs/mnist.png, id=26, 225.84375pt x 225.84375pt>
+<./figs/mnist.png, id=96, 225.84375pt x 225.84375pt>
 File: ./figs/mnist.png Graphic file (type png)
 <use ./figs/mnist.png>
-Package pdftex.def Info: ./figs/mnist.png  used on input line 105.
+Package pdftex.def Info: ./figs/mnist.png  used on input line 112.
 (pdftex.def)             Requested size: 112.92159pt x 112.92159pt.
 [6
 
  <./figs/mnist.png>]
-Overfull \hbox (15.34207pt too wide) in paragraph at lines 125--126
+Overfull \hbox (15.34207pt too wide) in paragraph at lines 132--133
 \OT1/cmr/m/n/10.95 order to efficiently train our neural network we have equali
 zed the representation
  []
@@ -630,37 +751,54 @@ zed the representation
 Chapter 2.
 [9
 
-] [10]
-No file report_group_25.bbl.
-[11
+]
+Overfull \hbox (12.74657pt too wide) in paragraph at lines 271--272
+\OT1/cmr/m/n/10.95 with the other ones (the neighbors' ones). For what regards 
+the communication,
+ []
 
-] (report_group_25.aux) ) 
+[10]
+Overfull \hbox (13.365pt too wide) in paragraph at lines 277--278
+\OT1/cmr/m/n/10.95 The control laws typically consists of two components: attra
+ction and repulsion.
+ []
+
+[11] [12]
+No file report_group_25.bbl.
+[13
+
+] (report_group_25.aux)
+Package rerunfilecheck Info: File `report_group_25.out' has not changed.
+(rerunfilecheck)             Checksum: 71756EC93ACABBE9273C485FB5F2A3E0;1897.
+ ) 
 Here is how much of TeX's memory you used:
- 15632 strings out of 478346
- 313534 string characters out of 5840784
- 1865851 words of memory out of 5000000
- 35439 multiletter control sequences out of 15000+600000
- 520860 words of font info for 64 fonts, out of 8000000 for 9000
+ 22135 strings out of 478346
+ 413031 string characters out of 5840784
+ 1866851 words of memory out of 5000000
+ 41827 multiletter control sequences out of 15000+600000
+ 521201 words of font info for 65 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
- 84i,9n,89p,647b,955s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</home/giulia/.miktex/texmfs/install/fonts/type1/publi
-c/amsfonts/cm/cmbx10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/publi
-c/amsfonts/cm/cmbx12.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/publi
-c/amsfonts/cm/cmex10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/publi
-c/amsfonts/cm/cmmi10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/publi
-c/amsfonts/cm/cmmi6.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public
-/amsfonts/cm/cmmi8.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/a
-msfonts/cm/cmr12.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/am
-sfonts/cm/cmr17.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/ams
-fonts/cm/cmr8.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfo
-nts/cm/cmsy10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfo
-nts/cm/cmsy8.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfon
-ts/cm/cmti10.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfon
-ts/cm/cmtt10.pfb>
-Output written on report_group_25.pdf (11 pages, 274045 bytes).
+ 84i,9n,89p,647b,963s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </home/giulia/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm109
+5.pk></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx10
+.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12
+.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmex10
+.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10
+.pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi6.
+pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi8.p
+fb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb
+></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+</home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr8.pfb></
+home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy8.pfb></h
+ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb></h
+ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt10.pfb></h
+ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pf
+b>
+Output written on report_group_25.pdf (13 pages, 300266 bytes).
 PDF statistics:
- 114 PDF objects out of 1000 (max. 8388607)
- 0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 234 PDF objects out of 1000 (max. 8388607)
+ 39 named destinations out of 1000 (max. 500000)
+ 119 words of extra memory for PDF output out of 10000 (max. 10000000)
 
