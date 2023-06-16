@@ -1,0 +1,26 @@
+------------------TEST SCORES-----------------
+
+AGENT:  0
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656
+
+AGENT:  1
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656
+
+AGENT:  2
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656
+
+AGENT:  3
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656
+
+AGENT:  4
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656

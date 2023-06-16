@@ -62,12 +62,15 @@ print(f'Total negative samples {np.sum(labels_train == 0)}')
 T_LAYERS = 2        # Number of layers
 D_NEURONS = image_size      # Number of neurons for each layer
 ActivationFunct = "Sigmoid" # {"Sigmoid", "ReLu", "HyTan"}
-CostFunct = "Quadratic"     # {"Quadratic", "BinaryCrossEntropy"}
+CostFunct = "BinaryCrossEntropy"     # {"Quadratic", "BinaryCrossEntropy"}
 
 #####################################################################################
 #  Generate Network Graph
-GRAPH_TYPE = "Cycle"    # {"Cycle", "Path", "Star"}
+GRAPH_TYPE = "Star"    # {"Cycle", "Path", "Star"}
 
+plot_folder_name = 'Test_5'
+
+fig_graph = plt.figure('Graph')
 if GRAPH_TYPE == "Cycle":
 	G = nx.path_graph(N_AGENTS)
 	G.add_edge(N_AGENTS-1,0)
@@ -81,7 +84,10 @@ if GRAPH_TYPE == "Star":
 	G = nx.star_graph(N_AGENTS-1)
 	nx.draw(G, with_labels=True)
 
-# plt.show()s
+# Salvataggio del grafico come file immagine
+plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', plot_folder_name, 'Graph.png')
+plt.savefig(plot_path)
+
 
 ID_AGENTS = np.identity(N_AGENTS, dtype=int)
 
@@ -263,7 +269,7 @@ def accuracy(xT,Y):
 ###############################################################################
 
 # Training parameters
-EPOCHS = 1000
+EPOCHS = 500
 STEP_SIZE = 1e-2
 BATCH_SIZE = 8 # Dimension of the minibatch set
 N_BATCH = int(np.ceil(SAMPLES_PER_AGENT/BATCH_SIZE))
@@ -459,7 +465,7 @@ if save_weights:
 # # PLOT
 # ###############################################################################
 
-plot_folder_name = 'Test_3'
+plot_folder_name = plot_folder_name
 
 plt.figure('Cost function')
 plt.plot(range(EPOCHS), np.mean(J, axis=1), label='Total Normalized Cost Evolution', linewidth=2)
