@@ -72,9 +72,24 @@ TO DO:
     CostFunct = "BinaryCrossEntropy"
 
     EPOCHS      = 2*1000 or (10 senza impuvement)
-    STEP_SIZE   = 2*1e-1
+    STEP_SIZE   = 2*1e-
     BATCH_SIZE  = 32
 
+
+- Test {5} con: "Star"
+    TARGET              = 7
+    SIZE                = (28X28)
+    AGENT               = 5
+    SAMPLES_PER_AGENT   = 256
+    CostFunct = "BinaryCrossEntropy"
+    GRAPH_TYPE = "Star" 
+
+    EPOCHS      = 400
+    STEP_SIZE   = 1e-2 #Costant
+    BATCH_SIZE  = 32
+
+
+  
 
 # ROS
 - Fare il plot_csv opne
@@ -84,3 +99,5 @@ TO DO:
 
 
 - Aggiungere le legende mancanti ai plot
+Plot:
+con grid e righe spesse
