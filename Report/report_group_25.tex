@@ -249,6 +249,7 @@ This kind of potential function represents the energy associated with the relati
 As a consequence, the control law we have implemented for each agent $i$ is the following:
 \begin{equation}
 \dot{x}_i(t) = f_i(x(t)) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j )
+\label{Dynamics_no_collision_avoidance}
 \end{equation}
 
 Since we were required to work in discrete time, we denote with $p_i^k \in \mathbb{R}^3$ the discretized version of $x_i(t)$ at time $k$ and, once we have computed the dynamics update for agent $i$ we discretize with Euler formula in the following way:
@@ -276,7 +277,7 @@ We have developed also a plotter agent (\texttt{the\_plotter.py}) that can read 
 For what regards the simulation of the team behaviour we have used RViz.
 
 \subsection{Results}
-In the following we can see some results obtained during package simulations. 
+In the following we can see some results obtained during the simulation of the \texttt{formation\_control} package. 
 We have tested several formation-shapes that involve different number of agents.
 
 
@@ -312,19 +313,20 @@ We have tested several formation-shapes that involve different number of agents.
 
 \begin{figure}
 \centering
-	\begin{subfigure}{0.49\textwidth}	
+	\begin{subfigure}{0.48\textwidth}	
 	\includegraphics[scale=0.43]{Pentagon_path}
 	\caption{Paths for pentagon formation}
 	\end{subfigure}
 \hfill
-	\begin{subfigure}{0.49\textwidth}	
+	\begin{subfigure}{0.48\textwidth}	
 	\includegraphics[scale=0.43]{Hexagon_path}
 	\caption{Paths for hexagon formation}
 	\end{subfigure}
+\caption{Paths followed by agents to reach formation}
 \label{Paths}
 \end{figure}
 
-First of all we have tried 2D-formations like a pentagon and an hexagon, represented respectively in figure \ref{Pentagon} and \ref{Hexagon}. We have initialized the agent's positions randomly and close to zero for the $x$ and the $y$ dimensions, while $z$ direction has been initialized equal to zero in such a way to remain always equal to zero during the whole evolution.
+First of all we have tried 2D-formations like a pentagon and an hexagon, the results are represented respectively in figure \ref{Pentagon} and \ref{Hexagon}. We have initialized the agent's positions randomly and close to zero for the $x$ and the $y$ dimensions, while $z$ direction has been initialized equal to zero in such a way to remain always equal to zero during the whole evolution.
 We show both the final RViz visualization and the potential evolution during the iterations: for the single agents and for the whole formation. The potential diminishes along the iterations while the agents reach the desired configuration. 
 For these formations we have also represented in figure \ref{Paths} the paths the single agents follow during the time evolution in order to accomplish the formation.
 
@@ -343,11 +345,11 @@ For these formations we have also represented in figure \ref{Paths} the paths th
 \label{Piramid}
 \end{figure}
 
-After that we have tried a 3D-formation, a square-based piramid. In order to do that we have initialized all the $x$, $y$ and $z$ dimensions close to zero. In figure \ref{Piramid} we can see the results obtained with simulations. The plane the "base-agents" chose changes from one simulation to the others since we don't have any constraint in this sense.
+After that, we have tried a 3D-formation, a square-based piramid. In order to do that we have initialized all the $x$, $y$ and $z$ dimensions close to zero. In figure \ref{Piramid} we can see the results obtained with simulations. The plane the "base-agents" chose, changes from one simulation to the others since we don't have any constraint in this sense.
 
 
 \section{Collision avoidance}
-The control laws typically consists of two components: attraction and repulsion. The attraction component pulls the agents towards their desired positions relative to their neighbors, while the repulsion component prevents collision by creating a repulsive force when the agents get too close to each other.
+In formation control, he control laws typically consists of two components: attraction and repulsion. The attraction component pulls the agents towards their desired positions relative to their neighbors, while the repulsion component prevents collision by creating a repulsive force when the agents get too close to each other.
 
 \begin{figure}[h]
 \centering
@@ -374,17 +376,100 @@ As a result, the control law has a new term due to this potential that is the fo
 And the total control law becomes:
 \begin{equation}
 \dot{x}_i(t) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) + 2 \frac{(x_i-x_j)}{\bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)}
+\label{Dynamics_with_collision_avoidance}
 \end{equation}
 
+\subsection{Results}
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Hexagon_path}
+	\caption{Path followed by agents without collision avoidance term}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Hexagon_path_collision}
+	\caption{Path followed by agents with collision avoidance term}
+	\end{subfigure}
+\caption{Comparison among paths with and without collision avoidance term}
+\label{Paths_comparison}
+\end{figure}
 
+In figure \ref{Paths_comparison} we can see the different shape of the paths followed by the agents in order to reach the same hexagon formation. The plot on the left shows the paths due to the dynamic evolution expressed in formula \ref{Dynamics_no_collision_avoidance} (the one without the collision avoidance term), while the plot on the right shows the behaviour due to the introduction of collision avoidance term (formula \ref{Dynamics_with_collision_avoidance}).
+
+\begin{figure}
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Formation_potential_hexagon_collision}
+	\caption{Formation potential (attraction) term}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Barrier_potential_hexagon_collision}
+	\caption{Barrier potential (repulsion), collision avoidance term}
+	\end{subfigure}
+\caption{Potential contribution in hexagon formation with collision avoidance}
+\label{Potentials_with_collision}
+\end{figure}
+
+In figure \ref{Potentials_with_collision} we can see the evolution of the two contributions of the overall potential function. The formation potential, the attractive one that pulls the agents toward the desired formation, diminishes but we can see a "flat area" when the agents goes too close so some neighbors. Accordingly, the barrier potential that repels the agents from other agents, has a peak.
 
 \section{Moving formation and leaders control}
-At this point robots are partitioned in two groups, namely leaders and followes. The objective of this task is to control the translation and/or the rotation of the formation (by giving proper inputs to the leaders) while maintaining the chosen pattern.
+At this point robots are partitioned in two groups, namely leaders and followers. The objective of this task is to control the translation and/or the rotation of the formation (by giving proper inputs to the leaders) while maintaining the chosen pattern.
 Distance constrains  are invariant to both translation and rotation of the formation, so the distance-based approach can be applied to realize translational and rotational formation maneuvers. 
 
+In task 2.3 we are asked to apply a certain input to the leaders in order to move the whole formation in a predefined way. 
+We have modified the \texttt{formation\_control.launch.py} in order to pass to the \texttt{the\_agent.py} file the information about their identity (leader or follower) and about the motion the leaders have to accomplish.
+
+\begin{figure}[h]
+\centering
+	\includegraphics[scale=0.4]{Formation_check}
+	\caption{Check on the formation accomplishment}
+	\label{Check}
+\end{figure}
+
+We use the \texttt{the\_plotter} agent as a "supervisor" that tells all the agents when the target formation has been reached. Once all the agents are in formation the leader start moving. As a checking condition the supervisor notifies when the potentials of all the agents are less then a certain small threshold for 5 consecutive iterations, this threshold value depends on the formation shape we chose. In figure \ref{Check} the red line represents this notification criterion.
+
+From this moment on, the dynamics evolution changes: the followers continue with the same motion, trying to maintain the formation, while the leader's dynamic has two contributions, the formation one and the motion we have decided them to follow.
+
+\begin{figure}[h]
+\centering
+	\includegraphics[scale=0.5]{Moving_hexagon_formation_linear}
+	\caption{Motion of the formation along the $x$-axis}
+	\label{Formation_motion_lin}
+\end{figure}
+
+Figure \ref{Formation_motion_lin} represents the motion of the formation along the $x$-axis due to a constant input assigned to leaders' dynamic. The leaders are represented as the blue stars.
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Moving_hexagon_formation_circle_r_2}
+	\caption{Moving along a circle of radius $2$}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Moving_hexagon_formation_circle_r_5}
+	\caption{Moving along a circle of radius $5$}
+	\end{subfigure}
+\caption{Motion of the formation along a circular path}
+\label{Formation_motion_circle}
+\end{figure}
+
+\bigskip
+We have also tried to give the leaders a proper input in order to accomplish a circular motion during the number of iterations given. In figure \ref{Formation_motion_circle} we can see the motion of the hexagon formation: in the left plot we have given as input a radius equal to $2$ while in the right one the radius is equal to $5$.
+
+
+
 \section{Obstacle avoidance}
+Task 2.4 asked to us to introduce obstacle avoidance in our \texttt{formation\_control} package. Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through en environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles.
+
+In order to accomplish this task we have created a certain number of fixed obstacles as ROS2 nodes. The obstacles gets their position from the launch file and communicate it to the follower agents. 
+In \texttt{the\_agent.py} we have still left two dynamics: the leaders move accordind to the assigned input while the followers move according to the formation and trying to avoid obstacles.
 
 
+
+FARE TEST DANDO UNA TARGET POSITION
 
 
 %%%%%%%%%% Conclusions %%%%%%%%%%

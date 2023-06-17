@@ -12,7 +12,7 @@ pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
 euler_step = 0.005 # Integration step
-L = 2
+L = 3
 
 # Moving leaders
 agent_types = np.zeros((N)) # Followers -> 0
@@ -28,7 +28,7 @@ for i in range(N):
 # input[0] = 5
 # input[1] = 0
 # input[2] = 0
-move = 3   # Raggio del cercio
+move = 2   # Raggio del cerchio
 
 if N == 4: # Square
     D = np.sqrt(2)*L
@@ -75,48 +75,6 @@ def generate_launch_description():
             # prefix='xterm -title "rviz2" -hold -e'
         )
     )
-
-
-    # for i_foll in range(n_follower):
-    #     launch_description.append(
-    #         Node(
-    #             package='formation_control',
-    #             namespace =f'agent_{i_foll}',
-    #             executable='the_agent',
-    #             parameters=[{ # dictionary
-    #                             'agent_id': i_foll, 
-    #                             'pos_init': pos_init[i_foll].tolist(),
-    #                             'distances': distances[i_foll], 
-    #                             'max_iters': MAXITERS,
-    #                             'comm_time': comm_time,
-    #                             'euler_step': euler_step,
-    #                             'type' : 0, # Follower
-    #                             'input' : input#.tolist(),
-    #                             }],
-    #             output='screen',
-    #             prefix=f'xterm -title "agent_{i_foll}" -hold -e',
-    #         ))
-        
-    # for i in range(n_leader):
-    #     i_lead = n_follower+i
-    #     launch_description.append(
-    #         Node(
-    #             package='formation_control',
-    #             namespace =f'agent_{i_lead}',
-    #             executable='the_agent',
-    #             parameters=[{ # dictionary
-    #                             'agent_id': i_lead, 
-    #                             'pos_init': pos_init[i_lead].tolist(),
-    #                             'distances': distances[i_lead], 
-    #                             'max_iters': MAXITERS,
-    #                             'comm_time': comm_time,
-    #                             'euler_step': euler_step,
-    #                             'type' : 1, # Leader
-    #                             'input' : input#.tolist(),
-    #                             }],
-    #             output='screen',
-    #             prefix=f'xterm -title "agent_{i_lead}" -hold -e',
-    #         ))
     
     for i in range(N):
         # Agents

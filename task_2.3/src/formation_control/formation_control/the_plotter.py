@@ -78,7 +78,7 @@ class Plot(Node):
                 if self.kk > 5:
                     # Check if derivative is equal to zero
                     for agent in range(self.n_agents):
-                        if np.abs(self.formation_potential[self.kk-5, agent]-self.formation_potential[self.kk, agent]) < 0.5e-1:
+                        if np.abs(self.formation_potential[self.kk-5, agent]-self.formation_potential[self.kk, agent]) < 3e-1:
                             self.formation[self.kk, agent] = 1
                     # If all agents have the derivative equal to zero
                     if np.all(self.formation[self.kk]):

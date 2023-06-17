@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  17 JUN 2023 13:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  17 JUN 2023 19:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -728,7 +728,7 @@ Package hyperref Info: Link coloring ON on input line 42.
 \@outlinefile=\write4
 \openout4 = `report_group_25.out'.
 
-<./figs/logo_unibo.png, id=54, 766.865pt x 401.5pt>
+<./figs/logo_unibo.png, id=58, 766.865pt x 401.5pt>
 File: ./figs/logo_unibo.png Graphic file (type png)
 <use ./figs/logo_unibo.png>
 Package pdftex.def Info: ./figs/logo_unibo.png  used on input line 53.
@@ -759,7 +759,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ]
 Chapter 1.
-<./figs/mnist.png, id=97, 225.84375pt x 225.84375pt>
+<./figs/mnist.png, id=102, 225.84375pt x 225.84375pt>
 File: ./figs/mnist.png Graphic file (type png)
 <use ./figs/mnist.png>
 Package pdftex.def Info: ./figs/mnist.png  used on input line 112.
@@ -777,84 +777,77 @@ Chapter 2.
 [9
 
 ]
-Overfull \hbox (12.74657pt too wide) in paragraph at lines 271--272
+Overfull \hbox (12.74657pt too wide) in paragraph at lines 272--273
 \OT1/cmr/m/n/10.95 with the other ones (the neighbors' ones). For what regards 
 the communication,
  []
 
 [10]
-<./figs/pentagon_rviz.png, id=140, 689.57625pt x 525.965pt>
+<./figs/pentagon_rviz.png, id=145, 689.57625pt x 525.965pt>
 File: ./figs/pentagon_rviz.png Graphic file (type png)
 <use ./figs/pentagon_rviz.png>
-Package pdftex.def Info: ./figs/pentagon_rviz.png  used on input line 286.
+Package pdftex.def Info: ./figs/pentagon_rviz.png  used on input line 287.
 (pdftex.def)             Requested size: 165.50168pt x 126.23418pt.
-<./figs/Formation_potential_pentagon.png, id=141, 462.528pt x 346.896pt>
+<./figs/Formation_potential_pentagon.png, id=146, 462.528pt x 346.896pt>
 File: ./figs/Formation_potential_pentagon.png Graphic file (type png)
 <use ./figs/Formation_potential_pentagon.png>
 Package pdftex.def Info: ./figs/Formation_potential_pentagon.png  used on input
- line 291.
+ line 292.
 (pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
 
-Overfull \hbox (17.85844pt too wide) in paragraph at lines 291--292
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 292--293
 [][] 
  []
 
-<./figs/hexagon_rviz.png, id=143, 689.57625pt x 524.96124pt>
+<./figs/hexagon_rviz.png, id=148, 689.57625pt x 524.96124pt>
 File: ./figs/hexagon_rviz.png Graphic file (type png)
 <use ./figs/hexagon_rviz.png>
-Package pdftex.def Info: ./figs/hexagon_rviz.png  used on input line 301.
+Package pdftex.def Info: ./figs/hexagon_rviz.png  used on input line 302.
 (pdftex.def)             Requested size: 165.50168pt x 125.99327pt.
-<./figs/Formation_potential_hexagon.png, id=144, 462.528pt x 346.896pt>
+<./figs/Formation_potential_hexagon.png, id=149, 462.528pt x 346.896pt>
 File: ./figs/Formation_potential_hexagon.png Graphic file (type png)
 <use ./figs/Formation_potential_hexagon.png>
 Package pdftex.def Info: ./figs/Formation_potential_hexagon.png  used on input 
-line 306.
+line 307.
 (pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
 
-Overfull \hbox (17.85844pt too wide) in paragraph at lines 306--307
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 307--308
 [][] 
  []
 
-<./figs/Pentagon_path.png, id=145, 462.528pt x 346.896pt>
+<./figs/Pentagon_path.png, id=150, 462.528pt x 346.896pt>
 File: ./figs/Pentagon_path.png Graphic file (type png)
 <use ./figs/Pentagon_path.png>
-Package pdftex.def Info: ./figs/Pentagon_path.png  used on input line 316.
+Package pdftex.def Info: ./figs/Pentagon_path.png  used on input line 317.
 (pdftex.def)             Requested size: 198.88315pt x 149.16237pt.
 
-Overfull \hbox (22.48117pt too wide) in paragraph at lines 316--317
+Overfull \hbox (26.08469pt too wide) in paragraph at lines 317--318
 [][] 
  []
 
-<./figs/Hexagon_path.png, id=146, 462.528pt x 346.896pt>
+<./figs/Hexagon_path.png, id=151, 462.528pt x 346.896pt>
 File: ./figs/Hexagon_path.png Graphic file (type png)
 <use ./figs/Hexagon_path.png>
-Package pdftex.def Info: ./figs/Hexagon_path.png  used on input line 321.
+Package pdftex.def Info: ./figs/Hexagon_path.png  used on input line 322.
 (pdftex.def)             Requested size: 198.88315pt x 149.16237pt.
 
-Overfull \hbox (22.48117pt too wide) in paragraph at lines 321--322
+Overfull \hbox (26.08469pt too wide) in paragraph at lines 322--323
 [][] 
  []
 
-
-Package caption Warning: \label without proper reference on input line 324.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `Paths' on page 11 undefined on input line 329.
-
-<./figs/piramid_rviz.png, id=150, 693.59125pt x 529.98pt>
+<./figs/piramid_rviz.png, id=155, 693.59125pt x 529.98pt>
 File: ./figs/piramid_rviz.png Graphic file (type png)
 <use ./figs/piramid_rviz.png>
-Package pdftex.def Info: ./figs/piramid_rviz.png  used on input line 334.
+Package pdftex.def Info: ./figs/piramid_rviz.png  used on input line 336.
 (pdftex.def)             Requested size: 166.4653pt x 127.19778pt.
-<./figs/Formation_potential_piramid.png, id=151, 462.528pt x 346.896pt>
+<./figs/Formation_potential_piramid.png, id=156, 462.528pt x 346.896pt>
 File: ./figs/Formation_potential_piramid.png Graphic file (type png)
 <use ./figs/Formation_potential_piramid.png>
 Package pdftex.def Info: ./figs/Formation_potential_piramid.png  used on input 
-line 339.
+line 341.
 (pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
 
-Overfull \hbox (17.85844pt too wide) in paragraph at lines 339--340
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 341--342
 [][] 
  []
 
@@ -862,31 +855,149 @@ Overfull \hbox (17.85844pt too wide) in paragraph at lines 339--340
 [12 <./figs/hexagon_rviz.png> <./figs/Formation_potential_hexagon.png> <./figs/
 Pentagon_path.png> <./figs/Hexagon_path.png> <./figs/piramid_rviz.png> <./figs/
 Formation_potential_piramid.png>]
-Overfull \hbox (13.365pt too wide) in paragraph at lines 350--351
-\OT1/cmr/m/n/10.95 The control laws typically consists of two components: attra
-ction and repulsion.
+Overfull \hbox (15.15964pt too wide) in paragraph at lines 352--353
+\OT1/cmr/m/n/10.95 their desired positions relative to their neighbors, while t
+he repulsion component
  []
 
-<./figs/Collision.png, id=170, 1026.83624pt x 751.80875pt>
+<./figs/Collision.png, id=175, 1026.83624pt x 751.80875pt>
 File: ./figs/Collision.png Graphic file (type png)
 <use ./figs/Collision.png>
-Package pdftex.def Info: ./figs/Collision.png  used on input line 354.
+Package pdftex.def Info: ./figs/Collision.png  used on input line 356.
 (pdftex.def)             Requested size: 256.70844pt x 187.95172pt.
-[13 <./figs/Collision.png>] [14] [15
+[13 <./figs/Collision.png>]
+File: ./figs/Hexagon_path.png Graphic file (type png)
+<use ./figs/Hexagon_path.png>
+Package pdftex.def Info: ./figs/Hexagon_path.png  used on input line 386.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 386--387
+[][] 
+ []
+
+
+Underfull \hbox (badness 1127) in paragraph at lines 387--387
+[]\OT1/cmr/m/n/10 (a) |Path followed by agents without
+ []
+
+<./figs/Hexagon_path_collision.png, id=185, 462.528pt x 346.896pt>
+File: ./figs/Hexagon_path_collision.png Graphic file (type png)
+<use ./figs/Hexagon_path_collision.png>
+Package pdftex.def Info: ./figs/Hexagon_path_collision.png  used on input line 
+391.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 391--392
+[][] 
+ []
+
+<./figs/Formation_potential_hexagon_collision.png, id=189, 462.528pt x 346.896p
+t>
+File: ./figs/Formation_potential_hexagon_collision.png Graphic file (type png)
+<use ./figs/Formation_potential_hexagon_collision.png>
+Package pdftex.def Info: ./figs/Formation_potential_hexagon_collision.png  used
+ on input line 403.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 403--404
+[][] 
+ []
+
+
+Underfull \hbox (badness 4995) in paragraph at lines 404--404
+[]\OT1/cmr/m/n/10 (a) |Formation potential (attraction)
+ []
+
+<./figs/Barrier_potential_hexagon_collision.png, id=190, 462.528pt x 346.896pt>
+
+File: ./figs/Barrier_potential_hexagon_collision.png Graphic file (type png)
+<use ./figs/Barrier_potential_hexagon_collision.png>
+Package pdftex.def Info: ./figs/Barrier_potential_hexagon_collision.png  used o
+n input line 408.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 408--409
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 409--409
+[]\OT1/cmr/m/n/10 (b) |Barrier potential (repulsion),
+ []
+
+[14 <./figs/Hexagon_path_collision.png>]
+<./figs/Formation_check.png, id=201, 462.528pt x 346.896pt>
+File: ./figs/Formation_check.png Graphic file (type png)
+<use ./figs/Formation_check.png>
+Package pdftex.def Info: ./figs/Formation_check.png  used on input line 426.
+(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
+
+Overfull \hbox (3.83443pt too wide) in paragraph at lines 431--432
+\OT1/cmr/m/n/10.95 formation shape we chose. In figure [][]2.8[][] the red line
+ represents this notification
+ []
+
+[15 <./figs/Formation_potential_hexagon_collision.png> <./figs/Barrier_potentia
+l_hexagon_collision.png> <./figs/Formation_check.png>]
+<./figs/Moving_hexagon_formation_linear.png, id=211, 462.528pt x 346.896pt>
+File: ./figs/Moving_hexagon_formation_linear.png Graphic file (type png)
+<use ./figs/Moving_hexagon_formation_linear.png>
+Package pdftex.def Info: ./figs/Moving_hexagon_formation_linear.png  used on in
+put line 437.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+<./figs/Moving_hexagon_formation_circle_r_2.png, id=213, 462.528pt x 346.896pt>
+
+File: ./figs/Moving_hexagon_formation_circle_r_2.png Graphic file (type png)
+<use ./figs/Moving_hexagon_formation_circle_r_2.png>
+Package pdftex.def Info: ./figs/Moving_hexagon_formation_circle_r_2.png  used o
+n input line 447.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 447--448
+[][] 
+ []
+
+<./figs/Moving_hexagon_formation_circle_r_5.png, id=214, 462.528pt x 346.896pt>
+
+File: ./figs/Moving_hexagon_formation_circle_r_5.png Graphic file (type png)
+<use ./figs/Moving_hexagon_formation_circle_r_5.png>
+Package pdftex.def Info: ./figs/Moving_hexagon_formation_circle_r_5.png  used o
+n input line 452.
+(pdftex.def)             Requested size: 194.26042pt x 145.69531pt.
+
+Overfull \hbox (17.85844pt too wide) in paragraph at lines 452--453
+[][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (4.1154pt too wide) in paragraph at lines 460--461
+[]\OT1/cmr/m/n/10.95 We have also tried to give the leaders a proper input in o
+rder to accomplish
+ []
+
+
+Overfull \hbox (10.47668pt too wide) in paragraph at lines 465--466
+\OT1/cmr/m/n/10.95 Task 2.4 asked to us to introduce obstacle avoidance in our 
+\OT1/cmtt/m/n/10.95 formation[]control
+ []
+
+[16 <./figs/Moving_hexagon_formation_linear.png>] [17 <./figs/Moving_hexagon_fo
+rmation_circle_r_2.png> <./figs/Moving_hexagon_formation_circle_r_5.png>]
+[18
 
 ] (report_group_25.aux)
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `report_group_25.out' has not changed.
-(rerunfilecheck)             Checksum: 9B892F1E32DED0D4EBDF7308E77D266D;1890.
+(rerunfilecheck)             Checksum: D642AE0B78B0747886F8F16B349BF792;1987.
  ) 
 Here is how much of TeX's memory you used:
- 23570 strings out of 478346
- 442823 string characters out of 5840784
+ 23681 strings out of 478346
+ 446967 string characters out of 5840784
  1867851 words of memory out of 5000000
- 43250 multiletter control sequences out of 15000+600000
- 521508 words of font info for 66 fonts, out of 8000000 for 9000
+ 43350 multiletter control sequences out of 15000+600000
+ 523207 words of font info for 74 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  84i,9n,89p,647b,982s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/giulia/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm109
@@ -906,9 +1017,9 @@ ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb></h
 ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt10.pfb></h
 ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pf
 b>
-Output written on report_group_25.pdf (15 pages, 679658 bytes).
+Output written on report_group_25.pdf (18 pages, 916206 bytes).
 PDF statistics:
- 269 PDF objects out of 1000 (max. 8388607)
- 47 named destinations out of 1000 (max. 500000)
- 164 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 314 PDF objects out of 1000 (max. 8388607)
+ 56 named destinations out of 1000 (max. 500000)
+ 207 words of extra memory for PDF output out of 10000 (max. 10000000)
 

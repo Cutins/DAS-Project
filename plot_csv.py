@@ -8,16 +8,16 @@ import signal
 import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-N_obstacle = 0
+N_obstacle = 8
 
-_, _, files = next(os.walk("./task_2.2/_csv_file"))
+_, _, files = next(os.walk("./task_2.4/_csv_file"))
 NN = len(files)
 
 xx_csv = {}
 Tlist = []
 
 for ii in range(NN):
-    xx_csv[ii] = np.genfromtxt("task_2.2/_csv_file/agent_{}.csv".format(ii), delimiter=',').T
+    xx_csv[ii] = np.genfromtxt("task_2.4/_csv_file/agent_{}.csv".format(ii), delimiter=',').T
     Tlist.append(xx_csv[ii].shape[1])
 
 n_x = xx_csv[ii].shape[0]
@@ -49,10 +49,10 @@ if 1 and n_x == 2: # animation
         for ii in range((NN-N_obstacle)):
             index_ii =  ii*n_x + np.arange(n_x)
             xx_ii = xx_tt[index_ii]
-            # if ii%2 == 1: # Leaders are blue stars
-            #     plt.plot(xx_ii[0],xx_ii[1], marker='*', markersize=12, fillstyle='full', color = 'tab:blue')
-            # else: # Followers are red circles
-            plt.plot(xx_ii[0],xx_ii[1], marker='o', markersize=10, fillstyle='full', color = 'tab:red')
+            if ii%2 == 1: # Leaders are blue stars
+                plt.plot(xx_ii[0],xx_ii[1], marker='*', markersize=12, fillstyle='full', color = 'tab:blue')
+            else: # Followers are red circles
+                plt.plot(xx_ii[0],xx_ii[1], marker='o', markersize=10, fillstyle='full', color = 'tab:red')
 
         if N_obstacle:
             for ii in range(N_obstacle):
