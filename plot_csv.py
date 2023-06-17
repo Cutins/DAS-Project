@@ -49,21 +49,27 @@ if 1 and n_x == 2: # animation
         for ii in range((NN-N_obstacle)):
             index_ii =  ii*n_x + np.arange(n_x)
             xx_ii = xx_tt[index_ii]
-            plt.plot(xx_ii[0],xx_ii[1], marker='o', markersize=15, fillstyle='none', color = 'tab:red')
+            # if ii%2 == 1: # Leaders are blue stars
+            #     plt.plot(xx_ii[0],xx_ii[1], marker='*', markersize=12, fillstyle='full', color = 'tab:blue')
+            # else: # Followers are red circles
+            plt.plot(xx_ii[0],xx_ii[1], marker='o', markersize=10, fillstyle='full', color = 'tab:red')
 
         if N_obstacle:
             for ii in range(N_obstacle):
                 ii = (NN-N_obstacle) + ii
                 index_ii =  ii*n_x + np.arange(n_x)
                 xx_ii = xx_tt[index_ii]
-                plt.plot(xx_ii[0],xx_ii[1], marker='s', markersize=10, fillstyle='none', color = 'tab:green')
+                plt.plot(xx_ii[0],xx_ii[1], marker='s', markersize=8, fillstyle='full', color = 'tab:green')
 
 
         axes_lim = (np.min(xx)-1,np.max(xx)+1)
         plt.xlim(axes_lim); plt.ylim(axes_lim)
         # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T) #Dovresti printare fino a NN-(numero di obstacle)
-        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T) #Dovresti printare fino a NN-(numero di obstacle)
 
+        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T, color= 'tab:gray') #Dovresti printare fino a NN-(numero di obstacle)
+        plt.xlabel('X-axis')
+        plt.ylabel('Y-axis')
+        plt.grid()
         plt.axis('equal')
         
         plt.show(block=False)

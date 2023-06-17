@@ -81,8 +81,8 @@ class Visualizer(Node):
 
             # Specify the color of the marker as RGBA
             color = [1.0, 0.0, 0.0, 1.0] #Red
-            if self.agent_id % 2:
-                color = [0.0, 0.5, 0.5, 1.0] #Blue
+            # if self.agent_id % 2:
+            #     color = [0.0, 0.5, 0.5, 1.0] #Blue
 
             marker.color.r = color[0]
             marker.color.g = color[1]

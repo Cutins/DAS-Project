@@ -78,6 +78,8 @@ class Plot(Node):
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Formation Potential of agent {agent}') 
                     plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2)
+                    plt.xlabel('Iterations')
+                    plt.ylabel('Potential')
                     plt.legend()
                     plt.grid()
 
@@ -85,6 +87,8 @@ class Plot(Node):
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.barrier_potential[:,agent], ':', label=f'Barrier Potential of agent {agent}') 
                     plt.plot(range(self.max_iters), np.mean(self.barrier_potential, axis=-1), label=f'Total Barrier Potential', linewidth = 2) 
+                    plt.xlabel('Iterations')
+                    plt.ylabel('Potential')
                     plt.legend()
                     plt.grid()
 
@@ -92,6 +96,8 @@ class Plot(Node):
                     for agent in range(self.n_agents):
                         plt.plot(range(self.max_iters), self.total_potential[:,agent], ':', label=f'Potential of agent {agent}') 
                     plt.plot(range(self.max_iters), np.mean(self.total_potential, axis=-1), label=f'Total Potential', linewidth = 2) 
+                    plt.xlabel('Iterations')
+                    plt.ylabel('Potential')
                     plt.legend()
                     plt.grid()
 

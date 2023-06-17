@@ -6,8 +6,8 @@
 \contentsline {chapter}{\numberline {2}Formation Control}{9}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Distance-based formation}{9}{section.2.1}%
 \contentsline {section}{\numberline {2.2}ROS2 implementation}{10}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Collision avoidance}{11}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Moving formation and leaders control}{11}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Obstacle avoidance}{12}{section.2.5}%
-\contentsline {chapter}{Conclusions}{13}{chapter*.6}%
-\contentsline {chapter}{Bibliography}{13}{chapter*.6}%
+\contentsline {subsection}{\numberline {2.2.1}Results}{11}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Collision avoidance}{13}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Moving formation and leaders control}{14}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Obstacle avoidance}{14}{section.2.5}%
+\contentsline {chapter}{Conclusions}{15}{chapter*.13}%
