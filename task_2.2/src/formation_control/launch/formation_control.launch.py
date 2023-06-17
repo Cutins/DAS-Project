@@ -5,14 +5,16 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 500
-N = 6
+MAXITERS = 2000
+N = 5
 n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
-euler_step = 0.003 # Integration step
+euler_step = 0.0001 # Integration step
 L = 2
+
+_3d_formation = True
 
 if N == 4: # Square
     D = np.sqrt(2)*L
@@ -40,6 +42,19 @@ if N == 6: #Hexagon
                 [D, 0, L, 0, L, 0],
                 [H, D, 0, L, 0, L],
                 [L, 0, D, 0, L, 0]] 
+    
+if _3d_formation == True: # Square-based pyramid
+    N = 5
+    pos_init = (np.random.rand(N, 3) - 0.5) *0.1
+    L = 3
+    H = 4
+    D1 = np.sqrt(2)*L
+    D = np.sqrt(H**2+(L/2)**2)
+    distances = [[0, L, D1, L, D],
+                [L, 0, L, D1, D],
+                [D1, L, 0, L, D],
+                [L, D1, L, 0, D],
+                [D, D, D, D, 0]]
 
 def generate_launch_description():
     launch_description = [] # Append here your nodes

@@ -37,12 +37,14 @@ class Visualizer(Node):
         self.current_pose = Pose()
 
 
+
     def listener_callback(self, msg):
         # store (and rearrange) the received message
         self.current_pose.position.x = msg.data[2]
         # self.current_pose.position.x = 0.2*self.agent_id # fix x coordinate
         self.current_pose.position.y = msg.data[3]
         self.current_pose.position.z = msg.data[4]
+
             
     def publish_data(self):
         if self.current_pose.position is not None:
@@ -89,6 +91,7 @@ class Visualizer(Node):
 
             # Let's publish the marker
             self.publisher.publish(marker)
+
 
 def main():
     rclpy.init()
