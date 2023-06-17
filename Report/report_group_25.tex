@@ -7,9 +7,9 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb,amsmath,color}
-\usepackage{cite}
 \usepackage{graphicx}
 \graphicspath{{./figs/}}
+\usepackage{subcaption}
 \usepackage{float}
 \usepackage{tikz}
 \usepackage{listofitems} % for \readlist to create arrays
@@ -34,7 +34,7 @@
     colorlinks,
     citecolor=black,
     filecolor=black,
-    linkcolor=black,
+    linkcolor=blue,
     urlcolor=black
 }
 
@@ -273,10 +273,90 @@ This file manages the dynamic evolution of the agent and the communication with 
 \bigskip
 We have developed also a plotter agent (\texttt{the\_plotter.py}) that can read from its topic the actual positions of all the other agents in order to visualize the evolution of the trajectories of the whole formation.
 
+For what regards the simulation of the team behaviour we have used RViz.
+
+\subsection{Results}
+In the following we can see some results obtained during package simulations. 
+We have tested several formation-shapes that involve different number of agents.
+
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.24]{pentagon_rviz}
+	\caption{RViz visualization}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Formation_potential_pentagon}
+	\caption{Formation potential plot}
+	\end{subfigure}
+\caption{Pentagon formation with $5$ agents}
+\label{Pentagon}
+\end{figure}
+
+\begin{figure}
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.24]{hexagon_rviz}
+	\caption{RViz visualization}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Formation_potential_hexagon}
+	\caption{Formation potential plot}
+	\end{subfigure}
+\caption{Hexagon formation with $6$ agents}
+\label{Hexagon}
+\end{figure}
+
+\begin{figure}
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{Pentagon_path}
+	\caption{Paths for pentagon formation}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{Hexagon_path}
+	\caption{Paths for hexagon formation}
+	\end{subfigure}
+\label{Paths}
+\end{figure}
+
+First of all we have tried 2D-formations like a pentagon and an hexagon, represented respectively in figure \ref{Pentagon} and \ref{Hexagon}. We have initialized the agent's positions randomly and close to zero for the $x$ and the $y$ dimensions, while $z$ direction has been initialized equal to zero in such a way to remain always equal to zero during the whole evolution.
+We show both the final RViz visualization and the potential evolution during the iterations: for the single agents and for the whole formation. The potential diminishes along the iterations while the agents reach the desired configuration. 
+For these formations we have also represented in figure \ref{Paths} the paths the single agents follow during the time evolution in order to accomplish the formation.
+
+\begin{figure}
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.24]{piramid_rviz}
+	\caption{RViz visualization}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.42]{Formation_potential_piramid}
+	\caption{Formation potential plot}
+	\end{subfigure}
+\caption{Square-based piramid with $5$ agents}
+\label{Piramid}
+\end{figure}
+
+After that we have tried a 3D-formation, a square-based piramid. In order to do that we have initialized all the $x$, $y$ and $z$ dimensions close to zero. In figure \ref{Piramid} we can see the results obtained with simulations. The plane the "base-agents" chose changes from one simulation to the others since we don't have any constraint in this sense.
+
+
 \section{Collision avoidance}
 The control laws typically consists of two components: attraction and repulsion. The attraction component pulls the agents towards their desired positions relative to their neighbors, while the repulsion component prevents collision by creating a repulsive force when the agents get too close to each other.
 
-The control law that models the agent's dynamics had, up to now, just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure (METTERE FIGURA DI UNA COLLISION). 
+\begin{figure}[h]
+\centering
+	\includegraphics[scale=0.25]{Collision}
+	\caption{Collision among two agents during hexagon formation}
+	\label{Collision}
+\end{figure}
+
+The control law that models the agent's dynamics up to now, had just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure \ref{Collision}. 
 
 \bigskip
 For this reason the task 2.2 asked to introduce a second potential to avoid agent's collision. In order to do that the following proper barrier function has been used:
@@ -284,6 +364,7 @@ For this reason the task 2.2 asked to introduce a second potential to avoid agen
 V_{ij}(x) = - \log( \lVert x_i - x_j \rVert ^2)
 \label{Collision_barrier}
 \end{equation}
+
 
 As a result, the control law has a new term due to this potential that is the following one:
 \begin{equation}
@@ -298,7 +379,7 @@ And the total control law becomes:
 
 
 \section{Moving formation and leaders control}
-At this point robots are partitioned in two groups, namely leaders and followes.
+At this point robots are partitioned in two groups, namely leaders and followes. The objective of this task is to control the translation and/or the rotation of the formation (by giving proper inputs to the leaders) while maintaining the chosen pattern.
 Distance constrains  are invariant to both translation and rotation of the formation, so the distance-based approach can be applied to realize translational and rotational formation maneuvers. 
 
 \section{Obstacle avoidance}
@@ -311,9 +392,10 @@ Distance constrains  are invariant to both translation and rotation of the forma
 \addcontentsline{toc}{chapter}{Conclusions} 
 
 %%%%%%%%%% Bibliography %%%%%%%%%%%
-\bibliography{bibfile}{}
-\bibliographystyle{plain}
-\addcontentsline{toc}{chapter}{Bibliography}
+
+%\bibliographystyle{sample}
+%\bibliography{references}{}
+%\addcontentsline{toc}{chapter}{Bibliography}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
