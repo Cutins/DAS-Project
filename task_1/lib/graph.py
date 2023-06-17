@@ -2,10 +2,9 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import os
-np.random.seed(SEED)
 
 from lib.config import *
-
+np.random.seed(SEED)
 
 #####################################################################################
 #  Generate Network Graph

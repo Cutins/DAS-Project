@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import tensorflow.keras as ks
 import cv2
-np.random.seed(SEED)
 
 from lib.config import *
+np.random.seed(SEED)
 
 def load_data():
     # Load DataFrame
