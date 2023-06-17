@@ -1,34 +1,46 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import os
+np.random.seed(SEED)
+
+from lib.config import *
 
 
 #####################################################################################
 #  Generate Network Graph
-def get_graph(graph_type, n_agents):
+def get_graph():
+    plt.figure('Graph')
 
-    if graph_type == "Cycle":
-        graph = nx.path_graph(n_agents)
-        graph.add_edge(n_agents-1,0)
+    if GRAPH_TYPE == "Cycle":
+        graph = nx.path_graph(N_AGENTS)
+        graph.add_edge(N_AGENTS-1,0)
         nx.draw_circular(graph, with_labels=True)
 
-    if graph_type == "Path":
-        graph = nx.path_graph(n_agents)
+    if GRAPH_TYPE == "Path":
+        graph = nx.path_graph(N_AGENTS)
         nx.draw(graph)
         
-    if graph_type == "Star":
-        graph = nx.star_graph(n_agents-1)
+    if GRAPH_TYPE == "Star":
+        graph = nx.star_graph(N_AGENTS-1)
         nx.draw(graph, with_labels=True)
 
-    #plt.show()
+    # Salvataggio del grafico come file immagine
+    plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Graph.png')
+    plt.savefig(plot_path)
 
-    id_agent = np.identity(n_agents, dtype=int)
+    return graph
 
+
+#####################################################################################
+# Adjacency Matrix
+def get_adjacency(graph): 
     while 1:
-        adj = nx.adjacency_matrix(graph)
-        adj = adj.toarray()	
+        adjacency = nx.adjacency_matrix(graph)
+        adjacency = adjacency.toarray()	
 
-        test = np.linalg.matrix_power((id_agent+adj), n_agents)
+        identity = np.identity(N_AGENTS, dtype=int)
+        test = np.linalg.matrix_power((identity+adjacency), N_AGENTS)
         
         if np.all(test>0):
             print("the graph is connected\n")
@@ -37,26 +49,24 @@ def get_graph(graph_type, n_agents):
             print("the graph is NOT connected\n")
             quit()
 
-    print(adj)
-    return graph, adj
+    return adjacency
 
 
 #####################################################################################
 # Metropolis Hastings
-def get_weight_matrix(adj):  
-    n_agents = adj.shape[0]
+def get_weights(adj):
     degree = np.sum(adj, axis=0)
-    WW = np.zeros((n_agents, n_agents))
+    weights = np.zeros((N_AGENTS, N_AGENTS))
 
-    for agent in range(n_agents):
+    for agent in range(N_AGENTS):
         Nii = np.nonzero(adj[agent])[0]
     
         for neigh in Nii:
-            WW[agent,neigh] = 1 / (1 + np.max([degree[agent], degree[neigh]]))
+            weights[agent,neigh] = 1 / (1 + np.max([degree[agent], degree[neigh]]))
 
-        WW[agent,agent] = 1 - np.sum(WW[agent, :])
+        weights[agent,agent] = 1 - np.sum(weights[agent, :])
 
-    print('Row Stochasticity {}'.format(np.sum(WW, axis=1)))
-    print('Col Stochasticity {}'.format(np.sum(WW, axis=0)))
+    print('Row Stochasticity {}'.format(np.sum(weights, axis=1)))
+    print('Col Stochasticity {}'.format(np.sum(weights, axis=0)))
 
-    return WW
+    return weights
