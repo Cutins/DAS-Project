@@ -4,13 +4,13 @@ import numpy as np
 SEED                = 25
 
 # GRAPH SETTINGS
-GRAPH_TYPE          = "Star"                    # {"Cycle", "Path", "Star"}
+GRAPH_TYPE          = "Cycle"                    # {"Cycle", "Path", "Star"}
 
 # DATAFRAME SETTINGS
-TARGET              = 7
+TARGET              = 8
 SIZE                = (28, 28)
-N_AGENTS            = 4
-SAMPLES_PER_AGENT   = 32                        # Multiple of Minibatch Size
+N_AGENTS            = 5
+SAMPLES_PER_AGENT   = 256                        # Multiple of Minibatch Size
 SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
 
 # NETWORK SETTINGS
@@ -20,11 +20,11 @@ ACTIVATION_TYPE     = "Sigmoid"                 # {"Sigmoid", "ReLu", "HyTan"}
 LOSS_TYPE           = "BinaryCrossEntropy"      # {"Quadratic", "BinaryCrossEntropy"}
 
 # TRAINING SETTINGS
-EPOCHS              = 50
+EPOCHS              = 10
 STEP_SIZE           = 1e-2
 BATCH_SIZE          = 8                         # Dimension of the Minibatch 
 N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
 
 # SAVE & PLOT OPTIONS
-SAVE_WEIGHTS        = False
-PLOT_FOLDER         = 'Test_14'
+SAVE_WEIGHTS        = True
+PLOT_FOLDER         = 'Test_1_test'
