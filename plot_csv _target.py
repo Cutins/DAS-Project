@@ -21,7 +21,8 @@ if PLOT_TASK == 'Task 2.3':
 
 if PLOT_TASK == 'Task 2.4':
     N_obstacle = 8
-    folder_path = "task_2.4/_csv_file"
+    N_target = 3
+    folder_path = "task_2.4/_csv_file_target"
 
 
 ######## RUN ##########
@@ -61,7 +62,7 @@ if 1 and n_x == 2: # animation
     dt = 3 # sub-sampling of the plot horizon
     for tt in range(0,Tmax,dt):
         xx_tt = xx[:,tt].T
-        for ii in range((NN-N_obstacle)):
+        for ii in range((NN-N_obstacle-N_target)):
             index_ii =  ii*n_x + np.arange(n_x)
             xx_ii = xx_tt[index_ii]
             if ii%2 == 1: # Leaders are blue stars
@@ -71,16 +72,23 @@ if 1 and n_x == 2: # animation
 
         if N_obstacle:
             for ii in range(N_obstacle):
-                ii = (NN-N_obstacle) + ii
+                ii = (NN-N_obstacle-N_target) + ii
                 index_ii =  ii*n_x + np.arange(n_x)
                 xx_ii = xx_tt[index_ii]
                 plt.plot(xx_ii[0],xx_ii[1], marker='s', markersize=8, fillstyle='full', color = 'tab:green')
+
+        for ii in range(N_target):
+            ii = (NN-N_target) + ii
+            index_ii =  ii*n_x + np.arange(n_x)
+            xx_ii = xx_tt[index_ii]
+            plt.plot(xx_ii[0],xx_ii[1], marker='X', markersize=6, fillstyle='full', color = 'y')
+
 
 
         axes_lim = (np.min(xx)-1,np.max(xx)+1)
         plt.xlim(axes_lim); plt.ylim(axes_lim)
         # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T)
-        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T, color= 'tab:gray') #Dovresti printare fino a NN-(numero di obstacle)
+        plt.plot(xx[0:n_x*(NN-N_obstacle-N_target):n_x,:].T,xx[1:n_x*(NN-N_obstacle-N_target):n_x,:].T, color= 'tab:gray') #Dovresti printare fino a NN-(numero di obstacle)
         plt.xlabel('X-axis')
         plt.ylabel('Y-axis')
         plt.grid()

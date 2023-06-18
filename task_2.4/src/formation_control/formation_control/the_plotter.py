@@ -104,6 +104,9 @@ class Plot(Node):
                             msg.data.extend([self.pos_target[agent][index] for agent in range(self.n_agents) for index in range(3)])        
                             self.publisher.publish(msg)
 
+                            # Print to save on the plot_csv.py
+                            [print(f'Target pos of agent {agent}, [{self.pos_target[agent][0]}, {self.pos_target[agent][1]}, {self.pos_target[agent][2]}]') for agent in range(self.n_agents)]
+
 
 
                 self.kk += 1
