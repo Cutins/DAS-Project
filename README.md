@@ -24,11 +24,42 @@ TO DO:
 
 ##### TEST SIGNIFICATIVI PER REPORT #####
 # NN
-- Salavare i plot di: [J, Norm_J, UU_mean, UU, UU_single_neurons, SS]
-- Salvare i plot di [UU, UU_single_neaurons] zommate sulle prime iterazioni significative per aprezzare il grafico.
 - Salvare in un file .txt il risultati a terminale
+- inserire il config.txt
 
 - Test {1} con:
+# SEED
+SEED                = 25
+
+# GRAPH SETTINGS
+GRAPH_TYPE          = "Cycle"                    # {"Cycle", "Path", "Star"}
+
+# DATAFRAME SETTINGS
+TARGET              = 8
+SIZE                = (28, 28)
+N_AGENTS            = 5
+SAMPLES_PER_AGENT   = 256                        # Multiple of Minibatch Size
+SAMPLES = N_AGENTS*SAMPLES_PER_AGENT
+
+# NETWORK SETTINGS
+INPUT_SIZE          = SIZE[0]*SIZE[1]
+NETWORK             = [INPUT_SIZE, 28 , 1]
+ACTIVATION_TYPE     = "Sigmoid"                 # {"Sigmoid", "ReLu", "HyTan"}
+LOSS_TYPE           = "BinaryCrossEntropy"      # {"Quadratic", "BinaryCrossEntropy"}
+
+# TRAINING SETTINGS
+EPOCHS              = 10
+STEP_SIZE           = 1e-2
+BATCH_SIZE          = 8                         # Dimension of the Minibatch 
+N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
+
+# SAVE & PLOT OPTIONS
+SAVE_WEIGHTS        = True
+PLOT_FOLDER         = 'Test_1_test'
+
+
+
+
     TARGET              = 8
     SIZE                = (28X28)
     AGENT               = 5
@@ -87,6 +118,11 @@ TO DO:
     EPOCHS      = 400
     STEP_SIZE   = 1e-2 #Costant
     BATCH_SIZE  = 32
+
+
+- Test riducendo lo stepsize (diminishing da 1e-1 a 1e-3) circa 200 epoche a occhio
+- Test sui diversi grafi (cycle, star e path) e commentare la "velocità" di consenso
+-
 
 
   
