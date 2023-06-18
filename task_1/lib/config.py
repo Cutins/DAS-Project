@@ -7,7 +7,7 @@ SEED                = 25
 GRAPH_TYPE          = "Star"                    # {"Cycle", "Path", "Star"}
 
 # DATAFRAME SETTINGS
-TARGET              = 2
+TARGET              = 6
 SIZE                = (28, 28)
 N_AGENTS            = 5
 SAMPLES_PER_AGENT   = 256                        # Multiple of Minibatch Size
@@ -20,11 +20,11 @@ ACTIVATION_TYPE     = "Sigmoid"                 # {"Sigmoid", "ReLu", "HyTan"}
 LOSS_TYPE           = "BinaryCrossEntropy"      # {"Quadratic", "BinaryCrossEntropy"}
 
 # TRAINING SETTINGS
-EPOCHS              = 200
+EPOCHS              = 300
 STEP_SIZE           = 1e-2
 BATCH_SIZE          = 8                         # Dimension of the Minibatch 
 N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
 
 # SAVE & PLOT OPTIONS
 SAVE_WEIGHTS        = True
-PLOT_FOLDER         = 'Test_star_200'
+PLOT_FOLDER         = 'Test_digit_6'

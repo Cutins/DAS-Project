@@ -12,7 +12,7 @@ pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
 euler_step = 0.005 # Integration step
-L = 2
+L = 4
 
 # Moving leaders
 agent_types = np.zeros((N)) # Followers -> 0
