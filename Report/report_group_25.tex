@@ -261,7 +261,7 @@ The initial connection weights for our neural network have been randomly initial
 The training we were required to implement was a distributed one: several agents run a neural network with the same structure, over a different training set, then thanks to the \textbf{Gradient Tracking algoritm} we make possible to them to reach consensus over the weights.
 To implement the Gradient Tracking algorithm we compute the new weights $x^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $x^{k+1}$.
 
-\begin {equation}implemented
+\begin {equation}
 \begin{split}
 x_i^{k+1} &= \sum_{j \in N_i} a_{ij} x_j^k - \alpha s_i^k \\
 s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k - \nabla f_i(x_i^{k+1}) - \nabla f_i(x_i^k) \\
@@ -718,6 +718,21 @@ V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
 where $x_h$ denotes the position of the obstacles.
 
 In the following simulation we have given to the leaders of the formation a target position "over" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{Hexagon_obstacle}
+	\caption{Motion of formation to pass in between obstacles}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{Hexagon_obstacle_target}
+	\caption{Formation that reaches target position}
+	\end{subfigure}
+\caption{Obstacle avoidance}
+\label{obstacle}
+\end{figure}
 
 
 

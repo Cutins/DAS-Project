@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  18 JUN 2023 20:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  18 JUN 2023 20:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -802,12 +802,7 @@ Overfull \hbox (0.61748pt too wide) in paragraph at lines 258--259
  been randomly
  []
 
-[7]
-Overfull \hbox (63.51472pt too wide) detected at line 269
-[][][]\OML/cmm/m/it/10.95 implemented[]
- []
-
-[8]
+[7] [8]
 <./figs/test1/Graph.png, id=163, 462.528pt x 346.896pt>
 File: ./figs/test1/Graph.png Graphic file (type png)
 <use ./figs/test1/Graph.png>
@@ -1151,22 +1146,58 @@ le avoidance in our \OT1/cmtt/m/n/10.95 formation[]control
  []
 
 [21 <./figs/Formation_potential_hexagon_collision.png> <./figs/Barrier_potentia
-l_hexagon_collision.png> <./figs/Formation_check.png>] [22 <./figs/Moving_hexag
-on_formation_linear.png> <./figs/Moving_hexagon_formation_circle_r_2.png> <./fi
-gs/Moving_hexagon_formation_circle_r_5.png>] [23
+l_hexagon_collision.png> <./figs/Formation_check.png>]
+<./figs/Hexagon_obstacle.png, id=318, 462.528pt x 346.896pt>
+File: ./figs/Hexagon_obstacle.png Graphic file (type png)
+<use ./figs/Hexagon_obstacle.png>
+Package pdftex.def Info: ./figs/Hexagon_obstacle.png  used on input line 725.
+(pdftex.def)             Requested size: 198.88315pt x 149.16237pt.
 
-] (report_group_25.aux)
+Overfull \hbox (22.48117pt too wide) in paragraph at lines 725--726
+[][] 
+ []
+
+
+Underfull \hbox (badness 1748) in paragraph at lines 726--726
+[]\OT1/cmr/m/n/10 (a) |Motion of formation to pass in
+ []
+
+<./figs/Hexagon_obstacle_target.png, id=319, 462.528pt x 346.896pt>
+File: ./figs/Hexagon_obstacle_target.png Graphic file (type png)
+<use ./figs/Hexagon_obstacle_target.png>
+Package pdftex.def Info: ./figs/Hexagon_obstacle_target.png  used on input line
+ 730.
+(pdftex.def)             Requested size: 198.88315pt x 149.16237pt.
+
+Overfull \hbox (22.48117pt too wide) in paragraph at lines 730--731
+[][] 
+ []
+
+
+Underfull \hbox (badness 7907) in paragraph at lines 731--731
+[]\OT1/cmr/m/n/10 (b) |Formation that reaches target
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[22 <./figs/Moving_hexagon_formation_linear.png> <./figs/Moving_hexagon_formati
+on_circle_r_2.png> <./figs/Moving_hexagon_formation_circle_r_5.png>] [23 <./fig
+s/Hexagon_obstacle.png> <./figs/Hexagon_obstacle_target.png>] [24
+
+]
+(report_group_25.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `report_group_25.out' has not changed.
-(rerunfilecheck)             Checksum: 820B8179715E2D6E4B3EAF4CD93B9279;2685.
+(rerunfilecheck)             Checksum: 75FEACC79626491B02B64A91CA402D0C;2685.
  ) 
 Here is how much of TeX's memory you used:
- 23893 strings out of 478346
- 453647 string characters out of 5840784
+ 23920 strings out of 478346
+ 454495 string characters out of 5840784
  1867851 words of memory out of 5000000
- 43521 multiletter control sequences out of 15000+600000
+ 43546 multiletter control sequences out of 15000+600000
  523207 words of font info for 74 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  84i,15n,89p,699b,982s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1187,9 +1218,9 @@ ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb></h
 ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt10.pfb></h
 ome/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pf
 b>
-Output written on report_group_25.pdf (23 pages, 1368396 bytes).
+Output written on report_group_25.pdf (24 pages, 1419564 bytes).
 PDF statistics:
- 416 PDF objects out of 1000 (max. 8388607)
- 80 named destinations out of 1000 (max. 500000)
- 322 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 425 PDF objects out of 1000 (max. 8388607)
+ 82 named destinations out of 1000 (max. 500000)
+ 332 words of extra memory for PDF output out of 10000 (max. 10000000)
 
