@@ -1,0 +1,150 @@
+TRAINING SET
+
+[Agent 0] Label for Image 248 was 0 and is classified as 0.0020
+[Agent 0] Label for Image 249 was 1 and is classified as 0.9966
+[Agent 0] Label for Image 250 was 0 and is classified as 0.0080
+[Agent 0] Label for Image 251 was 1 and is classified as 0.9503
+[Agent 0] Label for Image 252 was 0 and is classified as 0.1877
+[Agent 0] Label for Image 253 was 0 and is classified as 0.0098
+[Agent 0] Label for Image 254 was 1 and is classified as 0.9948
+[Agent 0] Label for Image 255 was 1 and is classified as 0.8656
+
+[Agent 1] Label for Image 248 was 1 and is classified as 0.9991
+[Agent 1] Label for Image 249 was 1 and is classified as 0.9953
+[Agent 1] Label for Image 250 was 1 and is classified as 0.8840
+[Agent 1] Label for Image 251 was 0 and is classified as 0.0255
+[Agent 1] Label for Image 252 was 1 and is classified as 0.9974
+[Agent 1] Label for Image 253 was 0 and is classified as 0.0002
+[Agent 1] Label for Image 254 was 1 and is classified as 0.9990
+[Agent 1] Label for Image 255 was 1 and is classified as 0.1806
+
+[Agent 2] Label for Image 248 was 1 and is classified as 0.9977
+[Agent 2] Label for Image 249 was 0 and is classified as 0.2326
+[Agent 2] Label for Image 250 was 0 and is classified as 0.0568
+[Agent 2] Label for Image 251 was 1 and is classified as 0.9956
+[Agent 2] Label for Image 252 was 0 and is classified as 0.0846
+[Agent 2] Label for Image 253 was 0 and is classified as 0.1258
+[Agent 2] Label for Image 254 was 0 and is classified as 0.0534
+[Agent 2] Label for Image 255 was 0 and is classified as 0.0197
+
+[Agent 3] Label for Image 248 was 1 and is classified as 0.9754
+[Agent 3] Label for Image 249 was 1 and is classified as 0.9811
+[Agent 3] Label for Image 250 was 0 and is classified as 0.1296
+[Agent 3] Label for Image 251 was 1 and is classified as 0.8729
+[Agent 3] Label for Image 252 was 0 and is classified as 0.0063
+[Agent 3] Label for Image 253 was 0 and is classified as 0.5025
+[Agent 3] Label for Image 254 was 1 and is classified as 0.9965
+[Agent 3] Label for Image 255 was 1 and is classified as 0.9970
+
+[Agent 4] Label for Image 248 was 0 and is classified as 0.0032
+[Agent 4] Label for Image 249 was 0 and is classified as 0.0745
+[Agent 4] Label for Image 250 was 0 and is classified as 0.0572
+[Agent 4] Label for Image 251 was 0 and is classified as 0.1111
+[Agent 4] Label for Image 252 was 1 and is classified as 0.9921
+[Agent 4] Label for Image 253 was 0 and is classified as 0.0296
+[Agent 4] Label for Image 254 was 1 and is classified as 0.9953
+[Agent 4] Label for Image 255 was 0 and is classified as 0.0499
+
+
+
+TEST SET
+
+[Agent 0] Label for the SAME Image 248 was 1 and is classified as 0.9754
+[Agent 0] Label for the SAME Image 249 was 0 and is classified as 0.0245
+[Agent 0] Label for the SAME Image 250 was 1 and is classified as 0.4502
+[Agent 0] Label for the SAME Image 251 was 0 and is classified as 0.3387
+[Agent 0] Label for the SAME Image 252 was 1 and is classified as 0.8340
+[Agent 0] Label for the SAME Image 253 was 0 and is classified as 0.2222
+[Agent 0] Label for the SAME Image 254 was 1 and is classified as 0.6473
+[Agent 0] Label for the SAME Image 255 was 0 and is classified as 0.2085
+
+[Agent 1] Label for the SAME Image 248 was 1 and is classified as 0.9754
+[Agent 1] Label for the SAME Image 249 was 0 and is classified as 0.0245
+[Agent 1] Label for the SAME Image 250 was 1 and is classified as 0.4502
+[Agent 1] Label for the SAME Image 251 was 0 and is classified as 0.3387
+[Agent 1] Label for the SAME Image 252 was 1 and is classified as 0.8340
+[Agent 1] Label for the SAME Image 253 was 0 and is classified as 0.2222
+[Agent 1] Label for the SAME Image 254 was 1 and is classified as 0.6473
+[Agent 1] Label for the SAME Image 255 was 0 and is classified as 0.2085
+
+[Agent 2] Label for the SAME Image 248 was 1 and is classified as 0.9754
+[Agent 2] Label for the SAME Image 249 was 0 and is classified as 0.0245
+[Agent 2] Label for the SAME Image 250 was 1 and is classified as 0.4502
+[Agent 2] Label for the SAME Image 251 was 0 and is classified as 0.3387
+[Agent 2] Label for the SAME Image 252 was 1 and is classified as 0.8340
+[Agent 2] Label for the SAME Image 253 was 0 and is classified as 0.2222
+[Agent 2] Label for the SAME Image 254 was 1 and is classified as 0.6473
+[Agent 2] Label for the SAME Image 255 was 0 and is classified as 0.2085
+
+[Agent 3] Label for the SAME Image 248 was 1 and is classified as 0.9754
+[Agent 3] Label for the SAME Image 249 was 0 and is classified as 0.0245
+[Agent 3] Label for the SAME Image 250 was 1 and is classified as 0.4501
+[Agent 3] Label for the SAME Image 251 was 0 and is classified as 0.3387
+[Agent 3] Label for the SAME Image 252 was 1 and is classified as 0.8340
+[Agent 3] Label for the SAME Image 253 was 0 and is classified as 0.2222
+[Agent 3] Label for the SAME Image 254 was 1 and is classified as 0.6473
+[Agent 3] Label for the SAME Image 255 was 0 and is classified as 0.2085
+
+[Agent 4] Label for the SAME Image 248 was 1 and is classified as 0.9754
+[Agent 4] Label for the SAME Image 249 was 0 and is classified as 0.0245
+[Agent 4] Label for the SAME Image 250 was 1 and is classified as 0.4502
+[Agent 4] Label for the SAME Image 251 was 0 and is classified as 0.3387
+[Agent 4] Label for the SAME Image 252 was 1 and is classified as 0.8340
+[Agent 4] Label for the SAME Image 253 was 0 and is classified as 0.2222
+[Agent 4] Label for the SAME Image 254 was 1 and is classified as 0.6473
+[Agent 4] Label for the SAME Image 255 was 0 and is classified as 0.2085
+
+
+--------------TRAINING SCORES----------------
+
+AGENT:  0
+Correctly classified point:  240.0
+Wrong classified point:  16.0
+Accuracy: 93.7500
+
+AGENT:  1
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  2
+Correctly classified point:  247.0
+Wrong classified point:  9.0
+Accuracy: 96.4844
+
+AGENT:  3
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  4
+Correctly classified point:  239.0
+Wrong classified point:  17.0
+Accuracy: 93.3594
+
+------------------TEST SCORES-----------------
+
+AGENT:  0
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  1
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  2
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  3
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219
+
+AGENT:  4
+Correctly classified point:  243.0
+Wrong classified point:  13.0
+Accuracy: 94.9219

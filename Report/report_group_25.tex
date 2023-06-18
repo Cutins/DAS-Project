@@ -92,15 +92,24 @@
 \vspace{15mm}
 \end{center}
 
+The report shows the development of two projects that aim to show the application of distributed control algorithms in different fields.
+
+\bigskip
+The report is organized as follows: in the first chapter we describe the distributed implementation of a binary classification task for images of handwritten digits. The aim is to run in parallel several neural networks by different agents that communicate only locally with neighbors, and thanks to a distributed algorithm we expect them to obtain the same performances on a common test set. We show different test we have tried, such as how the accuracy changes by changing the target digit or how the type of graph changes the epochs required to reach consensus among agents.
+
+\bigskip
+In the second chapter we describe the ROS2 implementation of the distance-based formation control law by exploiting also several possible scenarios such as the collision avoidance, the moving formation and the obstacle avoidance. 
+We have done different test in order to validate the implementation using different target shapes both in 2d and in 3d, in by giving to the leaders different inputs, also in order to achive a target position.
+
 \tableofcontents \thispagestyle{empty}
 % \listoffigures\thispagestyle{empty}
 
 %%%%%%%%%% Introduction %%%%%%%%%%
-\chapter*{Introduction}
-\addcontentsline{toc}{chapter}{Introduction}
-\section*{Motivations} 
-
-\section*{Contributions}
+%\chapter*{Introduction}
+%\addcontentsline{toc}{chapter}{Introduction}
+%\section*{Motivations} 
+%
+%\section*{Contributions}
 
 
 
@@ -378,7 +387,7 @@ Target digit & Accuracy \\
 \hline
 0 & 97.66\% \\
 1 & 96.88\% \\
-2 & Row 3 \\
+2 & 94.92\% \\
 3 & Row 4 \\
 4 & Row 5 \\
 5 & Row 6 \\
@@ -399,8 +408,54 @@ We have tested three different graphs:
 \item path graph
 \end{itemize}
 
-As expected the number of epochs required to reach consensus is smaller in case of a better connected graph such as the cicle, while it's bigger for the path graph.
-We can also observe that, for example in the star graph, the agent in the "middle" of the connection is the faster to reach consensus since it has a lot of neighbors with respect to the agents on the branches of the graph.
+As expected the number of epochs required to reach consensus is smaller in case of a better connected graph such as the cycle, while it's bigger for the star graph.
+We can also observe that, for example in the star graph, the agent in the "middle" of the connection (agent $2$ with the green line) is the faster to reach consensus since it has a lot of neighbors with respect to the agents on the branches of the graph.
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_cycle_200/Weights_difference}
+	\caption{Weights evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_cycle_200/Single_weight}
+	\caption{Single weight (last neuron) evolution}
+	\end{subfigure}
+\caption{Evolution of a weights to consensus with \textbf{cycle} graph}
+\label{cycle_test}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_path_200/Weights_difference}
+	\caption{Weights evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_path_200/Single_weight}
+	\caption{Single weight (last neuron) evolution}
+	\end{subfigure}
+\caption{Evolution of a weights to consensus with \textbf{path} graph}
+\label{path_test}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_star_200/Weights_difference}
+	\caption{Weights evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{/Test_star_200/Single_weight}
+	\caption{Single weight (last neuron) evolution}
+	\end{subfigure}
+\caption{Evolution of a weights to consensus with \textbf{star }graph}
+\label{path_test}
+\end{figure}
+
 
 
 
@@ -652,19 +707,30 @@ We have also tried to give the leaders a proper input in order to accomplish a c
 
 
 \section{Obstacle avoidance}
-\textbf{Task 2.4} asked to us to introduce obstacle avoidance in our \texttt{formation\_control} package. Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through en environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles.
+\textbf{Task 2.4} asked to us to introduce obstacle avoidance in our \texttt{formation\_control} package. Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through en environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles. 
 
 In order to accomplish this task we have created a certain number of fixed obstacles as ROS2 nodes. The obstacles gets their position from the launch file and communicate it to the follower agents. 
-In \texttt{the\_agent.py} we have still two dynamics: the leaders move accordind to the assigned input while the followers move according to the formation and trying to avoid obstacles.
+In \texttt{the\_agent.py} we have still two dynamics: the leaders move according to the assigned input while the followers move according to the formation and trying to avoid obstacles. For this reason we have introduced in the dynamics a potential in order to avoid obstacles:
+\begin{equation}
+V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
+\label{Obstacles_barrier}
+\end{equation}
+where $x_h$ denotes the position of the obstacles.
+
+In the following simulation we have given to the leaders of the formation a target position "over" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
 
 
-
-FARE TEST DANDO UNA TARGET POSITION
 
 
 %%%%%%%%%% Conclusions %%%%%%%%%%
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions} 
+In the \textbf{First task} we explored a distributed optimization framework where each individual agent possesses limited knowledge of the global optimization problem. To tackle the classification problem, agents rely solely on local computations and communication with their neighboring agents, without the involvement of a central unit. In order to solve this problem we have implemented a Gradient Tracking algorithm. 
+We have obtained good results both in terms of consensus and accuracy of the classification. 
+
+\bigskip
+In the \textbf{Second task} we have seen the power of a ROS2 implementation of formation control for a network of N robotic agent, by applying a distance-based control law, and by allowing only local communication with neighbors. We have also seen how the agents are able to follow a predefined trajectory maintaining the formation very well.
+We have also explored the possibility of introduce obstacle and collision avoidance between agents and it seems to work very well.
 
 %%%%%%%%%% Bibliography %%%%%%%%%%%
 
