@@ -8,16 +8,40 @@ import signal
 import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+<<<<<<< Updated upstream
 N_obstacle = 0
 
 _, _, files = next(os.walk("./task_2.4/_csv_file_rotazione_formazione"))
+=======
+PLOT_TASK = 'Task 2.4' # {Task 2.2, Task 2.3, Task 2.4}
+
+if PLOT_TASK == 'Task 2.2':
+    N_obstacle = 0
+    folder_path = "task_2.2/_csv_file"
+
+if PLOT_TASK == 'Task 2.3':
+    N_obstacle = 0
+    folder_path = "task_2.3/_csv_file"
+
+if PLOT_TASK == 'Task 2.4':
+    N_obstacle = 8
+    folder_path = "task_2.4/_csv_file"
+
+
+######## RUN ##########
+_, _, files = next(os.walk("./" + folder_path))
+>>>>>>> Stashed changes
 NN = len(files)
 
 xx_csv = {}
 Tlist = []
 
 for ii in range(NN):
+<<<<<<< Updated upstream
     xx_csv[ii] = np.genfromtxt("task_2.4/_csv_file_rotazione_formazione/agent_{}.csv".format(ii), delimiter=',').T
+=======
+    xx_csv[ii] = np.genfromtxt(folder_path + "/agent_{}.csv".format(ii), delimiter=',').T
+>>>>>>> Stashed changes
     Tlist.append(xx_csv[ii].shape[1])
 
 n_x = xx_csv[ii].shape[0]
@@ -64,8 +88,7 @@ if 1 and n_x == 2: # animation
 
         axes_lim = (np.min(xx)-1,np.max(xx)+1)
         plt.xlim(axes_lim); plt.ylim(axes_lim)
-        # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T) #Dovresti printare fino a NN-(numero di obstacle)
-
+        # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T)
         plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T, color= 'tab:gray') #Dovresti printare fino a NN-(numero di obstacle)
         plt.xlabel('X-axis')
         plt.ylabel('Y-axis')

@@ -131,6 +131,7 @@ class Agent(Node):
                     self.publisher.publish(msg)
 
                     self.kk += 1
+
                     self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\t[{msg.data[2]:.4f}, {msg.data[3]:.4f}, {msg.data[4]:.4f}]\n")
                    
                     ######## LOG files #######
@@ -147,6 +148,7 @@ class Agent(Node):
             self.publisher.publish(msg)
 
             self.kk += 1
+            
             self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\n\t\tx: {msg.data[2]:.4f}\n\t\ty: {msg.data[3]:.4f}\n\t\tz: {msg.data[4]:.4f}")
           
             ######## LOG files #######

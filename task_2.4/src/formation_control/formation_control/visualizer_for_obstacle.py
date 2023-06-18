@@ -76,12 +76,6 @@ class Visualizer_obstacle(Node):
             marker.scale.y = scale
             marker.scale.z = scale
 
-            # Specify the color of the marker as RGBA
-            # if self.agent_id == 0:
-            #     color = [1.0, 0.0, 0.0, 1.0]   # Red - Follower
-            # if self.agent_id == 1:
-            #     color = [0.0, 0.5, 0.5, 1.0]    # Blue - Leader
-
             color = [0.0, 1.0, 0.0, 1.0]   # Green
 
 

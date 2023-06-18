@@ -84,10 +84,6 @@ class Visualizer(Node):
             if self.agent_types[self.agent_id] == 1:
                 color = [0.0, 0.5, 0.5, 1.0]    # Blue - Leader
 
-            # color = [1.0, 0.0, 0.0, 1.0]   # Red - Follower
-            # if self.agent_id >= self.n_follower:
-            #     color = [0.0, 0.5, 0.5, 1.0]    # Blue - Leader
-
             marker.color.r = color[0]
             marker.color.g = color[1]
             marker.color.b = color[2]

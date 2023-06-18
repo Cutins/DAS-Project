@@ -20,15 +20,13 @@ for i in range(N):
     if i%2 == 1:
         agent_types[i] = 1 # Leaders -> 1
 
-
-# n_leaders = int(N/2) + (N%2)
-# agent_types[n_follower:] = 1 # Leaders -> 1
-
-# input = np.zeros((n_dim))
-# input[0] = 5
-# input[1] = 0
-# input[2] = 0
 move = 2   # Raggio del cerchio
+
+# Target postion
+target = np.zeros((n_dim))
+target[0] = 5
+target[1] = 5
+target[2] = 0
 
 if N == 4: # Square
     D = np.sqrt(2)*L
@@ -111,7 +109,7 @@ def generate_launch_description():
                 )
             )
         
-    # Plotter Node
+    # Plotter and Supervisor Node
     flattened_distances = [item for sublist in distances for item in sublist]
     launch_description.append(
         Node(
@@ -120,7 +118,8 @@ def generate_launch_description():
             parameters=[{ # dictionary
                             'max_iters': MAXITERS,
                             'distance_matrix': flattened_distances,
-                            'comm_time': comm_time
+                            'comm_time': comm_time,
+                            'target' : target.tolist(),
                             }],
             output='screen',
             prefix=f'xterm -title "the_plotter" -hold -e',
