@@ -1,0 +1,14 @@
+AGENT:  2
+Correctly classified point:  233.0
+Wrong classified point:  23.0
+Accuracy: 91.0156
+
+AGENT:  3
+Correctly classified point:  233.0
+Wrong classified point:  23.0
+Accuracy: 91.0156
+
+AGENT:  4
+Correctly classified point:  233.0
+Wrong classified point:  23.0
+Accuracy: 91.0156
