@@ -1,0 +1,451 @@
+[k=1] Cost is 0.6848 and Grandient is 0.0864
+[k=2] Cost is 0.6564 and Grandient is 0.0786
+[k=3] Cost is 0.6454 and Grandient is 0.0788
+[k=4] Cost is 0.6335 and Grandient is 0.0779
+[k=5] Cost is 0.6209 and Grandient is 0.0766
+[k=6] Cost is 0.6081 and Grandient is 0.0758
+[k=7] Cost is 0.5948 and Grandient is 0.0750
+[k=8] Cost is 0.5810 and Grandient is 0.0743
+[k=9] Cost is 0.5666 and Grandient is 0.0735
+[k=10] Cost is 0.5516 and Grandient is 0.0726
+[k=11] Cost is 0.5363 and Grandient is 0.0717
+[k=12] Cost is 0.5207 and Grandient is 0.0706
+[k=13] Cost is 0.5048 and Grandient is 0.0696
+[k=14] Cost is 0.4889 and Grandient is 0.0684
+[k=15] Cost is 0.4730 and Grandient is 0.0673
+[k=16] Cost is 0.4573 and Grandient is 0.0661
+[k=17] Cost is 0.4419 and Grandient is 0.0648
+[k=18] Cost is 0.4269 and Grandient is 0.0636
+[k=19] Cost is 0.4123 and Grandient is 0.0623
+[k=20] Cost is 0.3982 and Grandient is 0.0611
+[k=21] Cost is 0.3847 and Grandient is 0.0598
+[k=22] Cost is 0.3719 and Grandient is 0.0586
+[k=23] Cost is 0.3597 and Grandient is 0.0574
+[k=24] Cost is 0.3481 and Grandient is 0.0562
+[k=25] Cost is 0.3373 and Grandient is 0.0551
+[k=26] Cost is 0.3270 and Grandient is 0.0540
+[k=27] Cost is 0.3174 and Grandient is 0.0530
+[k=28] Cost is 0.3083 and Grandient is 0.0520
+[k=29] Cost is 0.2998 and Grandient is 0.0511
+[k=30] Cost is 0.2919 and Grandient is 0.0502
+[k=31] Cost is 0.2844 and Grandient is 0.0493
+[k=32] Cost is 0.2774 and Grandient is 0.0486
+[k=33] Cost is 0.2709 and Grandient is 0.0478
+[k=34] Cost is 0.2647 and Grandient is 0.0471
+[k=35] Cost is 0.2589 and Grandient is 0.0464
+[k=36] Cost is 0.2534 and Grandient is 0.0458
+[k=37] Cost is 0.2483 and Grandient is 0.0451
+[k=38] Cost is 0.2434 and Grandient is 0.0446
+[k=39] Cost is 0.2388 and Grandient is 0.0440
+[k=40] Cost is 0.2345 and Grandient is 0.0435
+[k=41] Cost is 0.2303 and Grandient is 0.0430
+[k=42] Cost is 0.2264 and Grandient is 0.0425
+[k=43] Cost is 0.2227 and Grandient is 0.0420
+[k=44] Cost is 0.2192 and Grandient is 0.0416
+[k=45] Cost is 0.2158 and Grandient is 0.0412
+[k=46] Cost is 0.2126 and Grandient is 0.0408
+[k=47] Cost is 0.2095 and Grandient is 0.0404
+[k=48] Cost is 0.2066 and Grandient is 0.0400
+[k=49] Cost is 0.2038 and Grandient is 0.0396
+[k=50] Cost is 0.2011 and Grandient is 0.0393
+[k=51] Cost is 0.1985 and Grandient is 0.0390
+[k=52] Cost is 0.1960 and Grandient is 0.0386
+[k=53] Cost is 0.1936 and Grandient is 0.0383
+[k=54] Cost is 0.1913 and Grandient is 0.0380
+[k=55] Cost is 0.1891 and Grandient is 0.0377
+[k=56] Cost is 0.1870 and Grandient is 0.0374
+[k=57] Cost is 0.1849 and Grandient is 0.0372
+[k=58] Cost is 0.1829 and Grandient is 0.0369
+[k=59] Cost is 0.1810 and Grandient is 0.0366
+[k=60] Cost is 0.1791 and Grandient is 0.0364
+[k=61] Cost is 0.1773 and Grandient is 0.0361
+[k=62] Cost is 0.1756 and Grandient is 0.0359
+[k=63] Cost is 0.1739 and Grandient is 0.0357
+[k=64] Cost is 0.1722 and Grandient is 0.0354
+[k=65] Cost is 0.1706 and Grandient is 0.0352
+[k=66] Cost is 0.1691 and Grandient is 0.0350
+[k=67] Cost is 0.1676 and Grandient is 0.0348
+[k=68] Cost is 0.1661 and Grandient is 0.0346
+[k=69] Cost is 0.1647 and Grandient is 0.0344
+[k=70] Cost is 0.1633 and Grandient is 0.0342
+[k=71] Cost is 0.1619 and Grandient is 0.0340
+[k=72] Cost is 0.1606 and Grandient is 0.0338
+[k=73] Cost is 0.1593 and Grandient is 0.0336
+[k=74] Cost is 0.1581 and Grandient is 0.0334
+[k=75] Cost is 0.1569 and Grandient is 0.0332
+[k=76] Cost is 0.1557 and Grandient is 0.0330
+[k=77] Cost is 0.1545 and Grandient is 0.0329
+[k=78] Cost is 0.1534 and Grandient is 0.0327
+[k=79] Cost is 0.1523 and Grandient is 0.0325
+[k=80] Cost is 0.1512 and Grandient is 0.0324
+[k=81] Cost is 0.1501 and Grandient is 0.0322
+[k=82] Cost is 0.1491 and Grandient is 0.0320
+[k=83] Cost is 0.1481 and Grandient is 0.0319
+[k=84] Cost is 0.1471 and Grandient is 0.0317
+[k=85] Cost is 0.1461 and Grandient is 0.0316
+[k=86] Cost is 0.1452 and Grandient is 0.0314
+[k=87] Cost is 0.1442 and Grandient is 0.0313
+[k=88] Cost is 0.1433 and Grandient is 0.0312
+[k=89] Cost is 0.1424 and Grandient is 0.0310
+[k=90] Cost is 0.1416 and Grandient is 0.0309
+[k=91] Cost is 0.1407 and Grandient is 0.0307
+[k=92] Cost is 0.1399 and Grandient is 0.0306
+[k=93] Cost is 0.1390 and Grandient is 0.0305
+[k=94] Cost is 0.1382 and Grandient is 0.0303
+[k=95] Cost is 0.1374 and Grandient is 0.0302
+[k=96] Cost is 0.1366 and Grandient is 0.0301
+[k=97] Cost is 0.1359 and Grandient is 0.0300
+[k=98] Cost is 0.1351 and Grandient is 0.0299
+[k=99] Cost is 0.1344 and Grandient is 0.0297
+[k=100] Cost is 0.1337 and Grandient is 0.0296
+[k=101] Cost is 0.1329 and Grandient is 0.0295
+[k=102] Cost is 0.1322 and Grandient is 0.0294
+[k=103] Cost is 0.1315 and Grandient is 0.0293
+[k=104] Cost is 0.1309 and Grandient is 0.0292
+[k=105] Cost is 0.1302 and Grandient is 0.0291
+[k=106] Cost is 0.1295 and Grandient is 0.0289
+[k=107] Cost is 0.1289 and Grandient is 0.0288
+[k=108] Cost is 0.1282 and Grandient is 0.0287
+[k=109] Cost is 0.1276 and Grandient is 0.0286
+[k=110] Cost is 0.1270 and Grandient is 0.0285
+[k=111] Cost is 0.1264 and Grandient is 0.0284
+[k=112] Cost is 0.1258 and Grandient is 0.0283
+[k=113] Cost is 0.1252 and Grandient is 0.0282
+[k=114] Cost is 0.1246 and Grandient is 0.0281
+[k=115] Cost is 0.1240 and Grandient is 0.0280
+[k=116] Cost is 0.1235 and Grandient is 0.0279
+[k=117] Cost is 0.1229 and Grandient is 0.0278
+[k=118] Cost is 0.1224 and Grandient is 0.0278
+[k=119] Cost is 0.1218 and Grandient is 0.0277
+[k=120] Cost is 0.1213 and Grandient is 0.0276
+[k=121] Cost is 0.1208 and Grandient is 0.0275
+[k=122] Cost is 0.1203 and Grandient is 0.0274
+[k=123] Cost is 0.1197 and Grandient is 0.0273
+[k=124] Cost is 0.1192 and Grandient is 0.0272
+[k=125] Cost is 0.1187 and Grandient is 0.0271
+[k=126] Cost is 0.1183 and Grandient is 0.0271
+[k=127] Cost is 0.1178 and Grandient is 0.0270
+[k=128] Cost is 0.1173 and Grandient is 0.0269
+[k=129] Cost is 0.1168 and Grandient is 0.0268
+[k=130] Cost is 0.1163 and Grandient is 0.0267
+[k=131] Cost is 0.1159 and Grandient is 0.0267
+[k=132] Cost is 0.1154 and Grandient is 0.0266
+[k=133] Cost is 0.1150 and Grandient is 0.0265
+[k=134] Cost is 0.1145 and Grandient is 0.0264
+[k=135] Cost is 0.1141 and Grandient is 0.0263
+[k=136] Cost is 0.1137 and Grandient is 0.0263
+[k=137] Cost is 0.1132 and Grandient is 0.0262
+[k=138] Cost is 0.1128 and Grandient is 0.0261
+[k=139] Cost is 0.1124 and Grandient is 0.0260
+[k=140] Cost is 0.1120 and Grandient is 0.0260
+[k=141] Cost is 0.1116 and Grandient is 0.0259
+[k=142] Cost is 0.1112 and Grandient is 0.0258
+[k=143] Cost is 0.1108 and Grandient is 0.0258
+[k=144] Cost is 0.1104 and Grandient is 0.0257
+[k=145] Cost is 0.1100 and Grandient is 0.0256
+[k=146] Cost is 0.1096 and Grandient is 0.0256
+[k=147] Cost is 0.1092 and Grandient is 0.0255
+[k=148] Cost is 0.1088 and Grandient is 0.0254
+[k=149] Cost is 0.1085 and Grandient is 0.0254
+[k=150] Cost is 0.1081 and Grandient is 0.0253
+[k=151] Cost is 0.1077 and Grandient is 0.0252
+[k=152] Cost is 0.1074 and Grandient is 0.0252
+[k=153] Cost is 0.1070 and Grandient is 0.0251
+[k=154] Cost is 0.1066 and Grandient is 0.0250
+[k=155] Cost is 0.1063 and Grandient is 0.0250
+[k=156] Cost is 0.1059 and Grandient is 0.0249
+[k=157] Cost is 0.1056 and Grandient is 0.0248
+[k=158] Cost is 0.1053 and Grandient is 0.0248
+[k=159] Cost is 0.1049 and Grandient is 0.0247
+[k=160] Cost is 0.1046 and Grandient is 0.0247
+[k=161] Cost is 0.1043 and Grandient is 0.0246
+[k=162] Cost is 0.1039 and Grandient is 0.0245
+[k=163] Cost is 0.1036 and Grandient is 0.0245
+[k=164] Cost is 0.1033 and Grandient is 0.0244
+[k=165] Cost is 0.1030 and Grandient is 0.0244
+[k=166] Cost is 0.1026 and Grandient is 0.0243
+[k=167] Cost is 0.1023 and Grandient is 0.0243
+[k=168] Cost is 0.1020 and Grandient is 0.0242
+[k=169] Cost is 0.1017 and Grandient is 0.0241
+[k=170] Cost is 0.1014 and Grandient is 0.0241
+[k=171] Cost is 0.1011 and Grandient is 0.0240
+[k=172] Cost is 0.1008 and Grandient is 0.0240
+[k=173] Cost is 0.1005 and Grandient is 0.0239
+[k=174] Cost is 0.1002 and Grandient is 0.0239
+[k=175] Cost is 0.0999 and Grandient is 0.0238
+[k=176] Cost is 0.0996 and Grandient is 0.0238
+[k=177] Cost is 0.0993 and Grandient is 0.0237
+[k=178] Cost is 0.0991 and Grandient is 0.0237
+[k=179] Cost is 0.0988 and Grandient is 0.0236
+[k=180] Cost is 0.0985 and Grandient is 0.0236
+[k=181] Cost is 0.0982 and Grandient is 0.0235
+[k=182] Cost is 0.0979 and Grandient is 0.0235
+[k=183] Cost is 0.0977 and Grandient is 0.0234
+[k=184] Cost is 0.0974 and Grandient is 0.0234
+[k=185] Cost is 0.0971 and Grandient is 0.0233
+[k=186] Cost is 0.0969 and Grandient is 0.0233
+[k=187] Cost is 0.0966 and Grandient is 0.0232
+[k=188] Cost is 0.0963 and Grandient is 0.0232
+[k=189] Cost is 0.0961 and Grandient is 0.0231
+[k=190] Cost is 0.0958 and Grandient is 0.0231
+[k=191] Cost is 0.0956 and Grandient is 0.0230
+[k=192] Cost is 0.0953 and Grandient is 0.0230
+[k=193] Cost is 0.0951 and Grandient is 0.0229
+[k=194] Cost is 0.0948 and Grandient is 0.0229
+[k=195] Cost is 0.0945 and Grandient is 0.0228
+[k=196] Cost is 0.0943 and Grandient is 0.0228
+[k=197] Cost is 0.0941 and Grandient is 0.0227
+[k=198] Cost is 0.0938 and Grandient is 0.0227
+[k=199] Cost is 0.0936 and Grandient is 0.0226
+[k=200] Cost is 0.0933 and Grandient is 0.0226
+[k=201] Cost is 0.0931 and Grandient is 0.0226
+[k=202] Cost is 0.0929 and Grandient is 0.0225
+[k=203] Cost is 0.0926 and Grandient is 0.0225
+[k=204] Cost is 0.0924 and Grandient is 0.0224
+[k=205] Cost is 0.0921 and Grandient is 0.0224
+[k=206] Cost is 0.0919 and Grandient is 0.0223
+[k=207] Cost is 0.0917 and Grandient is 0.0223
+[k=208] Cost is 0.0915 and Grandient is 0.0223
+[k=209] Cost is 0.0912 and Grandient is 0.0222
+[k=210] Cost is 0.0910 and Grandient is 0.0222
+[k=211] Cost is 0.0908 and Grandient is 0.0221
+[k=212] Cost is 0.0906 and Grandient is 0.0221
+[k=213] Cost is 0.0903 and Grandient is 0.0220
+[k=214] Cost is 0.0901 and Grandient is 0.0220
+[k=215] Cost is 0.0899 and Grandient is 0.0220
+[k=216] Cost is 0.0897 and Grandient is 0.0219
+[k=217] Cost is 0.0895 and Grandient is 0.0219
+[k=218] Cost is 0.0893 and Grandient is 0.0218
+[k=219] Cost is 0.0890 and Grandient is 0.0218
+[k=220] Cost is 0.0888 and Grandient is 0.0218
+[k=221] Cost is 0.0886 and Grandient is 0.0217
+[k=222] Cost is 0.0884 and Grandient is 0.0217
+[k=223] Cost is 0.0882 and Grandient is 0.0217
+[k=224] Cost is 0.0880 and Grandient is 0.0216
+[k=225] Cost is 0.0878 and Grandient is 0.0216
+[k=226] Cost is 0.0876 and Grandient is 0.0215
+[k=227] Cost is 0.0874 and Grandient is 0.0215
+[k=228] Cost is 0.0872 and Grandient is 0.0215
+[k=229] Cost is 0.0870 and Grandient is 0.0214
+[k=230] Cost is 0.0868 and Grandient is 0.0214
+[k=231] Cost is 0.0866 and Grandient is 0.0214
+[k=232] Cost is 0.0864 and Grandient is 0.0213
+[k=233] Cost is 0.0862 and Grandient is 0.0213
+[k=234] Cost is 0.0860 and Grandient is 0.0212
+[k=235] Cost is 0.0858 and Grandient is 0.0212
+[k=236] Cost is 0.0856 and Grandient is 0.0212
+[k=237] Cost is 0.0854 and Grandient is 0.0211
+[k=238] Cost is 0.0852 and Grandient is 0.0211
+[k=239] Cost is 0.0850 and Grandient is 0.0211
+[k=240] Cost is 0.0848 and Grandient is 0.0210
+[k=241] Cost is 0.0847 and Grandient is 0.0210
+[k=242] Cost is 0.0845 and Grandient is 0.0210
+[k=243] Cost is 0.0843 and Grandient is 0.0209
+[k=244] Cost is 0.0841 and Grandient is 0.0209
+[k=245] Cost is 0.0839 and Grandient is 0.0209
+[k=246] Cost is 0.0837 and Grandient is 0.0208
+[k=247] Cost is 0.0836 and Grandient is 0.0208
+[k=248] Cost is 0.0834 and Grandient is 0.0208
+[k=249] Cost is 0.0832 and Grandient is 0.0207
+[k=250] Cost is 0.0830 and Grandient is 0.0207
+[k=251] Cost is 0.0828 and Grandient is 0.0207
+[k=252] Cost is 0.0827 and Grandient is 0.0206
+[k=253] Cost is 0.0825 and Grandient is 0.0206
+[k=254] Cost is 0.0823 and Grandient is 0.0206
+[k=255] Cost is 0.0821 and Grandient is 0.0205
+[k=256] Cost is 0.0820 and Grandient is 0.0205
+[k=257] Cost is 0.0818 and Grandient is 0.0205
+[k=258] Cost is 0.0816 and Grandient is 0.0204
+[k=259] Cost is 0.0814 and Grandient is 0.0204
+[k=260] Cost is 0.0813 and Grandient is 0.0204
+[k=261] Cost is 0.0811 and Grandient is 0.0204
+[k=262] Cost is 0.0809 and Grandient is 0.0203
+[k=263] Cost is 0.0808 and Grandient is 0.0203
+[k=264] Cost is 0.0806 and Grandient is 0.0203
+[k=265] Cost is 0.0804 and Grandient is 0.0202
+[k=266] Cost is 0.0803 and Grandient is 0.0202
+[k=267] Cost is 0.0801 and Grandient is 0.0202
+[k=268] Cost is 0.0799 and Grandient is 0.0201
+[k=269] Cost is 0.0798 and Grandient is 0.0201
+[k=270] Cost is 0.0796 and Grandient is 0.0201
+[k=271] Cost is 0.0794 and Grandient is 0.0201
+[k=272] Cost is 0.0793 and Grandient is 0.0200
+[k=273] Cost is 0.0791 and Grandient is 0.0200
+[k=274] Cost is 0.0790 and Grandient is 0.0200
+[k=275] Cost is 0.0788 and Grandient is 0.0199
+[k=276] Cost is 0.0786 and Grandient is 0.0199
+[k=277] Cost is 0.0785 and Grandient is 0.0199
+[k=278] Cost is 0.0783 and Grandient is 0.0199
+[k=279] Cost is 0.0782 and Grandient is 0.0198
+[k=280] Cost is 0.0780 and Grandient is 0.0198
+[k=281] Cost is 0.0778 and Grandient is 0.0198
+[k=282] Cost is 0.0777 and Grandient is 0.0197
+[k=283] Cost is 0.0775 and Grandient is 0.0197
+[k=284] Cost is 0.0774 and Grandient is 0.0197
+[k=285] Cost is 0.0772 and Grandient is 0.0197
+[k=286] Cost is 0.0771 and Grandient is 0.0196
+[k=287] Cost is 0.0769 and Grandient is 0.0196
+[k=288] Cost is 0.0768 and Grandient is 0.0196
+[k=289] Cost is 0.0766 and Grandient is 0.0196
+[k=290] Cost is 0.0765 and Grandient is 0.0195
+[k=291] Cost is 0.0763 and Grandient is 0.0195
+[k=292] Cost is 0.0762 and Grandient is 0.0195
+[k=293] Cost is 0.0760 and Grandient is 0.0194
+[k=294] Cost is 0.0759 and Grandient is 0.0194
+[k=295] Cost is 0.0757 and Grandient is 0.0194
+[k=296] Cost is 0.0756 and Grandient is 0.0194
+[k=297] Cost is 0.0754 and Grandient is 0.0193
+[k=298] Cost is 0.0753 and Grandient is 0.0193
+[k=299] Cost is 0.0751 and Grandient is 0.0193
+
+
+TRAINING SET
+
+[Agent 0] Label for Image 248 was 0 and is classified as 0.0414
+[Agent 0] Label for Image 249 was 1 and is classified as 0.9926
+[Agent 0] Label for Image 250 was 0 and is classified as 0.0509
+[Agent 0] Label for Image 251 was 1 and is classified as 0.9844
+[Agent 0] Label for Image 252 was 0 and is classified as 0.0019
+[Agent 0] Label for Image 253 was 0 and is classified as 0.2471
+[Agent 0] Label for Image 254 was 1 and is classified as 0.9946
+[Agent 0] Label for Image 255 was 1 and is classified as 0.9842
+
+[Agent 1] Label for Image 248 was 1 and is classified as 0.5189
+[Agent 1] Label for Image 249 was 1 and is classified as 0.9950
+[Agent 1] Label for Image 250 was 1 and is classified as 0.9883
+[Agent 1] Label for Image 251 was 0 and is classified as 0.0121
+[Agent 1] Label for Image 252 was 1 and is classified as 0.9937
+[Agent 1] Label for Image 253 was 0 and is classified as 0.0015
+[Agent 1] Label for Image 254 was 1 and is classified as 0.9615
+[Agent 1] Label for Image 255 was 1 and is classified as 0.9955
+
+[Agent 2] Label for Image 248 was 1 and is classified as 0.9985
+[Agent 2] Label for Image 249 was 0 and is classified as 0.0325
+[Agent 2] Label for Image 250 was 0 and is classified as 0.0058
+[Agent 2] Label for Image 251 was 1 and is classified as 0.9960
+[Agent 2] Label for Image 252 was 0 and is classified as 0.0046
+[Agent 2] Label for Image 253 was 0 and is classified as 0.0143
+[Agent 2] Label for Image 254 was 0 and is classified as 0.0033
+[Agent 2] Label for Image 255 was 0 and is classified as 0.0861
+
+[Agent 3] Label for Image 248 was 1 and is classified as 0.9929
+[Agent 3] Label for Image 249 was 1 and is classified as 0.9971
+[Agent 3] Label for Image 250 was 0 and is classified as 0.0002
+[Agent 3] Label for Image 251 was 1 and is classified as 0.9868
+[Agent 3] Label for Image 252 was 0 and is classified as 0.0030
+[Agent 3] Label for Image 253 was 0 and is classified as 0.0089
+[Agent 3] Label for Image 254 was 1 and is classified as 0.9770
+[Agent 3] Label for Image 255 was 1 and is classified as 0.9976
+
+[Agent 4] Label for Image 248 was 0 and is classified as 0.0007
+[Agent 4] Label for Image 249 was 0 and is classified as 0.0390
+[Agent 4] Label for Image 250 was 0 and is classified as 0.0810
+[Agent 4] Label for Image 251 was 0 and is classified as 0.0029
+[Agent 4] Label for Image 252 was 1 and is classified as 0.9802
+[Agent 4] Label for Image 253 was 0 and is classified as 0.0138
+[Agent 4] Label for Image 254 was 1 and is classified as 0.9909
+[Agent 4] Label for Image 255 was 0 and is classified as 0.0032
+
+
+
+TEST SET
+
+[Agent 0] Label for the SAME Image 248 was 1 and is classified as 0.9979
+[Agent 0] Label for the SAME Image 249 was 0 and is classified as 0.4106
+[Agent 0] Label for the SAME Image 250 was 1 and is classified as 0.9788
+[Agent 0] Label for the SAME Image 251 was 0 and is classified as 0.0254
+[Agent 0] Label for the SAME Image 252 was 1 and is classified as 0.9511
+[Agent 0] Label for the SAME Image 253 was 0 and is classified as 0.0077
+[Agent 0] Label for the SAME Image 254 was 1 and is classified as 0.9978
+[Agent 0] Label for the SAME Image 255 was 0 and is classified as 0.0437
+
+[Agent 1] Label for the SAME Image 248 was 1 and is classified as 0.9979
+[Agent 1] Label for the SAME Image 249 was 0 and is classified as 0.4105
+[Agent 1] Label for the SAME Image 250 was 1 and is classified as 0.9788
+[Agent 1] Label for the SAME Image 251 was 0 and is classified as 0.0254
+[Agent 1] Label for the SAME Image 252 was 1 and is classified as 0.9511
+[Agent 1] Label for the SAME Image 253 was 0 and is classified as 0.0077
+[Agent 1] Label for the SAME Image 254 was 1 and is classified as 0.9978
+[Agent 1] Label for the SAME Image 255 was 0 and is classified as 0.0437
+
+[Agent 2] Label for the SAME Image 248 was 1 and is classified as 0.9979
+[Agent 2] Label for the SAME Image 249 was 0 and is classified as 0.4106
+[Agent 2] Label for the SAME Image 250 was 1 and is classified as 0.9788
+[Agent 2] Label for the SAME Image 251 was 0 and is classified as 0.0254
+[Agent 2] Label for the SAME Image 252 was 1 and is classified as 0.9511
+[Agent 2] Label for the SAME Image 253 was 0 and is classified as 0.0077
+[Agent 2] Label for the SAME Image 254 was 1 and is classified as 0.9978
+[Agent 2] Label for the SAME Image 255 was 0 and is classified as 0.0437
+
+[Agent 3] Label for the SAME Image 248 was 1 and is classified as 0.9979
+[Agent 3] Label for the SAME Image 249 was 0 and is classified as 0.4106
+[Agent 3] Label for the SAME Image 250 was 1 and is classified as 0.9788
+[Agent 3] Label for the SAME Image 251 was 0 and is classified as 0.0254
+[Agent 3] Label for the SAME Image 252 was 1 and is classified as 0.9511
+[Agent 3] Label for the SAME Image 253 was 0 and is classified as 0.0077
+[Agent 3] Label for the SAME Image 254 was 1 and is classified as 0.9978
+[Agent 3] Label for the SAME Image 255 was 0 and is classified as 0.0437
+
+[Agent 4] Label for the SAME Image 248 was 1 and is classified as 0.9979
+[Agent 4] Label for the SAME Image 249 was 0 and is classified as 0.4106
+[Agent 4] Label for the SAME Image 250 was 1 and is classified as 0.9788
+[Agent 4] Label for the SAME Image 251 was 0 and is classified as 0.0254
+[Agent 4] Label for the SAME Image 252 was 1 and is classified as 0.9511
+[Agent 4] Label for the SAME Image 253 was 0 and is classified as 0.0077
+[Agent 4] Label for the SAME Image 254 was 1 and is classified as 0.9978
+[Agent 4] Label for the SAME Image 255 was 0 and is classified as 0.0437
+
+
+--------------TRAINING SCORES----------------
+
+AGENT:  0
+Correctly classified point:  249.0
+Wrong classified point:  7.0
+Accuracy: 97.2656
+
+AGENT:  1
+Correctly classified point:  252.0
+Wrong classified point:  4.0
+Accuracy: 98.4375
+
+AGENT:  2
+Correctly classified point:  251.0
+Wrong classified point:  5.0
+Accuracy: 98.0469
+
+AGENT:  3
+Correctly classified point:  251.0
+Wrong classified point:  5.0
+Accuracy: 98.0469
+
+AGENT:  4
+Correctly classified point:  251.0
+Wrong classified point:  5.0
+Accuracy: 98.0469
+
+------------------TEST SCORES-----------------
+
+AGENT:  0
+Correctly classified point:  250.0
+Wrong classified point:  6.0
+Accuracy: 97.6562
+
+AGENT:  1
+Correctly classified point:  250.0
+Wrong classified point:  6.0
+Accuracy: 97.6562
+
+AGENT:  2
+Correctly classified point:  250.0
+Wrong classified point:  6.0
+Accuracy: 97.6562
+
+AGENT:  3
+Correctly classified point:  250.0
+Wrong classified point:  6.0
+Accuracy: 97.6562
+
+AGENT:  4
+Correctly classified point:  250.0
+Wrong classified point:  6.0
+Accuracy: 97.6562

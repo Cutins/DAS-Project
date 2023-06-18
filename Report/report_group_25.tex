@@ -17,7 +17,7 @@
 \usepackage{xcolor}
 
 \tikzstyle{node}=[thick,circle,draw=blue,minimum size=22,inner sep=0.5,outer sep=0.6]
-\tikzstyle{pixel}=[thick,rectangle,draw=black,fill=white,minimum size=22,inner sep=0.5,outer sep=0.6]
+\tikzstyle{bias}=[thick,square,draw=black,minimum size=22,inner sep=0.5,outer sep=0.6]
 \tikzstyle{node in}=[node,green!20!black,draw=green!30!black,fill=green!25]
 \tikzstyle{node hidden}=[node,blue!20!black,draw=blue!30!black,fill=blue!20]
 \tikzstyle{node out}=[node,red!20!black,draw=red!30!black,fill=red!20]
@@ -105,6 +105,7 @@
 
 
 %%%%%%%%%% Chapter Title %%%%%%%%%%
+%%%%%%%%%% Chapter Title %%%%%%%%%%
 \chapter{Distributed classification via Neural Network}
 
 \begin{figure}
@@ -173,28 +174,23 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 \ifnum\lay=3 % Third Layer
   \node[node \n] (N\lay-\i) at (\x,\y) {$x_T$}; 
 \fi
-      % CONNECTIONS
-      \ifnum\lay>1 % connect to previous layer
-        \foreach \j in {1,...,\Nnod[\prev]}{ 
-          \draw[connect,white,line width=1.2] (N\prev-\j) -- (N\lay-\i);
-          \draw[connect] (N\prev-\j) -- (N\lay-\i);
-        }
-      \fi % nothing to connect first layer
+
+
+% CONNECTIONS
+\ifnum\lay>1 % connect to previous layer
+  \foreach \j in {1,...,\Nnod[\prev]}{ 
+    \draw[connect,white,line width=1.2] (N\prev-\j) -- (N\lay-\i);
+     \draw[connect] (N\prev-\j) -- (N\lay-\i);
+}
+\fi % nothing to connect first layer
       
-    }
+}
 \ifnum\lay<\Nnodlen % draw dots for all layers except the last one
     \path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.5] {$\vdots$};
     \fi
 }
 
-%%PIXELS
-%% Place pixels upstream of the first layer
-%\foreach \i in {1,...,\Nnod[1]}{
-%  \node[pixel] (P\i) at (0,\Nnod[1]/2-\i) {$p_\i$};
-%  \draw[connect] (P\i) -- (N1-\i);
-%}
-%  
-  % LABELS
+% LABELS
 % \pixel[above=5,align=center,black] at (N1-1.90) {flatten\\[-0.2em]image}
   \node[above=5,align=center,green!60!black] at (N1-1.90) {input\\[-0.2em]layer};
   \node[above=2,align=center,blue!60!black] at (N2-1.90) {hidden \\[-0.2em]layer};
@@ -207,11 +203,204 @@ As a consequence, we have performed a \textbf{balancing of the dataset}: in orde
 
 
 The structure we have choose to develop for the neural network is a tapered one, represented in figure \ref{NN_scheme}. 
-The first layer is composed by $784$ neurons, that is the dimension of the flattened image we give as input in the network. In this way each neurons of the first layer gets a single pixel as input. The second layer, the hidden one, has $28$ neurons since an higher number of neurons was useless in order to accomplish our task, while it increases a lot the computational effort required to train the network. The last layer has just one single neuron since we are asked to perform a binary classification, and so just a number between $0$ and $1$ is required as prediction.
+The first layer is composed by $784$ neurons, that is the dimension of the flattened image we give as input in the network. In this way each neurons of the first layer gets a single pixel as input. The second layer, the hidden one, has $28$ neurons since an higher number of neurons was useless in order to accomplish our task, while it increases a lot the computational effort required to train the network. The last layer has just one single neuron since we are asked to perform a binary classification, and thus only a number between $0$ and $1$ is required as a prediction.
+
+\bigskip
+In this setting we obtain two sets of weights, one for the connections between the input and hidden layers, while the second one is for the connections between the hidden and output layers. In particular, each neuron of the generic layer $L^t$ is connected with all the neurons of the previous layer $L^{t-1}$ plus one connection for the bias, thus each set $W^t$ contains $|L^t| * (|L^{t-1}| + 1)$ weights.
+
+\bigskip
+The activation function used to introduce non-linearities into the model is the \textbf{sigmoid} function
+
+\begin{equation}
+\sigma(x) = \frac{1}{1 + \exp^{-x}}
+\end{equation}
+
+and its derivative is
+
+\begin{equation}
+\frac{d}{dx}\sigma(x) = \frac{\sigma(x)}{1 - \sigma(x)}
+\end{equation}
 
 
 
+\section{Training}
+The training happens as a sequence of epochs, every epoch contains multiple mini-batches that are small sets of images. For each mini-batch the computations are the following:
 
+\begin{itemize}
+    \item Forward pass to compute the prediction;
+    \item Loss and gradient evaluation;
+    \item Backward pass to compute the derivative of the loss function with respect to each weight of the network.
+    \item Weights update.
+\end{itemize}
+
+The loss function we used is the \textbf{binary cross-entropy}
+
+\begin{equation}
+L = - y_i \cdot log(\hat{y}) - (1 - y_i) \cdot log(1 - \hat{y_i})
+\end{equation}
+
+and its derivative with respect to the activations in the output layer, i.e. the prediction, is
+
+\begin{equation}
+\frac{\partial L}{\partial \hat{y}} = - \frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}}
+\end{equation}
+
+\bigskip 
+The initial connection weights for our neural network have been randomly initialized very close to zero, while the bias term has been initialize at $0.5$ since our prediction value will be $\in[0,1]$ 
+
+\subsection{Gradient Tracking algorithm}
+The training we were required to implement was a distributed one: several agents run a neural network with the same structure, over a different training set, then thanks to the \textbf{Gradient Tracking algoritm} we make possible to them to reach consensus over the weights.
+To implement the Gradient Tracking algorithm we compute the new weights $x^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $x^{k+1}$.
+
+\begin {equation}implemented
+\begin{split}
+x_i^{k+1} &= \sum_{j \in N_i} a_{ij} x_j^k - \alpha s_i^k \\
+s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k - \nabla f_i(x_i^{k+1}) - \nabla f_i(x_i^k) \\
+\end{split}
+\end{equation}
+
+The adjacency matrix $A$ from which we extract the coefficient $a_{ij}$ is a non-negative matrix such that the entry $(i,j)$ is $a_{ij}>0$ if $(i,j)$ is and edge of the graph, $a_{ij}=0$ otherwise.
+In our implementation we have chose the adjacency matrix weight according to the \textit{Metropolis Hastings} rule:
+\begin{equation}
+A_{ij} = 
+\begin{cases}
+\frac{1}{\max\{d_i,d_j\}+1},  &\text{if } (i,j) \in E \text{and} i \neq j, \\
+1-\sum_{h \in N_i} A_{ih}, &\text{if }  i=j \\
+0, &\text{otherwise}
+\end{cases}
+\end{equation}
+
+\section{Experiments and Results}
+For testing the network we use the test set we created without splitting it, in this way we can check whether the agents provide results that are equal, given that they should reach consensus to the same weights. 
+
+\bigskip
+The performance have been evaluated using the accuracy as a metric. In addition, given that the predictions are not binary we threshold them at 0.5.
+
+\begin{equation}
+\hat{y}_i = 
+\begin{cases}
+1, & \hat{y}_i > 0.5 \\
+0, & \hat{y}_i \le 0.5
+\end{cases}
+\end{equation}
+
+We made different experiments to verify the functioning of the network both as the hyper-parameters such as step-size change but also as the target class or graph changes.
+
+\section{First test}
+In the first experiment we want to inspect the convergence of the network. In this configuration we have 5 agents communicating according to a \textit{cycle graph} \ref{test1_graph}, each of them is trained on 32 mini-batches containing 8 samples each for a total of 256 images. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.32\textwidth]{test1/Graph}
+    \caption{Communication graph}
+    \label{test1_graph}
+\end{figure}
+
+From the plots in \ref{test1_loss} we can appreciate the evolution of the cost function and norm of the gradients, in particular it is possible to observe that the magnitude of the gradients decreases exponentially indicating a fast improvement of the networks.
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{test1/J}
+	\caption{Cost evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[scale=0.43]{test1/norm_gradient_J}
+	\caption{Gradients evolution}
+	\end{subfigure}
+\caption{Evolution of the cost function and norm of the gradients.}
+\label{test1_loss}
+\end{figure}
+
+After that, to see if the network converges, we take a single weight from the networks and, for each node, we plot the difference from the mean value of the weight. If the network's weights converge we expect these values to be equal for different nodes, thus they will be equal to the mean and the difference goes to zero. Indeed, from the plot \ref{test1_var}(a) we can see that these differences approaches the zero value, therefore the networks converge to a consensus. However, it can also be observed that in reaching this consensus the weights of the networks oscillate, but these oscillations have smaller and smaller amplitudes \ref{test1_var}(b).
+
+\bigskip
+In this experiment we obtained an accuracy of $94.9\%$ on the test set.
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test1/Single_weight}
+	\caption{Weight evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test1/Single_weight-60}
+	\caption{Weight evolution (first 60 epochs)}
+	\end{subfigure}
+\caption{Evolution of a single weight.}
+\label{test1_var}
+\end{figure}
+
+\section{Second test}
+In the second experiment we check whether the target digit impacts the network behaviour, in particular we use the digit 7 as a target instead of the digit 8 used in the first experiment. From the following plots \ref{test2_loss} and \ref{test2_var} we notice that the decrease both in the cost and gradients magnitude is very similar across these experiments, which indicates a good generalization ability of the network, i.e., that the network is capable of distinguishing different input digits.
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test2/J.png}
+	\caption{Cost evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test2/norm_gradient_J.png}
+	\caption{Gradients evolution}
+	\end{subfigure}
+ \caption{Evolution of the cost function and norm of the gradients.}
+\label{test2_loss}
+\end{figure}
+
+We may also note a slightly slower convergence to consensus in this second experiment, in fact the amplitude of the first oscillations \ref{test2_var}(b) is slightly bigger than in the first experiment. 
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test2/Single_weight.png}
+	\caption{Weight evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{figs/test2/Single_weight-60.png}
+	\caption{Weight evolution (first 60 epochs)}
+	\end{subfigure}
+\caption{Evolution of a single weight.}
+\label{test2_var}
+\end{figure}
+
+We have repeated the test previously explained giving as target the different available digits: in the following we show the results obtained in terms of accuracy.
+The simulations have been obtained with $5$ agents connected with a cycle graph, and a step-size of $1e^{-2}$.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Target digit & Accuracy \\
+\hline
+0 & 97.66\% \\
+1 & 96.88\% \\
+2 & Row 3 \\
+3 & Row 4 \\
+4 & Row 5 \\
+5 & Row 6 \\
+6 & Row 7 \\
+7 & Row 8 \\
+8 & Row 9 \\
+9 & Row 10 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Third test}
+We have done, as last test, a check on how much the shape of the communication graph influences the velocity (in terms of epochs) required in order to reach the consensus.
+We have tested three different graphs:
+\begin{itemize}
+\item cycle graph
+\item star graph
+\item path graph
+\end{itemize}
+
+As expected the number of epochs required to reach consensus is smaller in case of a better connected graph such as the cicle, while it's bigger for the path graph.
+We can also observe that, for example in the star graph, the agent in the "middle" of the connection is the faster to reach consensus since it has a lot of neighbors with respect to the agents on the branches of the graph.
 
 
 
