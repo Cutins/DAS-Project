@@ -378,7 +378,7 @@ We may also note a slightly slower convergence to consensus in this second exper
 \end{figure}
 
 We repeated the test for all the possible target digits: in the following we show the results obtained in terms of accuracy.
-The simulations have been obtained with $5$ agents connected with a cycle graph, and a step-size of $1e^{-2}$.
+The simulations have been obtainedi over 300 epochs of training with $5$ agents connected with a cycle graph, and a step-size of $1e^{-2}$.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -402,14 +402,6 @@ Target digit & Accuracy \\
 \section{Third test}
 In the last test, we checked the impact of the shape of the communication graph on the epochs required to reach consensus.
 
-\bigskip
-We have tested three different graphs:
-\begin{itemize}
-\item cycle graph
-\item star graph
-\item path graph
-\end{itemize}
-
 \begin{figure}[H]
 \centering
     \begin{subfigure}{0.32\textwidth}
@@ -426,8 +418,18 @@ We have tested three different graphs:
     \includegraphics[width=\textwidth]{figs/Test_star_200/Graph.png}
     \caption{Star graph}
     \end{subfigure}
-\label{graphs}
+\label{Graphs}
 \end{figure}
+
+\bigskip
+We have tested three different graphs represented in figure \ref{Graphs}:
+\begin{itemize}
+\item cycle graph
+\item star graph
+\item path graph
+\end{itemize}
+
+
 
 From these experiment we would expect that fewer epochs are needed in the case of a more connected graph such as the cycle than in the case of a less connected one such as the star graph.
 
@@ -742,7 +744,7 @@ V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
 \end{equation}
 where $x_h$ denotes the position of the obstacles.
 
-In the following simulation we have given to the leaders of the formation a target position "over" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
+In the following simulation we have given to the leaders of the formation a target position (indicated in the plot with the yellow x symbol) "over" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
 
 \begin{figure}[h]
 \centering
