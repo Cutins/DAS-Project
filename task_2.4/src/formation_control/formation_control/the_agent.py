@@ -171,7 +171,7 @@ class Agent(Node):
                         # delta_pos = delta_pos + linear_trajectory(self, self.move)
 
                         delta_pos = delta_pos + trajectory_to_target(self, self.pos_target, self.pos)
-                        delta_pos = delta_pos + obstacle_avoidance(self)
+                        # delta_pos = delta_pos + obstacle_avoidance(self)
 
                     if self.start_moving and (self.type == 0): # Follower
                         delta_pos = delta_pos + obstacle_avoidance(self)
