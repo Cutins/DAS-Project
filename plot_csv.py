@@ -9,7 +9,7 @@ import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
-PLOT_TASK = 'Task 2.4' # {Task 2.2, Task 2.3, Task 2.4}
+PLOT_TASK = 'Task 2.2' # {Task 2.2, Task 2.3, Task 2.4}
 
 if PLOT_TASK == 'Task 2.2':
     N_obstacle = 0

@@ -1,14 +1,10 @@
 # DAS-Project
 
 TO DO:
-- Implementare la tecnica 'Bearing'
 - Muovere gli obstacole, contro gli altri obstacle
-- Diminiscing step-size (cambiare la batch-size)
 
-- Test_3
 - Ripulire / commentare i codici
 
-- 
 
 
 
