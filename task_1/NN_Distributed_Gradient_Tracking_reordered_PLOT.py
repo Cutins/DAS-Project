@@ -13,6 +13,7 @@ import pickle
 from copy import deepcopy
 
 from lib.graph import *
+from lib.plots import *
 from lib.config import *
 from lib.data_load import *
 from lib.network_dynamics import *
@@ -79,8 +80,8 @@ J               = np.zeros((EPOCHS, N_AGENTS))
 NormGradientJ   = np.zeros((EPOCHS, N_AGENTS))
 
 # Values to plot
-weight_val      = np.zeros((EPOCHS, N_AGENTS))
-weights_mag     = np.zeros((EPOCHS, N_AGENTS))
+weight_val      = np.zeros((EPOCHS*N_BATCH, N_AGENTS))
+weights_mag     = np.zeros((EPOCHS*N_BATCH, N_AGENTS))
 ss_mag          = np.zeros((EPOCHS, N_AGENTS))
 
 # Initialization for evaluating accuracy
@@ -130,7 +131,7 @@ for batch_num in range(N_BATCH):
 for epoch in range(EPOCHS):
 
     # Early stopping if performance are not improving
-    if epoch >= 200 and np.all([np.mean(J[e]) > np.mean(J[epoch-11]) for e in range(epoch-10, epoch)]):
+    if epoch >= 200 and np.all([np.mean(J[e]) > np.mean(J[epoch-51] - 1e-5) for e in range(epoch-50, epoch)]):
         break
 
     if epoch % 1 == 0 and epoch != 0:
@@ -188,11 +189,19 @@ for epoch in range(EPOCHS):
                 uu[agent][layer] = uu_plus[agent][layer]
                 ss[batch_num][agent][layer] = ss_plus[batch_num][agent][layer]
 
-    for agent in range(N_AGENTS):
-        weight_val[epoch][agent] = uu[agent][-1][0, 1]
-        weights_mag[epoch][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
-        ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
+        for agent in range(N_AGENTS):
+            iteration = epoch*N_BATCH+batch_num
+            weight_val[iteration][agent] = uu[agent][-1][0, 1]
+            weights_mag[iteration][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
+            ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
 
+    if epoch % 100 == 0 and epoch != 0:
+        plt.close('all')
+        plot_cost(J, epoch)
+        plot_cost_grad(NormGradientJ, epoch)
+        plot_weights_val(weight_val, epoch)
+        plot_weights_mag(weights_mag, epoch)
+        plot_ss_mag(ss_mag, epoch)
 
 
 ########################## PRINT PREDICTIONS #########################
@@ -261,130 +270,130 @@ if SAVE_WEIGHTS:
 
 ################################ PLOTS ###############################
 
-#########   J and Grad_J    #########
-plt.figure('Cost function')
-plt.plot(range(EPOCHS), np.mean(J, axis=1), label=r"$\frac{1}{N} \sum_{i=1}^N J(u_i)$", linewidth=2)
-for agent in range(N_AGENTS):
-     plt.plot(range(EPOCHS), J[:, agent], label =rf"$J(u_{agent})$", linewidth=0.5)
-plt.xlabel(r'Epochs $[k]$')
-plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N J(u_i^k)$")
-plt.title("Evolution of the cost function")
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'J.png')
-plt.savefig(plot_path)
+# #########   J and Grad_J    #########
+# plt.figure('Cost function')
+# plt.plot(range(EPOCHS), np.mean(J, axis=1), label=r"$\frac{1}{N} \sum_{i=1}^N J(u_i)$", linewidth=2)
+# for agent in range(N_AGENTS):
+#      plt.plot(range(EPOCHS), J[:, agent], label =rf"$J(u_{agent})$", linewidth=0.5)
+# plt.xlabel(r'Epochs $[k]$')
+# plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N J(u_i^k)$")
+# plt.title("Evolution of the cost function")
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'J.png')
+# plt.savefig(plot_path)
 
-plt.figure('Cost function - LOG')
-plt.semilogy(range(EPOCHS), np.mean(J, axis=1), label=r"$\frac{1}{N} \sum_{i=1}^N J(u_i)$", linewidth=2)
-for agent in range(N_AGENTS):
-     plt.semilogy(range(EPOCHS), J[:, agent], label =rf"$J(u_{agent})$", linewidth=0.5)
-plt.xlabel(r'Epochs $[k]$')
-plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N J(u_i^k)$")
-plt.title("Evolution of the cost function")
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'J-log.png')
-plt.savefig(plot_path)
+# plt.figure('Cost function - LOG')
+# plt.semilogy(range(EPOCHS), np.mean(J, axis=1), label=r"$\frac{1}{N} \sum_{i=1}^N J(u_i)$", linewidth=2)
+# for agent in range(N_AGENTS):
+#      plt.semilogy(range(EPOCHS), J[:, agent], label =rf"$J(u_{agent})$", linewidth=0.5)
+# plt.xlabel(r'Epochs $[k]$')
+# plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N J(u_i^k)$")
+# plt.title("Evolution of the cost function")
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'J-log.png')
+# plt.savefig(plot_path)
 
-plt.figure('Gradient of Cost function')
-plt.semilogy(range(EPOCHS), np.mean(NormGradientJ, axis=-1), label=r"$\frac{1}{N} \sum_{i=1}^N \nabla{J(u_i)}$", linewidth=2)
-for agent in range(N_AGENTS):
-    plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], label =fr"$\nabla J(u_{agent})$", linewidth=0.5)
-plt.xlabel(r'Epochs $[k]$')
-plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N \nabla{J(u_i^k)}$")
-plt.title('Evolution of the Gradient of the Cost function')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'norm_gradient_J.png')
-plt.savefig(plot_path)
-
-
-#########   Weights - Difference    #########
-# Computes the mean error over uu
-plt.figure('Weights (uu) magnitude difference')
-weights_mag_mean = np.mean(weights_mag, axis=-1)
-for agent in range(N_AGENTS):
-    plt.plot(weights_mag[:, agent] - weights_mag_mean, label =f'Agent {agent}', linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
-plt.title('Weights magnitude - Weights mean magnitude')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_difference.png')
-plt.savefig(plot_path)
-
-plt.figure('Single weight difference')
-weight_val_mean = np.mean(weight_val, axis=-1)
-for agent in range(N_AGENTS):
-    plt.plot(weight_val[:, agent] - weight_val_mean, label =f'Agent {agent}', linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
-plt.title('Weight per agent - Weight mean value across agents')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight_difference.png')
-plt.savefig(plot_path)
-
-plt.figure('Weights (uu) magnitude difference - LOG')
-weights_mag_mean = np.mean(weights_mag, axis=-1)
-for agent in range(N_AGENTS):
-    plt.semilogy(np.abs(weights_mag[:, agent] - weights_mag_mean), label =f'Agent {agent}', linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
-plt.title('Weights magnitude - Weights mean magnitude')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_difference-log.png')
-plt.savefig(plot_path)
-
-plt.figure('Single weight difference - LOG')
-weight_val_mean = np.mean(weight_val, axis=-1)
-for agent in range(N_AGENTS):
-    plt.semilogy(np.abs(weight_val[:, agent] - weight_val_mean), label =f'Agent {agent}', linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
-plt.title('Weight per agent - Weight mean value across agents')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight_difference-log.png')
-plt.savefig(plot_path)
-
-#########   Weights    #########
-plt.figure('Weights (uu) magnitude')
-for agent in range(N_AGENTS):
-    plt.plot(weights_mag[:, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$||u_i^h||$")
-plt.title('Weights magnitude evolution')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_evolution.png')
-plt.savefig(plot_path)
-
-plt.figure('Single weight')
-for agent in range(N_AGENTS):
-    plt.plot(weight_val[:, agent], label =rf"$||\hat u_{agent}||$", linewidth=0.5)
-plt.xlabel(r'Updates $[h]$')
-plt.ylabel(r"$\hat{u}_i^h$")
-plt.title('Single weight evolution')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight.png')
-plt.savefig(plot_path)
+# plt.figure('Gradient of Cost function')
+# plt.semilogy(range(EPOCHS), np.mean(NormGradientJ, axis=-1), label=r"$\frac{1}{N} \sum_{i=1}^N \nabla{J(u_i)}$", linewidth=2)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(range(EPOCHS), NormGradientJ[:, agent], label =fr"$\nabla J(u_{agent})$", linewidth=0.5)
+# plt.xlabel(r'Epochs $[k]$')
+# plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N \nabla{J(u_i^k)}$")
+# plt.title('Evolution of the Gradient of the Cost function')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'norm_gradient_J.png')
+# plt.savefig(plot_path)
 
 
-#########   Local estimate    #########
-plt.figure('S evolution')
-plt.semilogy(np.mean(ss_mag, axis=-1), label=r"$\frac{1}{N} \sum_{i=1}^N ||s_i||$", linewidth=2)
-for agent in range(N_AGENTS):
-    plt.semilogy(ss_mag[:, agent], label =rf"$||s_{agent}||$", linewidth = 0.5)
-plt.xlabel(r'Epochs $[k]$')
-plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N ||s_i^k||$")
-plt.title('Local estimate magnitude evolution')
-plt.legend()
-plt.grid()
-plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'S_evolution.png')
-plt.savefig(plot_path)
+# #########   Weights - Difference    #########
+# # Computes the mean error over uu
+# plt.figure('Weights (uu) magnitude difference')
+# weights_mag_mean = np.mean(weights_mag, axis=-1)
+# for agent in range(N_AGENTS):
+#     plt.plot(weights_mag[:, agent] - weights_mag_mean, label =f'Agent {agent}', linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
+# plt.title('Weights magnitude - Weights mean magnitude')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_difference.png')
+# plt.savefig(plot_path)
+
+# plt.figure('Single weight difference')
+# weight_val_mean = np.mean(weight_val, axis=-1)
+# for agent in range(N_AGENTS):
+#     plt.plot(weight_val[:, agent] - weight_val_mean, label =f'Agent {agent}', linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
+# plt.title('Weight per agent - Weight mean value across agents')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight_difference.png')
+# plt.savefig(plot_path)
+
+# plt.figure('Weights (uu) magnitude difference - LOG')
+# weights_mag_mean = np.mean(weights_mag, axis=-1)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(np.abs(weights_mag[:, agent] - weights_mag_mean), label =f'Agent {agent}', linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
+# plt.title('Weights magnitude - Weights mean magnitude')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_difference-log.png')
+# plt.savefig(plot_path)
+
+# plt.figure('Single weight difference - LOG')
+# weight_val_mean = np.mean(weight_val, axis=-1)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(np.abs(weight_val[:, agent] - weight_val_mean), label =f'Agent {agent}', linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
+# plt.title('Weight per agent - Weight mean value across agents')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight_difference-log.png')
+# plt.savefig(plot_path)
+
+# #########   Weights    #########
+# plt.figure('Weights (uu) magnitude')
+# for agent in range(N_AGENTS):
+#     plt.plot(weights_mag[:, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$||u_i^h||$")
+# plt.title('Weights magnitude evolution')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_evolution.png')
+# plt.savefig(plot_path)
+
+# plt.figure('Single weight')
+# for agent in range(N_AGENTS):
+#     plt.plot(weight_val[:, agent], label =rf"$||\hat u_{agent}||$", linewidth=0.5)
+# plt.xlabel(r'Updates $[h]$')
+# plt.ylabel(r"$\hat{u}_i^h$")
+# plt.title('Single weight evolution')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Single_weight.png')
+# plt.savefig(plot_path)
+
+
+# #########   Local estimate    #########
+# plt.figure('S evolution')
+# plt.semilogy(np.mean(ss_mag, axis=-1), label=r"$\frac{1}{N} \sum_{i=1}^N ||s_i||$", linewidth=2)
+# for agent in range(N_AGENTS):
+#     plt.semilogy(ss_mag[:, agent], label =rf"$||s_{agent}||$", linewidth = 0.5)
+# plt.xlabel(r'Epochs $[k]$')
+# plt.ylabel(r"$\frac{1}{N} \sum_{i=1}^N ||s_i^k||$")
+# plt.title('Local estimate magnitude evolution')
+# plt.legend()
+# plt.grid()
+# plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'S_evolution.png')
+# plt.savefig(plot_path)
 
 
 # #########   Reduced plots    #########
