@@ -199,8 +199,10 @@ for epoch in range(EPOCHS):
         plt.close('all')
         plot_cost(J, epoch)
         plot_cost_grad(NormGradientJ, epoch)
-        plot_weights_val(weight_val, epoch, step=PLOT_STEP)
-        plot_weights_mag(weights_mag, epoch, step=PLOT_STEP)
+        plot_weights_val(weight_val, epoch, step=N_BATCH)
+        plot_weights_val(weight_val, epoch, step=1)
+        plot_weights_mag(weights_mag, epoch, step=N_BATCH)
+        plot_weights_mag(weights_mag, epoch, step=1)
         plot_ss_mag(ss_mag, epoch)
 
 

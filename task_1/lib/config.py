@@ -29,4 +29,3 @@ N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
 SAVE_WEIGHTS        = True
 SAVE_STEP           = 100
 PLOT_FOLDER         = 'Test_elimina'
-PLOT_STEP           = N_BATCH                   # {1, N_BATCH}
