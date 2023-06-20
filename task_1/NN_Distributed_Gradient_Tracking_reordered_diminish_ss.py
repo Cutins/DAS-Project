@@ -49,7 +49,7 @@ def get_step_size(step_initial, step_final, EPOCHS, epoch):
     return step
 
 STEP_SIZE_INITIAL = 1e-1
-STEP_SIZE_FINAL = 1e-3
+STEP_SIZE_FINAL = 1e-6
 
 
 ######################################################################
@@ -305,7 +305,7 @@ plt.savefig(plot_path)
 plt.figure('Weights (uu) magnitude difference')
 weights_mag_mean = np.mean(weights_mag, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot(weights_mag[:, agent] - weights_mag_mean, label =f'Agent {agent}', linewidth=0.5)
+    plt.semilogy(np.abs(weights_mag[:, agent] - weights_mag_mean), label =f'Agent {agent}', linewidth=0.5)
 plt.xlabel('Epochs')
 plt.ylabel(r"$||u_i^k|| - \frac{1}{N} \sum_{i=1}^N ||u_i^k||$")
 plt.title('Weights magnitude - Weights mean magnitude')
@@ -318,7 +318,7 @@ plt.savefig(plot_path)
 plt.figure('Single weight')
 weight_val_mean = np.mean(weight_val, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot(weight_val[:, agent] - weight_val_mean, label =f'Agent {agent}', linewidth=0.5)
+    plt.semilogy(np.abs(weight_val[:, agent] - weight_val_mean), label =f'Agent {agent}', linewidth=0.5)
 plt.xlabel('Epochs')
 plt.title('Weight per agent - Weight mean value across agents')
 plt.legend()
@@ -339,7 +339,7 @@ plt.grid()
 plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_evolution.png')
 plt.savefig(plot_path)
 
-#########   Local estiamte    #########
+#########   Local estimate    #########
 plt.figure('S evolution')
 plt.semilogy(np.mean(ss_mag, axis=-1), label='S mean', linewidth=2)
 for agent in range(N_AGENTS):
@@ -359,7 +359,7 @@ plt.savefig(plot_path)
 plt.figure('Weights (uu) magnitude difference - 60 Epochs')
 weights_mag_mean = np.mean(weights_mag, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot(weights_mag[0:60, agent] - weights_mag_mean[0:60], label =f'Agent {agent}', linewidth=0.5)
+    plt.semilogy(np.abs(weights_mag[0:60, agent] - weights_mag_mean[0:60]), label =f'Agent {agent}', linewidth=0.5)
 plt.xlabel('Epochs')
 plt.ylabel(r"$||u_i^k|| - \frac{1}{N} \sum_{i=1}^N ||u_i^k||$")
 plt.title('Weights magnitude - Weights mean magnitude')
@@ -369,10 +369,10 @@ plt.grid()
 plot_path = os.path.join(os.getcwd(), 'task_1', 'Plots', PLOT_FOLDER, 'Weights_difference-60.png')
 plt.savefig(plot_path)
 
-plt.figure('Single weight - 20 Epochs')
+plt.figure('Single weight - 60 Epochs')
 weight_val_mean = np.mean(weight_val, axis=-1)
 for agent in range(N_AGENTS):
-    plt.plot(weight_val[0:20, agent] - weight_val_mean[0:20], label =f'Agent {agent}', linewidth=0.5)
+    plt.semilogy(np.abs(weight_val[0:60, agent] - weight_val_mean[0:60]), label =f'Agent {agent}', linewidth=0.5)
 plt.xlabel('Epochs')
 plt.title('Weight per agent - Weight mean value across agents')
 plt.legend()
@@ -383,7 +383,7 @@ plt.savefig(plot_path)
 
 plt.figure('Weights (uu) magnitude - 20 Epochs')
 for agent in range(N_AGENTS):
-    plt.plot(weights_mag[0:20, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
+    plt.plot(weights_mag[0:60, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
 plt.xlabel('Epochs')
 plt.ylabel(r"$||u_i^k||$")
 plt.title('Weights magnitude evolution')
