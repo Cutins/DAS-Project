@@ -131,11 +131,11 @@ for batch_num in range(N_BATCH):
 for epoch in range(EPOCHS):
 
     # Early stopping if performance are not improving
-    if epoch >= 200 and np.all([np.mean(J[e]) > np.mean(J[epoch-51] - 1e-5) for e in range(epoch-50, epoch)]):
+    if epoch >= 600 and np.all([np.mean(NormGradientJ[e]) > np.mean(NormGradientJ[epoch-501] - 1e-5) for e in range(epoch-500, epoch)]):
         break
 
     if epoch % 1 == 0 and epoch != 0:
-        print(f'[k={epoch:d}] Cost is {np.mean(J[epoch-1]):.4f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.4f}')
+        print(f'[k={epoch:d}] Cost is {np.mean(J[epoch-1]):.7f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.7f}')
 
     for batch_num in range(N_BATCH):
         kk = epoch*N_BATCH+batch_num
@@ -195,12 +195,12 @@ for epoch in range(EPOCHS):
             weights_mag[iteration][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
             ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
 
-    if epoch % 100 == 0 and epoch != 0:
+    if (epoch + 1) % SAVE_STEP == 0:
         plt.close('all')
         plot_cost(J, epoch)
         plot_cost_grad(NormGradientJ, epoch)
-        plot_weights_val(weight_val, epoch)
-        plot_weights_mag(weights_mag, epoch)
+        plot_weights_val(weight_val, epoch, step=PLOT_STEP)
+        plot_weights_mag(weights_mag, epoch, step=PLOT_STEP)
         plot_ss_mag(ss_mag, epoch)
 
 

@@ -21,10 +21,12 @@ LOSS_TYPE           = "BinaryCrossEntropy"      # {"Quadratic", "BinaryCrossEntr
 
 # TRAINING SETTINGS
 EPOCHS              = 200
-STEP_SIZE           = 5*1e-2
-BATCH_SIZE          = 8                       # Dimension of the Minibatch 
+STEP_SIZE           = 1e-4
+BATCH_SIZE          = 8                         # Dimension of the Minibatch 
 N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
 
 # SAVE & PLOT OPTIONS
 SAVE_WEIGHTS        = True
+SAVE_STEP           = 100
 PLOT_FOLDER         = 'Test_elimina'
+PLOT_STEP           = N_BATCH                   # {1, N_BATCH}

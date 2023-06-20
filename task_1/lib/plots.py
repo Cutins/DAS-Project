@@ -64,7 +64,7 @@ def plot_cost_grad(NormGradientJ, epochs=None):
 
 
 #########   Single Weight   #########
-def plot_weights_val(weight_val, epochs=None):
+def plot_weights_val(weight_val, epochs=None, step=1):
     if epochs is None:
         epochs = weight_val.shape[0]
     iters = epochs * N_BATCH
@@ -75,9 +75,9 @@ def plot_weights_val(weight_val, epochs=None):
         os.makedirs(folder_path)
 
     plt.figure('Single weight difference')
-    weight_val_mean = np.mean(weight_val[:iters], axis=-1)
+    weight_val_mean = np.mean(weight_val[:iters:step], axis=-1)
     for agent in range(N_AGENTS):
-        plt.plot(weight_val[:iters, agent] - weight_val_mean, label =f'Agent {agent}', linewidth=0.5)
+        plt.plot(range(0, iters, step), weight_val[:iters:step, agent] - weight_val_mean, label =f'Agent {agent}', linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
     plt.title('Weight per agent - Weight mean value across agents')
@@ -88,9 +88,9 @@ def plot_weights_val(weight_val, epochs=None):
 
 
     plt.figure('Single weight difference - LOG')
-    weight_val_mean = np.mean(weight_val[:iters], axis=-1)
+    weight_val_mean = np.mean(weight_val[:iters:step], axis=-1)
     for agent in range(N_AGENTS):
-        plt.semilogy(np.abs(weight_val[:iters, agent] - weight_val_mean), label =f'Agent {agent}', linewidth=0.5)
+        plt.semilogy(range(0, iters, step), np.abs(weight_val[:iters:step, agent] - weight_val_mean), label =f'Agent {agent}', linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$\hat{u}_i^h - \frac{1}{N} \sum_{i=1}^N \hat{u}_i^h$")
     plt.title('Weight per agent - Weight mean value across agents')
@@ -102,7 +102,7 @@ def plot_weights_val(weight_val, epochs=None):
 
     plt.figure('Single weight')
     for agent in range(N_AGENTS):
-        plt.plot(weight_val[:iters, agent], label =rf"$||\hat u_{agent}||$", linewidth=0.5)
+        plt.plot(range(0, iters, step), weight_val[:iters:step, agent], label =rf"$||\hat u_{agent}||$", linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$\hat{u}_i^h$")
     plt.title('Single weight evolution')
@@ -113,7 +113,7 @@ def plot_weights_val(weight_val, epochs=None):
 
 
 #########   Weights   #########
-def plot_weights_mag(weights_mag, epochs=None):
+def plot_weights_mag(weights_mag, epochs=None, step=1):
     if epochs is None:
         epochs = weights_mag.shape[0]
     iters = epochs*N_BATCH
@@ -124,9 +124,9 @@ def plot_weights_mag(weights_mag, epochs=None):
         os.makedirs(folder_path)
 
     plt.figure('Weights (uu) magnitude difference')
-    weights_mag_mean = np.mean(weights_mag[:iters], axis=-1)
+    weights_mag_mean = np.mean(weights_mag[:iters:step], axis=-1)
     for agent in range(N_AGENTS):
-        plt.plot(weights_mag[:iters, agent] - weights_mag_mean, label =f'Agent {agent}', linewidth=0.5)
+        plt.plot(range(0, iters, step), weights_mag[:iters:step, agent] - weights_mag_mean, label =f'Agent {agent}', linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
     plt.title('Weights magnitude - Weights mean magnitude')
@@ -137,9 +137,9 @@ def plot_weights_mag(weights_mag, epochs=None):
 
 
     plt.figure('Weights (uu) magnitude difference - LOG')
-    weights_mag_mean = np.mean(weights_mag[:iters], axis=-1)
+    weights_mag_mean = np.mean(weights_mag[:iters:step], axis=-1)
     for agent in range(N_AGENTS):
-        plt.semilogy(np.abs(weights_mag[:iters, agent] - weights_mag_mean), label =f'Agent {agent}', linewidth=0.5)
+        plt.semilogy(range(0, iters, step), np.abs(weights_mag[:iters:step, agent] - weights_mag_mean), label =f'Agent {agent}', linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$||u_i^h|| - \frac{1}{N} \sum_{i=1}^N ||u_i^h||$")
     plt.title('Weights magnitude - Weights mean magnitude')
@@ -151,7 +151,7 @@ def plot_weights_mag(weights_mag, epochs=None):
 
     plt.figure('Weights (uu) magnitude')
     for agent in range(N_AGENTS):
-        plt.plot(weights_mag[:iters, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
+        plt.plot(range(0, iters, step), weights_mag[:iters:step, agent], label =rf"$||u_{agent}||$", linewidth=0.5)
     plt.xlabel(r'Updates $[h]$')
     plt.ylabel(r"$||u_i^h||$")
     plt.title('Weights magnitude evolution')
