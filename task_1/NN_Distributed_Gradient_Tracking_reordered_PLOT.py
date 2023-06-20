@@ -132,6 +132,13 @@ for epoch in range(EPOCHS):
 
     # Early stopping if performance are not improving
     if epoch >= 600 and np.all([np.mean(NormGradientJ[e]) > np.mean(NormGradientJ[epoch-501] - 1e-5) for e in range(epoch-500, epoch)]):
+        print(f'\n\nTRAINING STOPPED EPOCH {epoch}\n')
+        plt.close('all')
+        plot_cost(J, epoch)
+        plot_cost_grad(NormGradientJ, epoch)
+        plot_weights_val(weight_val, epoch)
+        plot_weights_mag(weights_mag, epoch)
+        plot_ss_mag(ss_mag, epoch)
         break
 
     if epoch % 1 == 0 and epoch != 0:
