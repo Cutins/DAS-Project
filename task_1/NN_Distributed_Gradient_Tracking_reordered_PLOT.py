@@ -128,90 +128,93 @@ for batch_num in range(N_BATCH):
 
 ############################### TRAINING #############################
 
-for epoch in range(EPOCHS):
+try:
+    for epoch in range(EPOCHS):
 
-    # Early stopping if performance are not improving
-    if epoch >= 600 and np.all([np.mean(NormGradientJ[e]) > np.mean(NormGradientJ[epoch-501] - 1e-5) for e in range(epoch-500, epoch)]):
-        print(f'\n\nTRAINING STOPPED EPOCH {epoch}\n')
-        plt.close('all')
-        plot_cost(J, epoch)
-        plot_cost_grad(NormGradientJ, epoch)
-        plot_weights_val(weight_val, epoch)
-        plot_weights_mag(weights_mag, epoch)
-        plot_ss_mag(ss_mag, epoch)
-        break
+        # Early stopping if performance are not improving
+        if epoch >= 600 and np.all([np.mean(NormGradientJ[e]) > np.mean(NormGradientJ[epoch-501] - 1e-5) for e in range(epoch-500, epoch)]):
+            print(f'\n\nTRAINING STOPPED EPOCH {epoch}\n')
+            plt.close('all')
+            plot_cost(J, epoch)
+            plot_cost_grad(NormGradientJ, epoch)
+            plot_weights_val(weight_val, epoch)
+            plot_weights_mag(weights_mag, epoch)
+            plot_ss_mag(ss_mag, epoch)
+            break
 
-    if epoch % 1 == 0 and epoch != 0:
-        print(f'[k={epoch:d}] Cost is {np.mean(J[epoch-1]):.7f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.7f}')
+        if epoch % 1 == 0 and epoch != 0:
+            print(f'[k={epoch:d}] Cost is {np.mean(J[epoch-1]):.7f} and Grandient is {np.mean(NormGradientJ[epoch-1]):.7f}')
 
-    for batch_num in range(N_BATCH):
-        kk = epoch*N_BATCH+batch_num
+        for batch_num in range(N_BATCH):
+            kk = epoch*N_BATCH+batch_num
 
-        for agent in range(N_AGENTS):
-            neighs = np.nonzero(ADJ[agent])[0]
+            for agent in range(N_AGENTS):
+                neighs = np.nonzero(ADJ[agent])[0]
 
-            # Gradient Tracking Algorithm - Weights Update
-            for layer in range(n_layers-1):
-                uu_plus[agent][layer] = (WW[agent, agent] * uu[agent][layer]) - (STEP_SIZE * ss[batch_num][agent][layer])
-                for neigh in neighs:
-                    uu_plus[agent][layer] += WW[agent, neigh] * uu[neigh][layer]
-
-            batch_grad = [np.zeros_like(ul) for ul in uu[agent]]
-            for batch_el in range(BATCH_SIZE):
-                idx = (batch_num*BATCH_SIZE) + batch_el
-                
-                # Skip if samples are finished (last minibatch)
-                if idx >= SAMPLES_PER_AGENT:
-                    break
-
-                # Forward pass
-                xx = forward_pass(images_train[agent, idx], uu_plus[agent])
-                prediction[agent, idx] = xx[-1] # prediction <= value of the first neuron in the last layer
-                
-                # Loss evalutation
-                loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
-
-                # Backward pass
-                _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
-
-                J[epoch, agent] += loss / SAMPLES_PER_AGENT
+                # Gradient Tracking Algorithm - Weights Update
                 for layer in range(n_layers-1):
-                    batch_grad[layer] += grad[layer] / BATCH_SIZE
+                    uu_plus[agent][layer] = (WW[agent, agent] * uu[agent][layer]) - (STEP_SIZE * ss[batch_num][agent][layer])
+                    for neigh in neighs:
+                        uu_plus[agent][layer] += WW[agent, neigh] * uu[neigh][layer]
 
-            for layer in range(n_layers-1):
-                NormGradientJ[epoch, agent] += (np.abs(batch_grad[layer]).sum() / batch_grad[layer].size) / N_BATCH
+                batch_grad = [np.zeros_like(ul) for ul in uu[agent]]
+                for batch_el in range(BATCH_SIZE):
+                    idx = (batch_num*BATCH_SIZE) + batch_el
+                    
+                    # Skip if samples are finished (last minibatch)
+                    if idx >= SAMPLES_PER_AGENT:
+                        break
+
+                    # Forward pass
+                    xx = forward_pass(images_train[agent, idx], uu_plus[agent])
+                    prediction[agent, idx] = xx[-1] # prediction <= value of the first neuron in the last layer
+                    
+                    # Loss evalutation
+                    loss, out_grad = cost_fn(labels_train[agent, idx], xx[-1])
+
+                    # Backward pass
+                    _, grad = backward_pass(xx, uu_plus[agent], out_grad) # out_grad = llambdaT
+
+                    J[epoch, agent] += loss / SAMPLES_PER_AGENT
+                    for layer in range(n_layers-1):
+                        batch_grad[layer] += grad[layer] / BATCH_SIZE
+
+                for layer in range(n_layers-1):
+                    NormGradientJ[epoch, agent] += (np.abs(batch_grad[layer]).sum() / batch_grad[layer].size) / N_BATCH
+                
+                # Gradient Tracking Algorithm - SS Update
+                for layer in range(n_layers-1):
+                    ss_plus[batch_num][agent][layer] = (WW[agent, agent] * ss[batch_num][agent][layer]) + (batch_grad[layer] - old_grad[batch_num][agent][layer])
+                    for neigh in neighs:
+                        ss_plus[batch_num][agent][layer] += WW[agent, neigh] * ss[batch_num][neigh][layer]
+
+                for layer in range(n_layers-1):
+                    old_grad[batch_num][agent][layer] = batch_grad[layer]
             
-            # Gradient Tracking Algorithm - SS Update
-            for layer in range(n_layers-1):
-                ss_plus[batch_num][agent][layer] = (WW[agent, agent] * ss[batch_num][agent][layer]) + (batch_grad[layer] - old_grad[batch_num][agent][layer])
-                for neigh in neighs:
-                    ss_plus[batch_num][agent][layer] += WW[agent, neigh] * ss[batch_num][neigh][layer]
+            # Synch update
+            for agent in range(N_AGENTS):
+                for layer in range(n_layers-1):
+                    uu[agent][layer] = uu_plus[agent][layer]
+                    ss[batch_num][agent][layer] = ss_plus[batch_num][agent][layer]
 
-            for layer in range(n_layers-1):
-                old_grad[batch_num][agent][layer] = batch_grad[layer]
-        
-        # Synch update
-        for agent in range(N_AGENTS):
-            for layer in range(n_layers-1):
-                uu[agent][layer] = uu_plus[agent][layer]
-                ss[batch_num][agent][layer] = ss_plus[batch_num][agent][layer]
+            for agent in range(N_AGENTS):
+                iteration = epoch*N_BATCH+batch_num
+                weight_val[iteration][agent] = uu[agent][-1][0, 1]
+                weights_mag[iteration][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
+                ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
 
-        for agent in range(N_AGENTS):
-            iteration = epoch*N_BATCH+batch_num
-            weight_val[iteration][agent] = uu[agent][-1][0, 1]
-            weights_mag[iteration][agent] = np.sum([np.abs(uu[agent][layer]).sum() / uu[agent][layer].size for layer in range(n_layers-1)])
-            ss_mag[epoch][agent] = np.sum([np.abs(ss[0][agent][layer]).sum() / ss[0][agent][layer].size for layer in range(n_layers-1)])
+        if (epoch + 1) % SAVE_STEP == 0:
+            plt.close('all')
+            plot_cost(J, epoch)
+            plot_cost_grad(NormGradientJ, epoch)
+            plot_weights_val(weight_val, epoch, step=N_BATCH)
+            plot_weights_val(weight_val, epoch, step=1)
+            plot_weights_mag(weights_mag, epoch, step=N_BATCH)
+            plot_weights_mag(weights_mag, epoch, step=1)
+            plot_ss_mag(ss_mag, epoch)
 
-    if (epoch + 1) % SAVE_STEP == 0:
-        plt.close('all')
-        plot_cost(J, epoch)
-        plot_cost_grad(NormGradientJ, epoch)
-        plot_weights_val(weight_val, epoch, step=N_BATCH)
-        plot_weights_val(weight_val, epoch, step=1)
-        plot_weights_mag(weights_mag, epoch, step=N_BATCH)
-        plot_weights_mag(weights_mag, epoch, step=1)
-        plot_ss_mag(ss_mag, epoch)
-
+except KeyboardInterrupt:
+    pass
 
 ########################## PRINT PREDICTIONS #########################
 

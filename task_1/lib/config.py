@@ -4,7 +4,7 @@ import numpy as np
 SEED                = 25
 
 # GRAPH SETTINGS
-GRAPH_TYPE          = "Cycle"                    # {"Cycle", "Path", "Star"}
+GRAPH_TYPE          = "Path"                    # {"Cycle", "Path", "Star"}
 
 # DATAFRAME SETTINGS
 TARGET              = 0
@@ -20,12 +20,12 @@ ACTIVATION_TYPE     = "Sigmoid"                 # {"Sigmoid", "ReLu", "HyTan"}
 LOSS_TYPE           = "BinaryCrossEntropy"      # {"Quadratic", "BinaryCrossEntropy"}
 
 # TRAINING SETTINGS
-EPOCHS              = 200
-STEP_SIZE           = 1e-4
+EPOCHS              = 20000
+STEP_SIZE           = 5e-4
 BATCH_SIZE          = 8                         # Dimension of the Minibatch 
 N_BATCH             = int(np.ceil(SAMPLES_PER_AGENT / BATCH_SIZE))
 
 # SAVE & PLOT OPTIONS
 SAVE_WEIGHTS        = True
 SAVE_STEP           = 100
-PLOT_FOLDER         = 'Test_elimina'
+PLOT_FOLDER         = 'Path_elimina'
