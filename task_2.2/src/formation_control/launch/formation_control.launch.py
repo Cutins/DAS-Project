@@ -5,7 +5,7 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 700
+MAXITERS = 1200
 N = 6
 n_dim = 3 # State dimension
 
@@ -17,7 +17,7 @@ pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 
 pos_init[:, 2] = 0.
 comm_time = 1/30 # Comunication time
-euler_step = 0.003 # Integration step
+euler_step = 0.001 # Integration step
 L = 2
 
 _3d_formation = False
