@@ -9,7 +9,7 @@ import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
-PLOT_TASK = 'Task 2.4' # {Task 2.2, Task 2.3, Task 2.4}
+PLOT_TASK = 'Task 2.3' # {Task 2.2, Task 2.3, Task 2.4}
 
 if PLOT_TASK == 'Task 2.2':
     N_obstacle = 0
@@ -25,7 +25,11 @@ if PLOT_TASK == 'Task 2.4':
 
 
 ######## RUN ##########
-_, _, files = next(os.walk("./" + folder_path))
+path = os.path.join(os.getcwd(), 'task_2', folder_path)
+print(path)
+_, _, files = next(os.walk('./', folder_path))
+files = os.listdir(path)
+
 NN = len(files)
 
 xx_csv = {}
@@ -80,7 +84,7 @@ if 1 and n_x == 2: # animation
         axes_lim = (np.min(xx)-1,np.max(xx)+1)
         plt.xlim(axes_lim); plt.ylim(axes_lim)
         # plt.plot(xx[0:n_x*NN:n_x,:].T,xx[1:n_x*NN:n_x,:].T)
-        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T, color= 'tab:gray') #Dovresti printare fino a NN-(numero di obstacle)
+        plt.plot(xx[0:n_x*(NN-N_obstacle):n_x,:].T,xx[1:n_x*(NN-N_obstacle):n_x,:].T, color= 'tab:gray', linestyle='--') #Dovresti printare fino a NN-(numero di obstacle)
         plt.xlabel('X-axis')
         plt.ylabel('Y-axis')
         plt.grid()
