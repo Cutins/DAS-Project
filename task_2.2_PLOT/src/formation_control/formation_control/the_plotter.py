@@ -26,6 +26,10 @@ class Plot(Node):
         self.barrier_potential      = np.zeros((self.max_iters, self.n_agents))
         self.total_potential        = np.zeros((self.max_iters, self.n_agents))
 
+        self.formation_d_potential    = np.zeros((self.max_iters, self.n_agents))
+        self.barrier_d_potential      = np.zeros((self.max_iters, self.n_agents))
+        self.total_d_potential        = np.zeros((self.max_iters, self.n_agents))
+
         self.kk = 0
 
 
@@ -64,16 +68,21 @@ class Plot(Node):
                     self.pos[self.kk, agent] = self.received_msgs[agent].pop(0)[1]
                 for agent in range(self.n_agents):
                     neighs = np.nonzero(self.distance_matrix[agent])[0]
+                    # Compiute potential
                     self.formation_potential[self.kk, agent] = np.sum([1/4*(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2)**2 for neigh in neighs])
                     self.barrier_potential[self.kk, agent] = np.sum([-np.log(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2) for neigh in neighs])
                     self.total_potential[self.kk, agent] = self.formation_potential[self.kk, agent] + self.barrier_potential[self.kk, agent]
-        
+                    # Compiute potential's derivative
+                    self.formation_d_potential[self.kk, agent] = np.sum([(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2 - self.distance_matrix[agent][neigh]**2) * (self.pos[self.kk, agent] - self.pos[self.kk, neigh]) for neigh in neighs])
+                    self.barrier_d_potential[self.kk, agent] = np.sum([- (2* (self.pos[self.kk, agent] - self.pos[self.kk, neigh])/(np.linalg.norm(self.pos[self.kk, agent] - self.pos[self.kk, neigh], ord=2)**2)) for neigh in neighs])
+                    self.total_d_potential[self.kk, agent] = self.formation_d_potential[self.kk, agent] + self.barrier_d_potential[self.kk, agent]
+
 
                 self.kk += 1
                 # Check Termination
                 if self.kk == self.max_iters:
                     print('\nSTART PLOTTING')
-                                            
+
                     # Plotting potential                                            
                     plt.figure('Formation potential')
                     for agent in range(self.n_agents):
@@ -104,6 +113,70 @@ class Plot(Node):
                     plt.title('Total potential')
                     plt.legend()
                     plt.grid()
+
+
+                    # Plotting potential's derivative
+                    plt.figure("Formation potential's derivative")
+                    for agent in range(self.n_agents):
+                        plt.plot(range(self.max_iters), self.formation_d_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.formation_d_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2)
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} \frac{1}{4} ( || x_i^k - x_j^k || ^2 - d_{ij}^2 )^2 )$")  
+                    plt.title("Formation potential's derivative")
+                    plt.legend()
+                    plt.grid()
+
+                    plt.figure("Barrier potential's derivative")
+                    for agent in range(self.n_agents):
+                        plt.plot(range(self.max_iters), self.barrier_d_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.barrier_d_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} - \log ( || x_i^k - x_j^k || ^2 ) )$")  
+                    plt.title("Barrier potential's derivative")
+                    plt.legend()
+                    plt.grid()
+
+                    plt.figure("Total potential's derivative")
+                    for agent in range(self.n_agents):
+                        plt.plot(range(self.max_iters), self.total_d_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.total_d_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r'(Potential)$_{i}^k$')
+                    plt.title("Formation potential's derivative")
+                    plt.legend()
+                    plt.grid()
+
+                    # Plotting potential's derivative - LOG
+                    plt.figure("Formation potential's derivative - log")
+                    for agent in range(self.n_agents):
+                        plt.semilogy(range(self.max_iters), np.abs( self.formation_d_potential[:,agent]), ':', label=f'Agent {agent}') 
+                    plt.semilogy(range(self.max_iters), np.abs( np.mean(self.formation_d_potential, axis=-1)), label=f'Mean over all the agents', linewidth = 2)
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} \frac{1}{4} ( || x_i^k - x_j^k || ^2 - d_{ij}^2 )^2 )$")  
+                    plt.title("Formation potential's derivative - log")
+                    plt.legend()
+                    plt.grid()
+
+                    plt.figure("Barrier potential's derivative - log")
+                    for agent in range(self.n_agents):
+                        plt.semilogy(range(self.max_iters), np.abs( self.barrier_d_potential[:,agent]), ':', label=f'Agent {agent}') 
+                    plt.semilogy(range(self.max_iters), np.abs( np.mean(self.barrier_d_potential, axis=-1)), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} - \log ( || x_i^k - x_j^k || ^2 ) )$")  
+                    plt.title("Barrier potential's derivative - log")
+                    plt.legend()
+                    plt.grid()
+
+                    plt.figure("Total potential's derivative - log")
+                    for agent in range(self.n_agents):
+                        plt.semilogy(range(self.max_iters), np.abs( self.total_d_potential[:,agent]), ':', label=f'Agent {agent}') 
+                    plt.semilogy(range(self.max_iters), np.abs( np.mean(self.total_d_potential, axis=-1)), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r'(Potential)$_{i}^k$')
+                    plt.title("Formation potential's derivative - log")
+                    plt.legend()
+                    plt.grid()
+
 
 
                     plt.show()

@@ -114,27 +114,37 @@ class Plot(Node):
                 if self.kk == self.max_iters:
                     print('\nSTART PLOTTING')
                                             
+                    # Plotting potential                                            
                     plt.figure('Formation potential')
                     for agent in range(self.n_agents):
-                        plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Formation Potential of agent {agent}') 
-                    plt.plot(range(self.max_iters), self.all_in_formation[:], label='All agents in formation', color ='r', linewidth = 0.5)
-                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Total Formation Potential', linewidth = 2)
+                        plt.plot(range(self.max_iters), self.formation_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.formation_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2)
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} \frac{1}{4} ( || x_i^k - x_j^k || ^2 - d_{ij}^2 )^2 )$")  
+                    plt.title('Formation potential')
                     plt.legend()
                     plt.grid()
 
                     plt.figure('Barrier potential')
                     for agent in range(self.n_agents):
-                        plt.plot(range(self.max_iters), self.barrier_potential[:,agent], ':', label=f'Barrier Potential of agent {agent}') 
-                    plt.plot(range(self.max_iters), np.mean(self.barrier_potential, axis=-1), label=f'Total Barrier Potential', linewidth = 2) 
+                        plt.plot(range(self.max_iters), self.barrier_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.barrier_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} - \log ( || x_i^k - x_j^k || ^2 ) )$")  
+                    plt.title('Barrier potential')
                     plt.legend()
                     plt.grid()
 
                     plt.figure('Total potential')
                     for agent in range(self.n_agents):
-                        plt.plot(range(self.max_iters), self.total_potential[:,agent], ':', label=f'Potential of agent {agent}') 
-                    plt.plot(range(self.max_iters), np.mean(self.total_potential, axis=-1), label=f'Total Potential', linewidth = 2) 
+                        plt.plot(range(self.max_iters), self.total_potential[:,agent], ':', label=f'Agent {agent}') 
+                    plt.plot(range(self.max_iters), np.mean(self.total_potential, axis=-1), label=f'Mean over all the agents', linewidth = 2) 
+                    plt.xlabel(r'Iterations $[k]$')
+                    plt.ylabel(r'(Potential)$_{i}^k$')
+                    plt.title('Total potential')
                     plt.legend()
                     plt.grid()
+
 
                     plt.show()
                         
