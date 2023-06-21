@@ -19,14 +19,14 @@ The /lib/ folder contains the following files:
 - network_dynamics.py: contains all the functions used in the network training and the accuracy
 - plot.py: contains functions for saving plots during training
 
-The main file is "NN_Gradient_Tracking.py" that executes the distributed training of the network and the test.
+The main file is "NN_Distributed_Gradient_Tracking.py" that executes the distributed training of the network and the test.
 
 
 # How to run a simulation
 
 Open the /lib/ folder and set in the config.py file the setup for the simulation
 
-Run from VSCode "NN_Gradient_Tracking.py
+Run from VSCode "NN_Distributed_Gradient_Tracking.py"
 
 
 
@@ -43,6 +43,7 @@ The folder contains the following subfolders:
                 to change the input or the target change relative section in "formation_control.launch.py"
 
 - /task_2.4/: formation control with obstacle avoidance
+                in order to change the obstacle configuration modify the "formation_control.launch.py" 
 
 
 Inside each folder there is a /_csv_file/ folder that contains the data of the last simulation. 
@@ -52,7 +53,8 @@ In order to see the plots run the "plot_csv.py" by properly setting the Task you
 
 Go inside the folder relative to the task you want to execute
 ex cd/task_2.2/
-source /opt/ros/foxy/setup.bash 
-colcon build --symlink-install
-. install/setup.bash
-ros2 launch formation_control formation_control.launch.py
+Open the terminal here:
+> source /opt/ros/foxy/setup.bash 
+> colcon build --symlink-install
+> . install/setup.bash
+> ros2 launch formation_control formation_control.launch.py
