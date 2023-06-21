@@ -20,7 +20,7 @@ def formation_dynamics(self):
         formation_d_potential = (np.linalg.norm(self.pos - neigh_pos, ord=2)**2 - neigh_dist**2) * (self.pos - neigh_pos)
         barrier_d_potential = - (2* (self.pos - neigh_pos)/(np.linalg.norm(self.pos - neigh_pos, ord=2)**2))
 
-        delta_pos = delta_pos - (formation_d_potential + 0*barrier_d_potential)
+        delta_pos = delta_pos - (formation_d_potential + barrier_d_potential)
 
     return delta_pos
 
