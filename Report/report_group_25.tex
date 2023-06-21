@@ -96,13 +96,13 @@
 \vspace{15mm}
 \end{center}
 
-The report shows the development of two projects that aim to show the application of distributed systems in different fields.
+The report shows the development of two projects that aim to present some of the possible applications of distributed systems in different fields.
 
 \bigskip
-The report is organized as follows: in the first chapter we describes the distributed implementation of a binary supervised classification task for images of handwritten digits. The aim is to run in parallel several neural networks by different agents that communicate only locally with neighbors, and thanks to a distributed algorithm, the \textit{Gradient Tracking algorithm} we expect them to obtain the same performances on a common test set. We show different test we have performed, such as how the accuracy changes by changing the target digit or how the type of connection graph among agents influences the number of epochs required to reach consensus.
+The report is organized as follows: in the first chapter we describe the distributed implementation of a binary supervised classification task for images of handwritten digits. The aim is to run in parallel several neural networks by different agents that communicate only locally with neighbors, and thanks to a distributed algorithm, the \textit{Gradient Tracking algorithm} we expect them to obtain the same performances on a common test set. We show different test we have performed, such as how the accuracy changes by changing the target digit or how the type of connection graph among agents influences the number of epochs required to reach consensus.
 
 \bigskip
-In the second chapter we describe a ROS2 implementation of the distance-based formation control law by exploiting several real possible scenarios. The first test has been to obtain several different chosen shape as formation for our team of robots, both in 2D and in 3D. 
+In the second chapter we describe a ROS2 implementation of the distance-based formation control law by exploiting several real possible scenarios. The first test has been to obtain several different chosen shapes, as formation for our team of robots, both in 2D and in 3D. 
 Then we have introduced collision avoidance among the agents and tried to steer the formation according to a certain assigned motion or toward a target position. In order to do that, we have defined proper control laws to give to the leaders of the formation the required input to accomplish the task.
 The simulations have been showed by means of RViz.
 
@@ -112,7 +112,7 @@ The simulations have been showed by means of RViz.
 
 %%%%%%%%%% Introduction %%%%%%%%%%
 \newpage
-\section*{Motivations} 
+\chapter*{Motivations} 
 Distributed systems play a crucial role in today's connected world where we need efficient and scalable solutions. Our project is motivated by the need to address complex challenges in machine learning and robotics through the power of distributed systems, in which agents aim at cooperatively solving complex tasks by local computation and communication.
 
 \bigskip
@@ -638,12 +638,12 @@ We have tested several formation-shapes that involve different number of agents.
 \centering
 	\begin{subfigure}{0.49\textwidth}	
 	\centering
-	\includegraphics[width=0.72\textwidth]{pentagon_rviz}
+	\includegraphics[width=0.9\textwidth]{pentagon_rviz}
 	\caption{RViz visualization}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[width=1.2\textwidth]{Task-2.2_Formation-p_No-Coll-Avoid_Pentagon}
+	\includegraphics[width=\textwidth]{Formation_potential_pentagon}
 	\caption{Formation potential plot}
 	\end{subfigure}
 \caption{Pentagon formation with $5$ agents}
@@ -653,12 +653,12 @@ We have tested several formation-shapes that involve different number of agents.
 \begin{figure}
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[width=\textwidth]{hexagon_rviz}
+	\includegraphics[width=0.9\textwidth]{hexagon_rviz}
 	\caption{RViz visualization}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[width=\textwidth]{Task-2.2_Formation-p_No-Coll-Avoid_Hexagon}
+	\includegraphics[width=\textwidth]{Formation_potential_hexagon}
 	\caption{Formation potential plot}
 	\end{subfigure}
 \caption{Hexagon formation with $6$ agents}
@@ -687,19 +687,19 @@ For these formations we have also represented in figure \ref{Paths} the paths th
 \begin{figure}
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.24]{Task-2.2_R-viz_No-Coll-Avoid_Piramid}
+	\includegraphics[width=0.9\textwidth]{Task-2.2_R-viz_No-Coll-Avoid_Piramid}
 	\caption{RViz visualization}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Task-2.2_Formation-p_No-Coll-Avoid_Piramid}
+	\includegraphics[width=\textwidth]{Formation_potential_piramid}
 	\caption{Formation potential plot}
 	\end{subfigure}
 \caption{Square-based piramid with $5$ agents}
 \label{Piramid}
 \end{figure}
 
-After that, we have tried a 3D-formation, a square-based piramid. In order to do that we have initialized all the $x$, $y$ and $z$ positions close to zero. In figure \ref{Piramid} we can see the results obtained with simulations. The plane the "base-agents" chose, changes from one simulation to the others since we don't have any constraint in this sense.
+After that, we have tried a 3D-formation, a square-based piramid. In order to do that we have initialized all the $x$, $y$ and $z$ positions close to zero. In figure \ref{Piramid} we can see the results obtained with out simulation. The plane the "base-agents" chose, changes from one simulation to the others since we do not have any constraint in this sense.
 
 
 \section{Collision avoidance}
@@ -712,7 +712,7 @@ In formation control, the control laws typically consists of two components: att
 	\label{Collision}
 \end{figure}
 
-The control law that models the agent's dynamics up to now, had just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure \ref{Collision}). 
+The control law that models the agent's dynamics up to now, has just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure \ref{Collision}: two agents are in the same position at the same time). 
 
 \bigskip
 For this reason the \textbf{task 2.2} asked to introduce a second potential to avoid agent's collision. In order to do that the following proper barrier function has been used:
@@ -794,18 +794,18 @@ From this moment on, the dynamics evolution changes: the followers continue with
 	\label{Formation_motion_lin}
 \end{figure}
 
-Figure \ref{Formation_motion_lin} represents the motion of the formation along the $x$-axis due to a constant input assigned to leaders' dynamic. The The leaders are represented as the blue stars.
+Figure \ref{Formation_motion_lin} represents the motion of the formation along the $x$-axis due to a constant input assigned to leaders' dynamic. The leaders are represented as the blue stars.
 
 \begin{figure}[h]
 \centering
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{Moving_hexagon_formation_circle_r_2.jpg}
-	\caption{Moving along a circle of radius $2$}
+	\caption{Motion along a circle of radius $2$}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{Moving_hexagon_formation_circle_r_5.jpg}
-	\caption{Moving along a circle of radius $5$}
+	\caption{Motion along a circle of radius $5$}
 	\end{subfigure}
 \caption{Motion of the formation along a circular path}
 \label{Formation_motion_circle}
@@ -820,7 +820,7 @@ We have also tried to give the leaders a proper input in order to accomplish a c
 \textbf{Task 2.4} asked to us to introduce obstacle avoidance in our \texttt{formation\_control} package. Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through en environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles. 
 
 In order to accomplish this task we have created a certain number of fixed obstacles as ROS2 nodes. The obstacles gets their position from the launch file and communicate it to the follower agents. 
-In \texttt{the\_agent.py} we have still two dynamics: the leaders move according to the assigned input while the followers move according to the formation and trying to avoid obstacles. For this reason we have introduced in the dynamics a potential in order to avoid obstacles:
+In \texttt{the\_agent.py} we still have two dynamics: the leaders move according to the assigned input while the followers move according to the formation and trying to avoid obstacles. For this reason we have introduced in the dynamics a potential in order to avoid obstacles:
 \begin{equation}
 V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
 \label{Obstacles_barrier}
@@ -828,15 +828,15 @@ V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
 where $x_h$ denotes the position of the obstacles.
 
 \bigskip
-In the following simulation we give to the leaders of the formation a target position (indicated in the plot with the yellow x symbol) "over" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
-The target position is assigned to the leaders in this way: when the formation in reached, the leader compute their target position as in the following:
+In the following simulation we give to the leaders of the formation a target position (indicated in the plot with the yellow x symbol) "on top of" the obstacles: to reach it the formation has to pass inside the window left by the obstacles. 
+The target position is assigned to the leaders in this way: when the formation in reached, each leader computes its target position as in the following:
 \begin{equation}
 x_{i,tar} = x_i(\bar{t}) + h_y, \text{     $i$ are leaders}
 \end{equation}
 where $\bar{t}$ is the time instant in which the formation is reached, and $h_y$ is a proper distance (in this case along $y$ direction). In our simulation we chose $h_y = 7$ in order to make the formation move toward the obstacles.
 
 \bigskip
-In order to steer the leaders, and a consequence the whole formation, toward the target position, we have use the following proportional controller:
+In order to steer the leaders, and as a consequence the whole formation toward the target position, we have used the following proportional controller:
 \begin{equation}
 \dot{x}_i(t) = k\cdot (x_{i,tar} - x_i(t)), \text{     $i$ are leaders}
 \end{equation}
@@ -844,23 +844,25 @@ where $k$ is a proper proportional gain.
 
 \begin{figure}[h]
 \centering
-	\begin{subfigure}{0.32\textwidth}	
+	\begin{subfigure}{0.5\textwidth}	
 	\includegraphics[width=\textwidth]{Hexagon_obstacle_Initial.jpg}
 	\caption{Agents have reached the target formation}
 	\end{subfigure}
-\hfill
-	\begin{subfigure}{0.32\textwidth}	
+\vfill
+	\begin{subfigure}{0.5\textwidth}	
 	\includegraphics[width=\textwidth]{Hexagon_obstacle.jpg}
 	\caption{Motion of formation to pass in between obstacles}
 	\end{subfigure}
-\hfill
-	\begin{subfigure}{0.32\textwidth}	
+\vfill
+	\begin{subfigure}{0.5\textwidth}	
 	\includegraphics[width=\textwidth]{Hexagon_obstacle_target.jpg}
 	\caption{Formation that reaches target position}
 	\end{subfigure}
-\caption{Obstacle avoidance}
+\caption{Obstacle avoidance and motion to target position}
 \label{obstacle}
 \end{figure}
+
+In figure \ref{obstacle} we have represented three crucial points of the simulation. The first, \ref{obstacle}(a) represents the moment in which the formation in reached and leaders start moving toward the target. The second, \ref{obstacle}(b) represents the moment in which the formation is moving in between the window left by the obstacles: the shape of the hexagon is a bit distorted in order to allow the motion. The third, \ref{obstacle}(c), shows the moment in which the leaders reach their targets: at this point the formation has its right shape again.
 
 
 
@@ -871,9 +873,13 @@ where $k$ is a proper proportional gain.
 In the \textbf{First task} we explored a distributed optimization framework where each individual agent possesses limited knowledge of the global optimization problem. To tackle the classification problem, agents rely solely on local computations and communication with their neighboring agents, without the involvement of a central unit. In order to solve this problem we have implemented a Gradient Tracking algorithm. 
 We have obtained good results both in terms of consensus and accuracy of the classification. 
 
+A possible future development could be to train our neural network system in a truly distributed manner, with each network running on a separate processor, establishing a wired or wireless connection between devices. This would allow us to properly evaluate the benefits associated with distributed implementation.
+
 \bigskip
 In the \textbf{Second task} we have seen the power of a ROS2 implementation of formation control for a network of N robotic agent, by applying a distance-based control law, and by allowing only local communication with neighbors. We have also seen how the agents are able to follow a predefined trajectory maintaining the formation very well.
-We have also explored the possibility of introduce obstacle and collision avoidance between agents and it seems to work very well. Future additional developments could be to try the formation control according to a bearing-based tecnique in such a way to have also scale invariance in addition to translation and rotation one.
+We have also explored the possibility of introduce obstacle and collision avoidance between agents and it seems to work very well. 
+
+Future additional developments could be to try the formation control according to a bearing-based control tecnique in such a way to have also scale invariance in addition to translation and rotation one.
 
 %%%%%%%%%% Bibliography %%%%%%%%%%%
 

@@ -13,8 +13,8 @@
 \contentsline {section}{\numberline {2.1}Distance-based formation}{18}{section.2.1}%
 \contentsline {section}{\numberline {2.2}ROS2 implementation}{19}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Results}{20}{subsection.2.2.1}%
-\contentsline {section}{\numberline {2.3}Collision avoidance}{23}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Results}{24}{subsection.2.3.1}%
-\contentsline {section}{\numberline {2.4}Moving formation and leaders control}{24}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Obstacle avoidance}{27}{section.2.5}%
+\contentsline {section}{\numberline {2.3}Collision avoidance}{22}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Results}{23}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.4}Moving formation and leaders control}{23}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Obstacle avoidance}{26}{section.2.5}%
 \contentsline {chapter}{Conclusions}{29}{chapter*.27}%
