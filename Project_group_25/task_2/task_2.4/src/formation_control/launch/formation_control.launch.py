@@ -8,13 +8,14 @@ from ament_index_python.packages import get_package_share_directory
 
 #########################################################################
 ######### CONFIG #########
-MAXITERS = 2000  # Number of updates
-N = 6           # Number of agent
-TYPE_MOTION = 'circular' # {circular, target_position, linear}
+MAXITERS = 2000                     # Number of updates
+N = 6                               # Number of agent
+TYPE_MOTION = 'target_position'     # {circular, target_position, linear}
 
-AMPLITUDE = 2.5     # if 'circular' -> radius of it || if 'linear' -> magnitude of the dinymics
-TARGET = [5, 5, 0]  # target position [x, y, z]
+AMPLITUDE = 2.5                     # if 'circular' -> radius of it || if 'linear' -> magnitude of the dinymics
+TARGET = [0, 7, 0]                  # target position [x, y, z]
 
+N_OBSTACLES = 8                     # select the number of obstacles
 
 #########################################################################
 ######### LAUNCH #########
@@ -23,7 +24,7 @@ EULER_STEP = 0.005      # Integration step
 L = 2                   # Side lenght
 
 n_dim = 3 # State dimension
-pos_init = (np.random.rand(N, 3) - 0.5) *0.1
+pos_init = (np.random.rand(N, 3) - 0.5) * 0.1
 pos_init[:, 2] = 0.
 
 # Moving leaders
@@ -63,9 +64,8 @@ if N == 6: #Hexagon
     
 
 ######### The obstacle #########
-N_obstacles = 8
-pos_obs = np.zeros((N_obstacles, n_dim))
-for i in range(N_obstacles):
+pos_obs = np.zeros((N_OBSTACLES, n_dim))
+for i in range(N_OBSTACLES):
     if i%2 == 0: #even
         pos_obs[i] = [2+(i/2), 4, 0]
     else:   #odd
@@ -109,7 +109,7 @@ def generate_launch_description():
                                 'type' : agent_types[i].tolist(),
                                 'amplitude' : AMPLITUDE,
                                 'type_motion': motion_dict[TYPE_MOTION],
-                                'N_obstacles' : N_obstacles,
+                                'N_obstacles' : N_OBSTACLES,
                                 }],
                 output='screen',
                 prefix=f'xterm -title "agent_{i}" -hold -e',
@@ -147,7 +147,7 @@ def generate_launch_description():
     )
 
     # The obstacles
-    for i in range(N_obstacles):
+    for i in range(N_OBSTACLES):
         #Obstacles
         launch_description.append(
             Node(

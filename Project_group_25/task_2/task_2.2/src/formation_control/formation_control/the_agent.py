@@ -2,6 +2,7 @@ import numpy as np
 from time import sleep
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import os
 
 import rclpy
 from rclpy.node import Node
@@ -55,7 +56,10 @@ class Agent(Node):
 
         ####### create logging file ######
         self.file_name = "_csv_file/agent_{}.csv".format(self.id)
-        file = open(self.file_name, "w+") # 'w+' needs to create file and open in writing mode if doesn't exist
+        folder_path = os.path.dirname(self.file_name)
+        if os.path.exists(folder_path) == False:
+            os.makedirs(folder_path)
+        file = open(self.file_name, "w+")
         file.close()
         
         # CREATE TOPIC
@@ -81,22 +85,20 @@ class Agent(Node):
 
         # MASSAGES BUFFER 
         self.received_msgs = {neigh: [] for neigh in self.neighs}
-
         print(f"Setup of agent {self.id} completed.")
+
 
     # NEIGHBORS
     def listener_callback(self, msg):
         id, kk, x, y, z = msg.data
         self.received_msgs[int(id)].append((int(kk), np.array([x, y, z])))
 
+
     # MANAGER
     def listener_callback_manager(self, msg):
         self.start_moving = msg.data
         self.k_start_moving = self.kk
 
-
-
-    
 
     def timer_callback(self):
         self.counter += 1

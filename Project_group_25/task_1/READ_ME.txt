@@ -10,7 +10,7 @@ The /lib/ folder contains the following files:
 The main file is "NN_Distributed_Gradient_Tracking.py" that executes the distributed training of the network and the test.
 
 
-# HOW TO RUN THE SIMULATION
+# How to run a simulation
 
 Open the /lib/ folder and set in the config.py file the setup for the simulation
 

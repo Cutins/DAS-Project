@@ -9,27 +9,26 @@ import os
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
-PLOT_TASK = 'Task 2.3' # {Task 2.2, Task 2.3, Task 2.4}
+#########################################################################
+######### CONFIG #########
+PLOT_TASK = 'Task 2.2' # {Task 2.2, Task 2.3, Task 2.4}
 
 if PLOT_TASK == 'Task 2.2':
     N_obstacle = 0
-    folder_path = "task_2.2/_csv_file"
+    folder_path = "task_2/task_2.2/_csv_file"
 
 if PLOT_TASK == 'Task 2.3':
     N_obstacle = 0
-    folder_path = "task_2.3/_csv_file"
+    folder_path = "task_2/task_2.3/_csv_file"
 
 if PLOT_TASK == 'Task 2.4':
     N_obstacle = 8
-    folder_path = "task_2.4/_csv_file"
+    folder_path = "task_2/task_2.4/_csv_file"
 
 
-######## RUN ##########
-path = os.path.join(os.getcwd(), 'task_2', folder_path)
-print(path)
-_, _, files = next(os.walk('./', folder_path))
-files = os.listdir(path)
-
+#########################################################################
+######## PLOT ##########
+_, _, files = next(os.walk("./" + folder_path))
 NN = len(files)
 
 xx_csv = {}

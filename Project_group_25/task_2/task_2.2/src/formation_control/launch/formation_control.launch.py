@@ -5,10 +5,15 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
+
+#########################################################################
+######### CONFIG #########
 MAXITERS = 1200
 N = 6
-n_dim = 3 # State dimension
+_3d_formation = False
 
+#########################################################################
+######### LAUNCH #########
 # Uncomment for set initial position in a row, better to simulate the collision
 # pos_init = np.zeros((N, 3))
 # pos_init[:, 0] = [((idx)/N) for idx in range(N)]
@@ -17,11 +22,11 @@ n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, 3) - 0.5) *0.1
 
 pos_init[:, 2] = 0.
-comm_time = 1/30 # Comunication time
-euler_step = 0.001 # Integration step
+n_dim = 3           # State dimension
+comm_time = 1/30    # Comunication time
+euler_step = 0.001  # Integration step
 L = 2
 
-_3d_formation = False
 
 if N == 4: # Square
     D = np.sqrt(2)*L

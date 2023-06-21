@@ -1,7 +1,6 @@
 import numpy as np
 from time import sleep
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import os
 
 import rclpy
@@ -141,7 +140,6 @@ class Agent(Node):
 
                     self.get_logger().info(f"Agent {int(msg.data[0]):d} -- Iter = {int(msg.data[1]):d}\n\tPosition:\n\t\tx: {msg.data[2]:.4f}\n\t\ty: {msg.data[3]:.4f}\n\t\tz: {msg.data[4]:.4f}")
 
-                    ######## LOG files #######
                     # save on file
                     data_for_csv = msg.data.tolist().copy()
                     data_for_csv = [str(round(element,4)) for element in data_for_csv[2:4]]
