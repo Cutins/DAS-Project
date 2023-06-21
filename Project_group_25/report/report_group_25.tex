@@ -312,7 +312,7 @@ In a distributed computation, the communication topology is an important part of
 Thus, in agent's networks, the goal is to design a proper distributed algorithm, such as the \textbf{Gradient Tracking algorithm}, that allows multiple agents in the network to collectively solve an optimization problem by tracking the gradient information of a global objective function.
 The optimization problem we need to solve is the following:
 \begin{equation}
-\min_{\textbf{u}} \sum_{i=1}^I J_i(\textbf{u})
+\min_{\textbf{u}} \sum_{i=1}^N J_i(\textbf{u})
 \end{equation}
 where $\textbf{u}$ is a common decision variable, while the cost function (expressed in formula \ref{Cost_funct}) is the sum of $N$ local contributes
 
