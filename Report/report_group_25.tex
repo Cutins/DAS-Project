@@ -120,7 +120,7 @@ The primary motivation behind our work is to leverage the collective computation
 
 In addition to enlarge computational capabilities, distributed systems offer inherent fault tolerance and resilience. Decentralizing computation and data storage reduces the risk of single points of failure, ensuring the system's robustness. This is crucial in critical applications.
 
-Scalability in another key motivation for exploring distributed systems. As datasets grow exponentially, centralized systems often struggle to handle the increasing computational demands. Distributed systems can handle large amounts of data by easily adding more agents to the network, allowing efficient processing.
+Scalability is another key motivation for exploring distributed systems. As datasets grow exponentially, centralized systems often struggle to handle the increasing computational demands. Distributed systems can handle large amounts of data by easily adding more agents to the network, allowing efficient processing.
 
 %\section*{Contributions}
 
@@ -240,7 +240,7 @@ x_l^+= \sigma(x^T u_l + u_{l_0})
 \end{equation}
 with $\sigma: \mathbb{R} \to \mathbb{R}$.
 
-Notation: $l$ identifies a neuron, a single computational unit, $u_l \in \mathbb{R}^{d+1}$ is the set of weights associated to it, with the bias ($u_{l_0}$), and $x$ is the "state" vector the neuron updates thanks to the the activation function. 
+Notation: $l$ identifies a neuron, a single computational unit, $u_l \in \mathbb{R}^{d+1}$ is the set of weights associated to it, with the bias ($u_{l_0}$), and $x$ is the "state" vector the neuron updates thanks to the activation function. 
 
 \bigskip
 The activation function introduces non-linearity to the neuron's output, allowing the network to learn and model complex relationships between inputs and outputs.
@@ -260,7 +260,7 @@ and its derivative is:
 The initial connection weights for our neural network have been randomly initialized very close to zero, the same for the bias.
 
 \section{Training}
-The training happens as a sequence of epochs, every epoch contains multiple mini-batches that are small sets of images. For each mini-batch the computations are the following:
+The training happens as a sequence of epochs, every epoch contains multiple minibatches that are small sets of images. For each mini-batch the computations are the following:
 
 \begin{itemize}
     \item Forward pass to compute the prediction;
@@ -297,7 +297,7 @@ Its derivative with respect to the prediction $\hat{y}$, is:
 The training happens in a distributed fashion: several agents run a neural network with the same structure on different training sets and communicate with neighbors according to a certain communication graph. A scheme can be seen in figure \ref{Distributed_learning}
 
 \bigskip
-In a distributed computation the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G$ with $N$ nodes, one for each agent. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the graph $G$ contains an edge connecting $i$ to $j$ (or $j$ to $i$).
+In a distributed computation, the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G$ with $N$ nodes, one for each agent. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the graph $G$ contains an edge connecting $i$ to $j$ (or $j$ to $i$).
 
 \bigskip
 Thus, in agent's networks, the goal is to design a proper distributed algorithm, such as the \textbf{Gradient Tracking algorithm}, that allows multiple agents in the network to collectively solve an optimization problem by tracking the gradient information of a global objective function.
@@ -305,7 +305,7 @@ The optimization problem we need to solve is the following:
 \begin{equation}
 \min_{\textbf{u}} \sum_{i=1}^I J_i(\textbf{u})
 \end{equation}
-where $\textbf{u}$ is a common decision variable, while the cost function (expressed in formula \ref{Cost_funct} is the sum of $N$ local contributes
+where $\textbf{u}$ is a common decision variable, while the cost function (expressed in formula \ref{Cost_funct}) is the sum of $N$ local contributes
 
 \bigskip
 If we suppose that our optimization cost coupled problem has an optimal solution $\textbf{u}^*$, we want our optimization algorithm to make all agents update their own local estimates $\textbf{u}_i^k$ in such a way to converge to the optimal consensual value.
@@ -322,10 +322,10 @@ where the variable $s_i^k$ is a local estimate used as an estimation of the loca
 \bigskip
 The assumptions we need to satisfy in order the algorithm to converge are the following:
 \begin{itemize}
-\item \textit{Ass.1}: Let  $a_{ij}$, $i,j \in \{1, \ldots, N\}$ be non-negative entries of a weighted adjacency matrix A associated to the undirected and connected graph G, with $a_{ii}>0$ and A doubly stochastic.
+\item \textit{Ass.1}: Let  $a_{ij}$, $i,j \in \{1, \ldots, N\}$ be non-negative entries of a weighted adjacency matrix A associated to the undirected and connected graph $G$, with $a_{ii}>0$ and A doubly stochastic.
 \item \textit{Ass.2}: For all $i \in \{1, \ldots, N\}$ each cost function $f_i: \mathbb{R}^d \to \mathbb{R}$ satisfies the following conditions: strongly convex with coefficient $\mu >0$, and Lipschitz continuous gradient with constant $L>0$.
 \end{itemize}
-Thanks to these assumptions it can be shown that there exists a $\alpha^*>0$ (constant stepsize) such that for all $\alpha \in (0,\alpha^*)$, the sequence of local solution estimates $\{x_i^k\}_{k\geq0}$ asymptotically converge to a (consensual) solution $u^*$ of the problem.
+Thanks to these assumptions it can be shown that there exists a $\alpha^*>0$ (constant stepsize) such that for all $\alpha \in (0,\alpha^*)$, the sequence of local solution estimates $\{x_i^k\}_{k\geq0}$ asymptotically converge to a (consensual) solution $\textbf{u}^*$ of the problem.
 
 \bigskip
 The adjacency matrix $A$ from which we extract the coefficient $a_{ij}$ is, as previously said, a non-negative matrix such that the entry $(i,j)$ is $a_{ij}>0$ if $(i,j)$ is and edge of the graph, $a_{ij}=0$ otherwise.
@@ -338,6 +338,8 @@ A_{ij} =
 0, &\text{otherwise}
 \end{cases}
 \end{equation}
+
+\bigskip
 In our implementation of the Gradient Tracking algorithm, applied to the federated learning of a neural network,  we compute the new weights $x^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $x^{k+1}$.
 
 \section{Experiments and Results}
@@ -393,11 +395,11 @@ From the plots in \ref{cycle_cost_grad} we can appreciate the evolution of the c
 
 \bigskip
 
-After that, to check if the network reaches the consensus, we choose the weight associated to a single connection (in particular the one that connects the first neuron of the hidden layer with the neuron of the output layer, called $u_c$). We have decided to plot, in order to have a more readable graph, the difference between the value of this connection and its mean value across the all the agents.
+After that, to check if the network reaches the consensus, we choose the weight associated to a single connection (in particular the one that connects the first neuron of the hidden layer with the neuron of the output layer, called $u_c$). We have decided to plot, in order to have a more readable graph, the difference between the value of this connection and its mean value across all the agents.
 \begin{equation}
 \text{Error} = u_{ci} - \frac{1}{N}\sum_{i=1}^N u_{ci}
 \end{equation}
-Theoretically, at consensus, this value should be equal to to zero. Indeed, from the plot \ref{cycle_consensus} we can see that these differences approaches the zero value, therefore the networks converge to a consensus.  This plots have been done over $3000$ updates, in fact, since we are working with the minibatches, each epoch corresponds to a number of updates equal to the number of a minibatches.
+Theoretically, at consensus, this value should be equal to to zero. Indeed, from the plot \ref{cycle_consensus} we can see that this difference approaches the zero value, therefore the networks converge to a consensus.  This plots have been done over $3000$ updates, in fact, since we are working with the minibatches, each epoch corresponds to a number of updates equal to the number of a minibatches.
 
 \bigskip
 In this experiment we reached an accuracy of $97.6\%$ on the test set.
