@@ -143,12 +143,12 @@ class Agent(Node):
                     if self.start_moving and self.type: # Leader
 
                         ## Uncomment to run {circular, target, linear} trajectory
-                        # discrete_time = self.kk - self.k_start_moving
-                        # delta_pos = delta_pos + (circle_trajectory(self, discrete_time, self.move))
+                        discrete_time = self.kk - self.k_start_moving
+                        delta_pos = delta_pos + (circle_trajectory(self, discrete_time, self.move))
                         
                         # delta_pos = delta_pos + trajectory_to_target(self, self.pos_target, self.pos)
 
-                        delta_pos = delta_pos + linear_trajectory(self, self.move)
+                        # delta_pos = delta_pos + linear_trajectory(self, self.move)
 
                         
                     # Update of dynamics

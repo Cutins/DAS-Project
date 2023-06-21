@@ -5,7 +5,7 @@ import networkx as nx
 import os
 from ament_index_python.packages import get_package_share_directory
 
-MAXITERS = 1000
+MAXITERS = 500
 N = 6
 n_dim = 3 # State dimension
 pos_init = (np.random.rand(N, 3) - 0.5) *0.1
@@ -20,7 +20,7 @@ for i in range(N):
     if i%2 == 1:
         agent_types[i] = 1 # Leaders -> 1
 
-move = 2   # Raggio del cerchio
+move = 2.5   # Raggio del cerchio
 
 # Target postion
 target = np.zeros((n_dim))

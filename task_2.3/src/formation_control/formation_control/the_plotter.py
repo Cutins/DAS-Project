@@ -129,7 +129,7 @@ class Plot(Node):
                     plt.plot(range(self.max_iters), self.all_in_formation[:], label='All agents are in formation', color ='r', linewidth = 0.5)
                     plt.xlabel(r'Iterations $[k]$')
                     plt.ylabel(r"$\frac{1}{|\mathcal{N}_i|} ( \sum_{j\in\mathcal{N}_i} \frac{1}{4} ( || x_i^k - x_j^k || ^2 - d_{ij}^2 )^2 )$")  
-                    plt.title('Formation potential - check')
+                    plt.title('Formation potential and check')
                     plt.legend()
                     plt.grid()
 
