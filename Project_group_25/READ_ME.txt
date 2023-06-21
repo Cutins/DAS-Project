@@ -17,6 +17,7 @@ The /lib/ folder contains the following files:
 - data_load.py: to load, balance and preprocess the mnist dataset 
 - graph.py: contains all the connection settings (graph type, metropolis Hastings weights, ...)
 - network_dynamics.py: contains all the functions used in the network training and the accuracy
+- plot.py: contains functions for saving plots during training
 
 The main file is "NN_Gradient_Tracking.py" that executes the distributed training of the network and the test.
 
