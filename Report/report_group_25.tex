@@ -528,7 +528,44 @@ In case of the path graph, less connected than the cycle, the value of $10^{-7}$
 
 Differently, in the figure \ref{star_test}, representing the star graph, we observe that the more connected node (the centre of the star, agent 0) approach the average at a faster pace with respect to the less connected ones. In particular, the inner node of the star graph.
 
+\section{Fourth test: diminishing stepsize}
+Since the simulation requires an high computational time we have tried to run a simulation with a diminishing stepsize instead of a constant one. In this case we have chose to start from a stepzise equal to $1e^{-1}$ that decreases linearly during the iterations up to a stepsize of $1e^{-6}$.
+After $3092$ epochs the simulation stopped since we have introduced a stopping criterion on the decreasing rate of the gradient of the cost function: if in the last $50$ epochs the gradient has diminished of a value smaller than $1e^{-5}$ the simulation stops.
 
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{diminishing/J-log}
+	\caption{Cost evolution in log-scale}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{diminishing/norm_gradient_J}
+	\caption{Gradient evolution in log-scale}
+	\end{subfigure}
+\caption{Evolution of the cost function and of the gradient.}
+\label{diminish_cost_grad}
+\end{figure}
+
+This test has produced, as shown in figure \ref{diminish_cost_grad} very good results: the gradient reaches a value smaller then $1e^{-4}$, so the resulting weights will be very close to the optimum consensus value. 
+
+\begin{figure}[h]
+\centering
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{diminishing/weight_100}
+	\caption{Weights evolution}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{diminishing/weight_100_log}
+	\caption{Single weight (last neuron) evolution}
+	\end{subfigure}
+\caption{Evolution of a weights to consensus with diminishing stepsize over 100 epochs}
+\label{diminish_weights}
+\end{figure}
+\bigskip
+
+Also the results about consensus in \ref{diminish_weights} seems to be good but not so different with respect to the ones obtained with the constant stepsize. We could conclude that the stepsize does not influence so much the convergence rate to the consensus value.
 
 
 \chapter{Formation Control} 
@@ -600,12 +637,13 @@ We have tested several formation-shapes that involve different number of agents.
 \begin{figure}[h]
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.24]{pentagon_rviz}
+	\centering
+	\includegraphics[width=0.72\textwidth]{pentagon_rviz}
 	\caption{RViz visualization}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Task-2.2_Formation-p_No-Coll-Avoid_Pentagon}
+	\includegraphics[width=1.2\textwidth]{Task-2.2_Formation-p_No-Coll-Avoid_Pentagon}
 	\caption{Formation potential plot}
 	\end{subfigure}
 \caption{Pentagon formation with $5$ agents}
@@ -615,12 +653,12 @@ We have tested several formation-shapes that involve different number of agents.
 \begin{figure}
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.24]{hexagon_rviz}
+	\includegraphics[width=\textwidth]{hexagon_rviz}
 	\caption{RViz visualization}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Task-2.2_Formation-p_No-Coll-Avoid_Hexagon}
+	\includegraphics[width=\textwidth]{Task-2.2_Formation-p_No-Coll-Avoid_Hexagon}
 	\caption{Formation potential plot}
 	\end{subfigure}
 \caption{Hexagon formation with $6$ agents}
@@ -629,13 +667,13 @@ We have tested several formation-shapes that involve different number of agents.
 
 \begin{figure}
 \centering
-	\begin{subfigure}{0.48\textwidth}	
-	\includegraphics[scale=0.43]{Pentagon_path}
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{Pentagon_path.jpg}
 	\caption{Paths for pentagon formation}
 	\end{subfigure}
 \hfill
-	\begin{subfigure}{0.48\textwidth}	
-	\includegraphics[scale=0.43]{Hexagon_path}
+	\begin{subfigure}{0.49\textwidth}	
+	\includegraphics[width=\textwidth]{Hexagon_path.jpg}
 	\caption{Paths for hexagon formation}
 	\end{subfigure}
 \caption{Paths followed by agents to reach formation}
@@ -669,7 +707,7 @@ In formation control, the control laws typically consists of two components: att
 
 \begin{figure}[h]
 \centering
-	\includegraphics[scale=0.25]{Collision}
+	\includegraphics[scale=0.25]{Collision.jpg}
 	\caption{Collision among two agents during hexagon formation}
 	\label{Collision}
 \end{figure}
@@ -699,12 +737,12 @@ And the total control law becomes:
 \begin{figure}[h]
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Hexagon_path}
+	\includegraphics[width=\textwidth]{Hexagon_path.jpg}
 	\caption{Path followed by agents without collision avoidance term}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Hexagon_path_collision}
+	\includegraphics[width=\textwidth]{Hexagon_path_collision.jpg}
 	\caption{Path followed by agents with collision avoidance term}
 	\end{subfigure}
 \caption{Comparison among paths with and without collision avoidance term}
@@ -738,7 +776,7 @@ We have modified the \texttt{formation\_control.launch.py} in order to pass to t
 
 \begin{figure}[h]
 \centering
-	\includegraphics[scale=0.4]{Task-2.3_Formation-p_Linear-trj_Hexagon}
+	\includegraphics[scale=0.6]{Task-2.3_Formation-p_Linear-trj_Hexagon}
 	\caption{Check on the formation accomplishment}
 	\label{Check}
 \end{figure}
@@ -751,7 +789,7 @@ From this moment on, the dynamics evolution changes: the followers continue with
 
 \begin{figure}[h]
 \centering
-	\includegraphics[scale=0.5]{Moving_hexagon_formation_linear}
+	\includegraphics[scale=0.4]{Moving_hexagon_formation_linear.jpg}
 	\caption{Motion of the formation along the $x$-axis}
 	\label{Formation_motion_lin}
 \end{figure}
@@ -761,12 +799,12 @@ Figure \ref{Formation_motion_lin} represents the motion of the formation along t
 \begin{figure}[h]
 \centering
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Moving_hexagon_formation_circle_r_2}
+	\includegraphics[width=\textwidth]{Moving_hexagon_formation_circle_r_2.jpg}
 	\caption{Moving along a circle of radius $2$}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.42]{Moving_hexagon_formation_circle_r_5}
+	\includegraphics[width=\textwidth]{Moving_hexagon_formation_circle_r_5.jpg}
 	\caption{Moving along a circle of radius $5$}
 	\end{subfigure}
 \caption{Motion of the formation along a circular path}
@@ -806,13 +844,18 @@ where $k$ is a proper proportional gain.
 
 \begin{figure}[h]
 \centering
-	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.43]{Hexagon_obstacle}
+	\begin{subfigure}{0.32\textwidth}	
+	\includegraphics[width=\textwidth]{Hexagon_obstacle_Initial.jpg}
+	\caption{Agents have reached the target formation}
+	\end{subfigure}
+\hfill
+	\begin{subfigure}{0.32\textwidth}	
+	\includegraphics[width=\textwidth]{Hexagon_obstacle.jpg}
 	\caption{Motion of formation to pass in between obstacles}
 	\end{subfigure}
 \hfill
-	\begin{subfigure}{0.49\textwidth}	
-	\includegraphics[scale=0.43]{Hexagon_obstacle_target}
+	\begin{subfigure}{0.32\textwidth}	
+	\includegraphics[width=\textwidth]{Hexagon_obstacle_target.jpg}
 	\caption{Formation that reaches target position}
 	\end{subfigure}
 \caption{Obstacle avoidance}
