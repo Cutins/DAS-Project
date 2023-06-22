@@ -46,7 +46,7 @@ The folder contains the following subfolders:
 
 
 Inside each folder will be created a '_csv_file' folder containing the data (x, y) of the last simulation. 
-In order to see the plots run the "plot_csv.py" by properly setting the PLOT_TASK option in the CONFIG section.
+In order to see the plots run the "plot_csv.py" by properly setting the PLOT_TASK option in the CONFIG section, please pay attention to insert the right path to "_csv_file" folder.
 
 # How to run a simulation
 

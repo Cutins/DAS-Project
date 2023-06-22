@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  22 JUN 2023 00:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.6.16)  22 JUN 2023 11:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -770,36 +770,28 @@ File: ./figs/mnist.png Graphic file (type png)
 Package pdftex.def Info: ./figs/mnist.png  used on input line 144.
 (pdftex.def)             Requested size: 112.92159pt x 112.92159pt.
 
-Overfull \hbox (0.58124pt too wide) in paragraph at lines 153--154
-\OT1/cmr/m/n/10.95 the images (file \OT1/cmtt/m/n/10.95 lib/data[]load.py\OT1/c
-mr/m/n/10.95 ). We flattened the $28 \OMS/cmsy/m/n/10.95 ^^B \OT1/cmr/m/n/10.95
- 28$ pixels grayscale
+Overfull \hbox (7.21075pt too wide) in paragraph at lines 150--151
+\OT1/cmr/m/n/10.95 (white), an example in figure [][]1.1[][]. In order to perfo
+rm our task we implemented
  []
 
 [6
 
  <./figs/mnist.png>] 1, 2, 3, [7]
-Overfull \hbox (0.61748pt too wide) in paragraph at lines 269--270
-[]\OT1/cmr/m/n/10.95 The initial connection weights for our neural network have
- been randomly
+Overfull \hbox (16.4342pt too wide) in paragraph at lines 269--270
+[]\OT1/cmr/m/n/10.95 The initial con-nec-tions for our neural network have been
+ randomly initialized
  []
 
 [8]
 <./figs/Distributed_learning.png, id=166, 717.68124pt x 793.96625pt>
 File: ./figs/Distributed_learning.png Graphic file (type png)
 <use ./figs/Distributed_learning.png>
-Package pdftex.def Info: ./figs/Distributed_learning.png  used on input line 30
-1.
+Package pdftex.def Info: ./figs/Distributed_learning.png  used on input line 29
+9.
 (pdftex.def)             Requested size: 143.5337pt x 158.79044pt.
-
-Overfull \hbox (1.83424pt too wide) in paragraph at lines 309--310
-\OT1/cmr/m/n/10.95 communicate with another agent $\OML/cmm/m/it/10.95 j$ \OT1/
-cmr/m/n/10.95 if the graph $\OML/cmm/m/it/10.95 G$ \OT1/cmr/m/n/10.95 contains 
-an edge connecting
- []
-
-[9 <./figs/Distributed_learning.png>] [10]
-Overfull \hbox (1.19835pt too wide) in paragraph at lines 352--353
+ [9 <./figs/Distributed_learning.png>] [10]
+Overfull \hbox (1.19835pt too wide) in paragraph at lines 351--352
 \OT1/cmr/m/n/10.95 after the backward pass since its computation requires the g
 radient computed
  []
@@ -808,21 +800,21 @@ radient computed
 <./figs/cycle/graph.png, id=193, 462.528pt x 346.896pt>
 File: ./figs/cycle/graph.png Graphic file (type png)
 <use ./figs/cycle/graph.png>
-Package pdftex.def Info: ./figs/cycle/graph.png  used on input line 383.
+Package pdftex.def Info: ./figs/cycle/graph.png  used on input line 382.
 (pdftex.def)             Requested size: 115.20264pt x 86.4009pt.
 <./figs/cycle/cost_log.png, id=195, 587.19376pt x 481.8pt>
 File: ./figs/cycle/cost_log.png Graphic file (type png)
 <use ./figs/cycle/cost_log.png>
-Package pdftex.def Info: ./figs/cycle/cost_log.png  used on input line 393.
+Package pdftex.def Info: ./figs/cycle/cost_log.png  used on input line 392.
 (pdftex.def)             Requested size: 176.40198pt x 144.73961pt.
 <./figs/cycle/gradient_log.png, id=196, 640.3925pt x 481.8pt>
 File: ./figs/cycle/gradient_log.png Graphic file (type png)
 <use ./figs/cycle/gradient_log.png>
-Package pdftex.def Info: ./figs/cycle/gradient_log.png  used on input line 398.
+Package pdftex.def Info: ./figs/cycle/gradient_log.png  used on input line 397.
 
 (pdftex.def)             Requested size: 190.51445pt x 143.32808pt.
 
-Overfull \hbox (14.11247pt too wide) in paragraph at lines 398--399
+Overfull \hbox (14.11247pt too wide) in paragraph at lines 397--398
 [][] 
  []
 
@@ -831,63 +823,63 @@ _log.png>]
 <./figs/cycle/weight_100.png, id=207, 462.528pt x 346.896pt>
 File: ./figs/cycle/weight_100.png Graphic file (type png)
 <use ./figs/cycle/weight_100.png>
-Package pdftex.def Info: ./figs/cycle/weight_100.png  used on input line 419.
+Package pdftex.def Info: ./figs/cycle/weight_100.png  used on input line 418.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/cycle/weight_100_log.png, id=208, 462.528pt x 346.896pt>
 File: ./figs/cycle/weight_100_log.png Graphic file (type png)
 <use ./figs/cycle/weight_100_log.png>
 Package pdftex.def Info: ./figs/cycle/weight_100_log.png  used on input line 42
-4.
+3.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
  [13 <./figs/cycle/weight_100.png> <./figs/cycle/weight_100_log.png>]
-Overfull \hbox (4.14966pt too wide) in paragraph at lines 455--455
+Overfull \hbox (4.14966pt too wide) in paragraph at lines 454--454
 []\OT1/cmr/bx/n/14.4 Third test: impact of graph shape on consensus 
  []
 
 File: ./figs/cycle/graph.png Graphic file (type png)
 <use ./figs/cycle/graph.png>
-Package pdftex.def Info: ./figs/cycle/graph.png  used on input line 461.
+Package pdftex.def Info: ./figs/cycle/graph.png  used on input line 460.
 (pdftex.def)             Requested size: 115.20264pt x 86.4009pt.
 <./figs/path/graph.png, id=218, 462.528pt x 346.896pt>
 File: ./figs/path/graph.png Graphic file (type png)
 <use ./figs/path/graph.png>
-Package pdftex.def Info: ./figs/path/graph.png  used on input line 466.
+Package pdftex.def Info: ./figs/path/graph.png  used on input line 465.
 (pdftex.def)             Requested size: 115.20264pt x 86.4009pt.
 <./figs/star/graph.png, id=219, 462.528pt x 346.896pt>
 File: ./figs/star/graph.png Graphic file (type png)
 <use ./figs/star/graph.png>
-Package pdftex.def Info: ./figs/star/graph.png  used on input line 471.
+Package pdftex.def Info: ./figs/star/graph.png  used on input line 470.
 (pdftex.def)             Requested size: 115.20264pt x 86.4009pt.
 File: ./figs/cycle/weight_100.png Graphic file (type png)
 <use ./figs/cycle/weight_100.png>
-Package pdftex.def Info: ./figs/cycle/weight_100.png  used on input line 491.
+Package pdftex.def Info: ./figs/cycle/weight_100.png  used on input line 490.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 File: ./figs/cycle/weight_100_log.png Graphic file (type png)
 <use ./figs/cycle/weight_100_log.png>
 Package pdftex.def Info: ./figs/cycle/weight_100_log.png  used on input line 49
-6.
+5.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 [14 <./figs/path/graph.png> <./figs/star/graph.png>]
 <./figs/path/weight_100.png, id=229, 462.528pt x 346.896pt>
 File: ./figs/path/weight_100.png Graphic file (type png)
 <use ./figs/path/weight_100.png>
-Package pdftex.def Info: ./figs/path/weight_100.png  used on input line 508.
+Package pdftex.def Info: ./figs/path/weight_100.png  used on input line 507.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs//path/weight_100_log.png, id=230, 462.528pt x 346.896pt>
 File: ./figs//path/weight_100_log.png Graphic file (type png)
 <use ./figs//path/weight_100_log.png>
 Package pdftex.def Info: ./figs//path/weight_100_log.png  used on input line 51
-3.
+2.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/star/weight_100.png, id=231, 462.528pt x 346.896pt>
 File: ./figs/star/weight_100.png Graphic file (type png)
 <use ./figs/star/weight_100.png>
-Package pdftex.def Info: ./figs/star/weight_100.png  used on input line 526.
+Package pdftex.def Info: ./figs/star/weight_100.png  used on input line 525.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/star/weight_100_log.png, id=232, 462.528pt x 346.896pt>
 File: ./figs/star/weight_100_log.png Graphic file (type png)
 <use ./figs/star/weight_100_log.png>
-Package pdftex.def Info: ./figs/star/weight_100_log.png  used on input line 531
+Package pdftex.def Info: ./figs/star/weight_100_log.png  used on input line 530
 .
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 
@@ -898,25 +890,25 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./figs/diminishing/J-log.png, id=243, 462.528pt x 346.896pt>
 File: ./figs/diminishing/J-log.png Graphic file (type png)
 <use ./figs/diminishing/J-log.png>
-Package pdftex.def Info: ./figs/diminishing/J-log.png  used on input line 547.
+Package pdftex.def Info: ./figs/diminishing/J-log.png  used on input line 546.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/diminishing/norm_gradient_J.png, id=244, 462.528pt x 346.896pt>
 File: ./figs/diminishing/norm_gradient_J.png Graphic file (type png)
 <use ./figs/diminishing/norm_gradient_J.png>
 Package pdftex.def Info: ./figs/diminishing/norm_gradient_J.png  used on input 
-line 552.
+line 551.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/diminishing/weight_100.png, id=246, 462.528pt x 346.896pt>
 File: ./figs/diminishing/weight_100.png Graphic file (type png)
 <use ./figs/diminishing/weight_100.png>
 Package pdftex.def Info: ./figs/diminishing/weight_100.png  used on input line 
-564.
+563.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 <./figs/diminishing/weight_100_log.png, id=247, 462.528pt x 346.896pt>
 File: ./figs/diminishing/weight_100_log.png Graphic file (type png)
 <use ./figs/diminishing/weight_100_log.png>
 Package pdftex.def Info: ./figs/diminishing/weight_100_log.png  used on input l
-ine 569.
+ine 568.
 (pdftex.def)             Requested size: 176.40198pt x 132.30353pt.
 
 
@@ -994,13 +986,13 @@ Underfull \hbox (badness 1127) in paragraph at lines 750--750
 []\OT1/cmr/m/n/10 (a) |Path followed by agents without
  []
 
-<./figs/Hexagon_path_collision.jpg, id=318, 642.4pt x 481.8pt>
+<./figs/Hexagon_path_collision.jpg, id=317, 642.4pt x 481.8pt>
 File: ./figs/Hexagon_path_collision.jpg Graphic file (type jpg)
 <use ./figs/Hexagon_path_collision.jpg>
 Package pdftex.def Info: ./figs/Hexagon_path_collision.jpg  used on input line 
 754.
 (pdftex.def)             Requested size: 176.40198pt x 132.30058pt.
-<./figs/Task-2.2_Formation-p_Yes-Coll-Avoid_Hexagon.png, id=322, 462.528pt x 34
+<./figs/Task-2.2_Formation-p_Yes-Coll-Avoid_Hexagon.png, id=321, 462.528pt x 34
 6.896pt>
 File: ./figs/Task-2.2_Formation-p_Yes-Coll-Avoid_Hexagon.png Graphic file (type
  png)
@@ -1018,7 +1010,7 @@ Underfull \hbox (badness 4995) in paragraph at lines 767--767
 []\OT1/cmr/m/n/10 (a) |Formation potential (attraction)
  []
 
-<./figs/Barrier_potential_hexagon_collision.png, id=323, 462.528pt x 346.896pt>
+<./figs/Barrier_potential_hexagon_collision.png, id=322, 462.528pt x 346.896pt>
 
 File: ./figs/Barrier_potential_hexagon_collision.png Graphic file (type png)
 <use ./figs/Barrier_potential_hexagon_collision.png>
@@ -1069,25 +1061,22 @@ Package pdftex.def Info: ./figs/Moving_hexagon_formation_circle_r_5.jpg  used o
 n input line 816.
 (pdftex.def)             Requested size: 176.40198pt x 132.30058pt.
 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 Overfull \hbox (4.1154pt too wide) in paragraph at lines 824--825
 []\OT1/cmr/m/n/10.95 We have also tried to give the leaders a proper input in o
 rder to accomplish
  []
 
-[25 <./figs/Moving_hexagon_formation_linear.jpg> <./figs/Moving_hexagon_formati
-on_circle_r_2.jpg> <./figs/Moving_hexagon_formation_circle_r_5.jpg>]
-Overfull \hbox (15.81596pt too wide) in paragraph at lines 829--830
-\OT1/cmr/bx/n/10.95 Task 2.4 \OT1/cmr/m/n/10.95 asked to us to introduce obstac
-le avoidance in our \OT1/cmtt/m/n/10.95 formation[]control
- []
-
-
+[25 <./figs/Moving_hexagon_formation_linear.jpg>]
 Overfull \hbox (3.41873pt too wide) in paragraph at lines 848--849
 \OT1/cmr/m/n/10.95 toward the target position, we have used the following propo
 rtional controller: 
  []
 
-<./figs/Hexagon_obstacle_Initial.jpg, id=357, 642.4pt x 481.8pt>
+<./figs/Hexagon_obstacle_Initial.jpg, id=355, 642.4pt x 481.8pt>
 File: ./figs/Hexagon_obstacle_Initial.jpg Graphic file (type jpg)
 <use ./figs/Hexagon_obstacle_Initial.jpg>
 Package pdftex.def Info: ./figs/Hexagon_obstacle_Initial.jpg  used on input lin
@@ -1098,7 +1087,7 @@ Underfull \hbox (badness 3657) in paragraph at lines 858--858
 []\OT1/cmr/m/n/10 (a) |Agents have reached the target
  []
 
-<./figs/Hexagon_obstacle.jpg, id=358, 642.4pt x 481.8pt>
+<./figs/Hexagon_obstacle.jpg, id=356, 642.4pt x 481.8pt>
 File: ./figs/Hexagon_obstacle.jpg Graphic file (type jpg)
 <use ./figs/Hexagon_obstacle.jpg>
 Package pdftex.def Info: ./figs/Hexagon_obstacle.jpg  used on input line 862.
@@ -1108,7 +1097,7 @@ Underfull \hbox (badness 2443) in paragraph at lines 863--863
 []\OT1/cmr/m/n/10 (b) |Motion of formation to pass in
  []
 
-<./figs/Hexagon_obstacle_target.jpg, id=359, 642.4pt x 481.8pt>
+<./figs/Hexagon_obstacle_target.jpg, id=357, 642.4pt x 481.8pt>
 File: ./figs/Hexagon_obstacle_target.jpg Graphic file (type jpg)
 <use ./figs/Hexagon_obstacle_target.jpg>
 Package pdftex.def Info: ./figs/Hexagon_obstacle_target.jpg  used on input line
@@ -1117,10 +1106,12 @@ Package pdftex.def Info: ./figs/Hexagon_obstacle_target.jpg  used on input line
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[26] [27] [28 <./figs/Hexagon_obstacle_Initial.jpg> <./figs/Hexagon_obstacle.jp
-g> <./figs/Hexagon_obstacle_target.jpg>] [29
+[26 <./figs/Moving_hexagon_formation_circle_r_2.jpg> <./figs/Moving_hexagon_for
+mation_circle_r_5.jpg>] [27] [28 <./figs/Hexagon_obstacle_Initial.jpg> <./figs/
+Hexagon_obstacle.jpg> <./figs/Hexagon_obstacle_target.jpg>] [29
 
-] (report_group_25.aux)
+]
+(report_group_25.aux)
 Package rerunfilecheck Info: File `report_group_25.out' has not changed.
 (rerunfilecheck)             Checksum: 79A2F3FD00D1C2FB87588B21DF6FC21B;3393.
  ) 
@@ -1131,7 +1122,7 @@ Here is how much of TeX's memory you used:
  43557 multiletter control sequences out of 15000+600000
  523828 words of font info for 76 fonts, out of 8000000 for 9000
  8 hyphenation exceptions out of 8191
- 84i,9n,89p,835b,982s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,11n,89p,844b,982s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/giulia/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm109
 5.pk></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx10
 .pfb></home/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12
@@ -1150,7 +1141,7 @@ e/giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy8.pfb></home
 /giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb></home
 /giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt10.pfb></home
 /giulia/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on report_group_25.pdf (29 pages, 1676380 bytes).
+Output written on report_group_25.pdf (29 pages, 1676676 bytes).
 PDF statistics:
  483 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)

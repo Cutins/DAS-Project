@@ -108,10 +108,10 @@
 The report shows the development of two projects that aim to present some of the possible applications of distributed systems in different fields.
 
 \bigskip
-The report is organized as follows: in the first chapter we describe the distributed implementation of a binary supervised classification task for images of handwritten digits. The aim is to run in parallel several neural networks by different agents that communicate only locally with neighbors, and thanks to a distributed algorithm, the \textit{Gradient Tracking algorithm} we expect them to obtain the same performances on a common test set. We show different tests we have performed, such as how the accuracy changes by changing the target digit or how the type of connection graph among agents influences the number of epochs required to reach consensus.
+The report is organized as follows: in the first chapter we describe the distributed implementation of a binary supervised classification task for images of handwritten digits. The aim is to run in parallel several neural networks by different agents that communicate only locally with neighbors, and thanks to a distributed algorithm, the \textit{Gradient Tracking algorithm} we expect them to obtain the same performances on a common test set. We show different tests we have performed, such as how the accuracy changes by changing the target digit or how the type of connection graph among agents influences the number of updates required to reach consensus.
 
 \bigskip
-In the second chapter we describe a ROS2 implementation of the distance-based formation control law by exploiting several real possible scenarios. The first test was to obtain several different chosen shapes, as a formation for our team of robots, both in 2D and in 3D. 
+In the second chapter we describe a ROS2 implementation of the distance-based formation control law by exploiting several real possible scenarios. The first test was to obtain different chosen shapes, as a formation for our team of robots, both in 2D and in 3D. 
 Then we have introduced collision avoidance among the agents and tried to steer the formation according to a certain assigned motion or toward a target position. In order to do that, we have defined proper control laws to give to the leaders of the formation the required input to accomplish the task.
 The simulations showed by means of RViz.
 
@@ -147,10 +147,10 @@ Scalability is another key motivation for exploring distributed systems. As data
 \end{figure}
 
 
-In the first task we should classify a set of grayscale images. The \texttt{mnist} dataset, downloaded from the Keras, collects images of handwritten digits of $28\times28$ pixels each one, with a value between 0 (black) and 255(white), an example in figure \ref{mnist}. In order to perform our task we implemented a distributed classification where, given a predefined number of agents, each of them trains an own neural network. To make possible to the whole cyber-network to converge to a common value over the connection weights we have implemented a distributed Gradient Tracking algorithm. This approach ensures that consensus is reached even though these networks train only on locally available data, that is, they ''see'' only a fraction of the global optimization problem.
+In the first task we should classify a set of grayscale images. The \texttt{mnist} dataset, downloaded from the Keras library, collects images of handwritten digits of $28\times28$ pixels each one, with a value between 0 (black) and 255 (white), an example in figure \ref{mnist}. In order to perform our task we implemented a distributed classification where, given a predefined number of agents, each of them trains its own neural network. To make possible to the whole cyber-network to converge to a common value over the connection weights we have implemented a distributed Gradient Tracking algorithm. This approach ensures that consensus is reached even though these networks train only on locally available data, that is, they ''see'' only a fraction of the global optimization problem.
 
 \section{Initial setup}
-The first step was to prepare the dataset by reshaping and a normalization of the images (file \texttt{lib/data\_load.py}). We flattened the $28\times28$ pixel grayscale images in order to obtain a $[784,1]$ column vector, and we normalized the pixel intensities dividing them by a factor of $255$ in order to avoid a saturation of the activation function.
+The first step was to prepare the dataset by reshaping and normalizing the images (file \texttt{lib/data\_load.py}). This is achieved by flattening the $28\times28$ pixel grayscale images in order to obtain a $[784,1]$ column vector, and normalizing the pixel intensities dividing them by a factor of $255$ in order to avoid a saturation of the activation function.
 
 \bigskip
 The classification problem we had to address is binary: we have to choose a digit (named as \texttt{target}) and assign the positive label ($1$) to the corresponding images, while, all the other images are labelled as negatives ($0$).
@@ -266,7 +266,7 @@ and its derivative is:
 \frac{d}{d\xi}\sigma(\xi) = \frac{\sigma(\xi)}{1 - \sigma(\xi)}
 \end{equation}
 
-The initial connection weights for our neural network have been randomly initialized very close to zero, the same for the bias.
+The initial connections for our neural network have been randomly initialized according to a Gaussian distribution with zero mean and $0.01$ variance, the same for the bias.
 
 \section{Training}
 The training happens as a sequence of epochs, every epoch contains multiple minibatches that are small sets of images. For each mini-batch the computations are the following:
@@ -284,15 +284,13 @@ The loss function we used is the \textbf{binary cross-entropy}
 J = - y \cdot \log(\hat{y}) - (1 - y) \cdot \log(1 - \hat{y})
 \label{Cost_funct}
 \end{equation}
-where $\hat{y}$ is the prediction, i.e. the output value of the neuron of the output layer.
+where $\hat{y}$ is the prediction, i.e. the output value of the neuron of the output layer. These predictions are used to compute the gradient on the output layer and thus to start the backward pass on the network.
 
-Its derivative with respect to the prediction $\hat{y}$, is:
+The derivative of the loss function, with respect to the prediction $\hat{y}$, is:
 
 \begin{equation}
 \frac{\partial J}{\partial \hat{y}} = - \frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}}
 \end{equation}
-
-
 
 \subsection{Gradient Tracking algorithm}
 
@@ -306,7 +304,7 @@ Its derivative with respect to the prediction $\hat{y}$, is:
 The training happens in a distributed fashion: several agents run a neural network with the same structure on different training sets and communicate with neighbors according to a certain communication graph. A scheme can be seen in figure \ref{Distributed_learning}
 
 \bigskip
-In a distributed computation, the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G$ with $N$ nodes, one for each agent. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the graph $G$ contains an edge connecting $i$ to $j$ (or $j$ to $i$).
+In a distributed computation, the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G = (\{1, \ldots,N\}, E)$ with $N$ nodes, one for each agent. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the the pair $(i,j) \in E$ or $(j,i) \in E$.
 
 \bigskip
 Thus, in agent's networks, the goal is to design a proper distributed algorithm, such as the \textbf{Gradient Tracking algorithm}, that allows multiple agents in the network to collectively solve an optimization problem by tracking the gradient information of a global objective function.
@@ -314,7 +312,7 @@ The optimization problem we need to solve is the following:
 \begin{equation}
 \min_{\textbf{u}} \sum_{i=1}^N J_i(\textbf{u})
 \end{equation}
-where $\textbf{u}$ is a common decision variable, while the cost function (expressed in formula \ref{Cost_funct}) is the sum of $N$ local contributes
+where $\textbf{u}$ is a common decision variable, while the cost function (expressed in formula \ref{Cost_funct}) is the sum of $N$ local contributes.
 
 \bigskip
 If we suppose that our optimization cost coupled problem has an optimal solution $\textbf{u}^*$, we want our optimization algorithm to make all agents update their own local estimates $\textbf{u}_i^k$ in such a way to converge to the optimal consensual value.
@@ -323,13 +321,13 @@ The formula of the algorithm are the following:
 \begin {equation}
 \begin{aligned}
 u_i^{k+1} &= \sum_{j \in N_i} a_{ij} u_j^k - \alpha s_i^k, \quad & u_i^0 \in \mathbb{R}\\
-s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k - \nabla f_i(x_i^{k+1}) - \nabla f_i(x_i^k) , \quad & s_i^0 = \nabla f_i(x_i^k) \\
+s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k + \big( \nabla f_i(x_i^{k+1}) - \nabla f_i(x_i^k)\big) , \quad & s_i^0 = \nabla f_i(x_i^k) \\
 \end{aligned}
 \end{equation}
 where the variable $s_i^k$ is a local estimate used as an estimation of the local descent direction, and $u_i^k$ is the local update of the connection weights. 
 
 \bigskip
-The assumptions we need to satisfy in order the algorithm to converge are the following:
+The assumptions required by the algorithm to converge are the following:
 \begin{itemize}
 \item \textit{Ass.1}: Let  $a_{ij}$, $i,j \in \{1, \ldots, N\}$ be non-negative entries of a weighted adjacency matrix A associated to the undirected and connected graph $G$, with $a_{ii}>0$ and A doubly stochastic.
 \item \textit{Ass.2}: For all $i \in \{1, \ldots, N\}$ each cost function $f_i: \mathbb{R}^d \to \mathbb{R}$ satisfies the following conditions: strongly convex with coefficient $\mu >0$, and Lipschitz continuous gradient with constant $L>0$.
@@ -347,6 +345,7 @@ A_{ij} =
 0, &\text{otherwise}
 \end{cases}
 \end{equation}
+where $d_i$ and $d_j$ are the out-degrees respectively of node $i$ and $j$.
 
 \bigskip
 In our implementation of the Gradient Tracking algorithm, applied to the federated learning of a neural network,  we compute the new weights $x^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $x^{k+1}$.
@@ -376,7 +375,7 @@ We made different experiments to verify the functioning of the network both as t
 \newpage
 \section{First test: efficiency of the neural network}
 In the first experiment we want to inspect the convergence of the network. In this configuration we have 5 agents communicating according to a \textit{cycle graph} \ref{cycle_graph}, each of them is trained on 32 mini-batches containing 8 samples each for a total of 256 images. 
-We have trained our network over $5000$ epochs with a constant stepsize equal to $1e^{-4}$.
+We have trained our network over $5000$ epochs with a constant stepsize equal to $5e^{-4}$.
 
 \begin{figure}[h]
     \centering
@@ -385,7 +384,7 @@ We have trained our network over $5000$ epochs with a constant stepsize equal to
     \label{cycle_graph}
 \end{figure}
 
-From the plots in \ref{cycle_cost_grad} we can appreciate the evolution of the cost function and the norm of the gradients, both on a logarithmic scale. We have decided to plot both the evolution of the mean values over the agents, and the single agent's values (dotted lines). In particular it is possible to observe that the magnitude of the gradients decreases exponentially over the epochs.
+From the plots in \ref{cycle_cost_grad} we can appreciate the evolution of the cost function and the norm of the gradients, both on a logarithmic scale. We have decided to plot both the evolution of the mean values over the agents, and the single agent's values (dotted lines). In particular it is possible to observe that the magnitude of the gradients quickly decreases over the firsts epochs, and then slows down as the network improves.
 
 \begin{figure}[h]
 \centering
@@ -524,22 +523,22 @@ In case of the path graph, less connected than the cycle, the value of $10^{-7}$
 \centering
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{star/weight_100}
-	\caption{Weights evolution}
+	\caption{Consensus error evolution}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{star/weight_100_log}
-	\caption{Single weight (last neuron) evolution}
+	\caption{Consensus error evolution in log-scale}
 	\end{subfigure}
 \caption{Evolution of a weight to consensus with \textbf{star} graph over 100 epochs}
 \label{star_test}
 \end{figure}
 
-Differently, in the figure \ref{star_test}, representing the star graph, we observe that the more connected node (the centre of the star, agent 0) approach the average at a faster pace with respect to the less connected ones. In particular, the inner node of the star graph.
+Differently, in the figure \ref{star_test}, representing the star graph, we observe that the more connected node (the centre of the star, agent 0) approaches the average at a faster pace with respect to the less connected ones.
 
 \section{Fourth test: diminishing stepsize}
 Since the simulation requires a high computational time we have tried to run a simulation with a diminishing stepsize instead of a constant one. In this case we have chosen to start from a stepzise equal to $1e^{-1}$ that decreases linearly during the iterations up to a stepsize of $1e^{-6}$.
-After $3092$ epochs the simulation stopped since we have introduced a stopping criterion on the decreasing rate of the gradient of the cost function: if in the last $50$ epochs, the gradient has diminished of a value smaller than $1e^{-5}$ the simulation stops.
+After $3092$ epochs the simulation stopped since we have introduced a stopping criterion on the decreasing rate of the gradient of the cost function: if in the last $500$ epochs, the gradient has diminished of a value smaller than $1e^{-5}$ the simulation stops.
 
 \begin{figure}[h]
 \centering
@@ -562,12 +561,12 @@ This test has produced, as shown in figure \ref{diminish_cost_grad} very good re
 \centering
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{diminishing/weight_100}
-	\caption{Weights evolution}
+	\caption{Consensus error evolution}
 	\end{subfigure}
 \hfill
 	\begin{subfigure}{0.49\textwidth}	
 	\includegraphics[width=\textwidth]{diminishing/weight_100_log}
-	\caption{Single weight (last neuron) evolution}
+	\caption{Consensus error evolution in log-scale}
 	\end{subfigure}
 \caption{Evolution of a weight to consensus with diminishing stepsize over 100 epochs}
 \label{diminish_weights}
@@ -599,7 +598,7 @@ l & 0 & d & 0 & l & 0
 \end{bmatrix}
 \end{equation}
 The desired distance value serve as reference value for the control law. The control law computes control signals for each agent based on its current position and the position of the neighboring agents, aiming to drive the agents towards the desired formation.
-The neighbors of a certain agent $i$ can be extracted from the $i$-th row of the distances matrix, by taking the indexes of the elements with $d_j > 0$.
+The neighbors of a certain agent $i$ can be extracted from the $i$-th row of the distances matrix, by taking the indexes of the elements with $d_{ij} > 0$.
 
 By denoting the position of agent $i \in \{1, \cdots, N\}$ at time $t>0$ with $x_i(t) \in \mathbb{R}^3$, one way to approach distance-based formation control involves the usage of \textbf{potential functions}, similar to the following one:
 \begin{equation}
@@ -626,17 +625,18 @@ The solution proposed in the previous section has been implemented in ROS2 envir
 \bigskip
 By means of a launch file (named \texttt{formation\_control.launch.py}), we can generate the desired number of agents and give them the required information in order to accomplish the target formation. In particular, for each agent, the launch file generates a ROS2 node that executes the file named \texttt{the\_agent.py}. Each node gets the following main parameters from the launch file:
 \begin{itemize}
-\item id: a number from $0$ to $N$ associated with the agent's identity
-\item initial position, randomly generated
-\item distances: each agent gets only "its" row of the distances matrix. In this way it will be able to know who are its neighbors and the distances he has to keep from them in the desired configuration
-\item maximum number of dynamic update
+\item id: a number from $0$ to $N-1$ associated with the agent's identity;
+\item initial position, randomly generated;
+\item distances: each agent gets only "its" row of the distances matrix. In this way it will be able to know who are its neighbors and the distances he has to keep from them in the desired configuration;
+\item maximum number of dynamic updates.
 \end{itemize}
-This file manages the dynamic evolution of the agent and the communication with the other ones (the neighbors' ones). For what regards the communication, we have used a publisher-subscriber protocol implemented in ROS2: each node communicates its position only to its neighbors. The communication between nodes is made using a topic for each edge defined in the formation graph. In order to write on a topic or to read from it, the node must know the name of the topic it wants to access.
+This file manages the dynamic evolution of the agent and the communication with the other ones (the neighbors' ones). For what regards the communication, we have used a publisher-subscriber protocol implemented in ROS2: each node communicates its id, iteration and position only to its neighbors. 
+The communication between nodes is made by creating a topic for each agent in the network and letting the neighbors subscribe to the topic, so that they can access to the published information.
 
 \bigskip
 We have developed also a plotter agent (\texttt{the\_plotter.py}) that can read the actual positions of all the other agents in order to visualize the evolution of the trajectories of the whole formation.
 
-For what regards the simulation of the team behaviour, we have used RViz.
+For what regards the simulation and visualization of the team behaviour, we have used RViz.
 
 \subsection{Results}
 In the following we can see some results obtained during the simulation of the \texttt{formation\_control} package. 
@@ -708,7 +708,7 @@ For these formations we have also represented in figure \ref{Paths} the paths th
 \label{Piramid}
 \end{figure}
 
-After that, we have tried a 3D-formation, a square-based pyramid. In order to do that we have initialized all the $x$, $y$ and $z$ positions close to zero. In figure \ref{Piramid} we can see the results obtained with out simulation. The plane the "base-agents" chose, changes from one simulation to the others since we do not have any constraint in this sense.
+After that, we have tried a 3D-formation, a square-based pyramid. In order to do that we have initialized all the $x$, $y$ and $z$ positions close to zero. In figure \ref{Piramid} we can see the results obtained with our simulation. The plane chosen by the "base-agents" changes from one simulation to the others since we do not have any constraint in this sense.
 
 
 \section{Collision avoidance}
@@ -717,11 +717,11 @@ In formation control, the control laws typically consist of two components: attr
 \begin{figure}[h]
 \centering
 	\includegraphics[scale=0.25]{Collision.jpg}
-	\caption{Collision among two agents during hexagon formation}
+	\caption{Collision among two agents during hexagon formation (without collision avoidance term)}
 	\label{Collision}
 \end{figure}
 
-The control law that models the agent's dynamics up to now, has just one component, the one linked to the \textit{formation potential}, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure \ref{Collision}: two agents are in the same position at the same time). 
+The control law that models the agent's dynamics up to now, has just one component, the one linked to the formation potential, formula \ref{Formation_potential}, this was not enough in order to avoid collision among agents (as we can see in figure \ref{Collision}: two agents are in the same position at the same time). 
 
 \bigskip
 For this reason the \textbf{task 2.2} asked to introduce a second potential to avoid agent's collision. In order to do that the following proper barrier function has been used:
@@ -826,12 +826,12 @@ We have also tried to give the leaders a proper input in order to accomplish a c
 
 
 \section{Obstacle avoidance}
-\textbf{Task 2.4} asked for us to introduce obstacle avoidance in our \texttt{formation\_control} package. Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through an environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles. 
+\textbf{Task 2.4} asked for us to introduce obstacle avoidance in the formation dynamics (\texttt{formation\_control} package). Obstacle avoidance in formation control refers to the ability of a group of $N$ coordinated agents to navigate through an environment while maintaining a desired formation and avoiding collision with fixed or moving obstacles. 
 
 In order to accomplish this task, we have created a certain number of fixed obstacles as ROS2 nodes. The obstacles get their position from the launch file and communicate it to the follower agents. 
 In \texttt{the\_agent.py} we still have two dynamics: the leaders move according to the assigned input while the followers move according to the formation and trying to avoid obstacles. For this reason we have introduced in the dynamics a potential in order to avoid obstacles:
 \begin{equation}
-V_{ij}(x) = - \log( \lVert x_i - x_h\rVert ^2)
+V_{ih}(x) = - \log( \lVert x_i - x_h\rVert ^2)
 \label{Obstacles_barrier}
 \end{equation}
 where $x_h$ denotes the position of the obstacles.
@@ -842,7 +842,7 @@ The target position is assigned to the leaders in this way: when the formation i
 \begin{equation}
 x_{i,tar} = x_i(\bar{t}) + h_y, \text{     $i$ are leaders}
 \end{equation}
-where $\bar{t}$ is the time instant in which the formation is reached, and $h_y$ is a proper distance (in this case along $y$ direction). In our simulation we chose $h_y = 7$ in order to make the formation move toward the obstacles.
+where $\bar{t}$ is the time instant in which the formation is reached, and $h_y$ is a proper distance (in this case along $y$ direction). In our simulation we chose $h_y = 7$ in order to make the formation move towards the obstacles.
 
 \bigskip
 In order to steer the leaders, and as a consequence the whole formation toward the target position, we have used the following proportional controller:
@@ -886,7 +886,7 @@ A possible future development could be to train our neural network system in a t
 
 \bigskip
 In the \textbf{Second task} we have seen the power of a ROS2 implementation of formation control of network of N robotic agent, by applying a distance-based control law, and by allowing only local communication with neighbors. We have also seen how the agents are able to follow a predefined trajectory maintaining the formation very well.
-We have also explored the possibility of introducing obstacle and collision avoidance between agents and it seems to work very well. 
+Then, we explored the possibility of introducing obstacle and collision avoidance between agents and it seems to work very well. 
 
 Future additional developments could be to try the formation control according to a bearing-based control technique in such a way to have also scale invariance in addition to translation and rotation one.
 

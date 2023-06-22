@@ -12,8 +12,9 @@ The folder contains the following subfolders:
                 to change the number of obstacles modify the N_OBSTACLES parameter in the CONFIG section of "formation_control.launch.py".
 
 
-Inside each folder will be created a '_csv_file' folder containing the data (x, y) of the last simulation. 
-In order to see the plots run the "plot_csv.py" by properly setting the PLOT_TASK option in the CONFIG section.
+Inside each folder will be created a '_csv_file' folder containing the data (x, y) of the last simulation.  
+In order to see the plots run the "plot_csv.py" by properly setting the PLOT_TASK option in the CONFIG section, please pay attention to insert the right path to "_csv_file" folder.
+
 
 # How to run a simulation
 
