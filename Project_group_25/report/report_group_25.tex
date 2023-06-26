@@ -237,7 +237,7 @@ We have also performed a \textbf{balancing of the dataset} by sampling the same 
 The structure of our neural network is conical, that is, the deeper layers contain fewer neurons than the earlier layers, it is drawn in figure \ref{NN_scheme}. 
 The input layer is composed of $784$ neurons, equal to the dimension of the flattened input image. The hidden layer has only 28 neurons, as more neurons were not necessary for our task, but would simply increase the computational effort required. The last layer has just one neuron since we perform a binary classification, and thus only a number between $0$ and $1$ is required as a prediction.
 
-With respect to the structure shown in figure \ref{NN_scheme} we have added the bias (a "fake" neuron) in the code implementation.
+With respect to the structure shown in figure \ref{NN_scheme} we have added the bias (a "fake" neuron with constant value always equal to 1) in the code implementation.
 
 \bigskip
 In this setting we obtain two sets of weights, one for the connections between the input and hidden layers, while the second one is for the connections between the hidden and output layers. In particular, each neuron of the generic layer $L^t$ is connected with all the neurons of the previous layer $L^{t-1}$ plus one connection for the bias, thus each set $W^t$ contains $|L^t| \cdot (|L^{t-1}| + 1)$ weights, where $W^t$ is the set of weights associated to the $t$ layer.
@@ -260,13 +260,15 @@ The activation function we used in this project is the \textbf{sigmoid} function
 \sigma(\xi) = \frac{1}{1 + e^{-\xi}}
 \end{equation}
 
-and its derivative is:
+where $\xi = x^T u_l + u_{l_0}.$
+
+The derivative of the sigmoid function is:
 
 \begin{equation}
 \frac{d}{d\xi}\sigma(\xi) = \frac{\sigma(\xi)}{1 - \sigma(\xi)}
 \end{equation}
 
-The initial connections for our neural network have been randomly initialized according to a Gaussian distribution with zero mean and $0.01$ variance, the same for the bias.
+The connections for our neural network have been randomly initialized according to a Gaussian distribution with zero mean and $0.01$ variance, the same for the bias.
 
 \section{Training}
 The training happens as a sequence of epochs, every epoch contains multiple minibatches that are small sets of images. For each mini-batch the computations are the following:
@@ -304,7 +306,7 @@ The derivative of the loss function, with respect to the prediction $\hat{y}$, i
 The training happens in a distributed fashion: several agents run a neural network with the same structure on different training sets and communicate with neighbors according to a certain communication graph. A scheme can be seen in figure \ref{Distributed_learning}
 
 \bigskip
-In a distributed computation, the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G = (\{1, \ldots,N\}, E)$ with $N$ nodes, one for each agent. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the the pair $(i,j) \in E$ or $(j,i) \in E$.
+In a distributed computation, the communication topology is an important part of the problem. The communication between agents is modeled through a graph $G = (\{1, \ldots,N\}, E)$ where $N$ are the nodes (one for each agent) and $E$ are the edges. Since in our application we are working with undirected graphs, we can say than an agent $i$ can communicate with another agent $j$ if the the pair $(i,j) \in E$ or $(j,i) \in E$.
 
 \bigskip
 Thus, in agent's networks, the goal is to design a proper distributed algorithm, such as the \textbf{Gradient Tracking algorithm}, that allows multiple agents in the network to collectively solve an optimization problem by tracking the gradient information of a global objective function.
@@ -321,7 +323,7 @@ The formula of the algorithm are the following:
 \begin {equation}
 \begin{aligned}
 u_i^{k+1} &= \sum_{j \in N_i} a_{ij} u_j^k - \alpha s_i^k, \quad & u_i^0 \in \mathbb{R}\\
-s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k + \big( \nabla f_i(x_i^{k+1}) - \nabla f_i(x_i^k)\big) , \quad & s_i^0 = \nabla f_i(x_i^k) \\
+s_i^{k+1}   &= \sum_{j \in N_i} a_{ij} s_j^k + \big( \nabla J_i(u_i^{k+1}) - \nabla J_i(u_i^k)\big) , \quad & s_i^0 = \nabla J_i(u_i^0) \\
 \end{aligned}
 \end{equation}
 where the variable $s_i^k$ is a local estimate used as an estimation of the local descent direction, and $u_i^k$ is the local update of the connection weights. 
@@ -332,10 +334,10 @@ The assumptions required by the algorithm to converge are the following:
 \item \textit{Ass.1}: Let  $a_{ij}$, $i,j \in \{1, \ldots, N\}$ be non-negative entries of a weighted adjacency matrix A associated to the undirected and connected graph $G$, with $a_{ii}>0$ and A doubly stochastic.
 \item \textit{Ass.2}: For all $i \in \{1, \ldots, N\}$ each cost function $f_i: \mathbb{R}^d \to \mathbb{R}$ satisfies the following conditions: strongly convex with coefficient $\mu >0$, and Lipschitz continuous gradient with constant $L>0$.
 \end{itemize}
-Thanks to these assumptions it can be shown that there exists a $\alpha^*>0$ (constant stepsize) such that for all $\alpha \in (0,\alpha^*)$, the sequence of local solution estimates $\{x_i^k\}_{k\geq0}$ asymptotically converge to a (consensual) solution $\textbf{u}^*$ of the problem.
+Thanks to these assumptions it can be shown that there exists a $\alpha^*>0$ (constant stepsize) such that for all $\alpha \in (0,\alpha^*)$, the sequence of local solution estimates $\{u_i^k\}_{k\geq0}$ asymptotically converge to a (consensual) solution $\textbf{u}^*$ of the problem.
 
 \bigskip
-The adjacency matrix $A$ from which we extract the coefficient $a_{ij}$ is, as previously said, a non-negative matrix such that the entry $(i,j)$ is $a_{ij}>0$ if $(i,j)$ is and edge of the graph, $a_{ij}=0$ otherwise.
+The adjacency matrix $A$ from which we extract the coefficient $a_{ij}$ is, as previously said, a non-negative matrix such that the entry $(i,j)$ is $a_{ij}>0$ if $(i,j)$ is an edge of the graph, $a_{ij}=0$ otherwise.
 In our implementation (file \texttt{lib/graph.py}) we choose the weights according to the \textit{Metropolis Hastings} rule:
 \begin{equation}
 A_{ij} = 
@@ -348,7 +350,7 @@ A_{ij} =
 where $d_i$ and $d_j$ are the out-degrees respectively of node $i$ and $j$.
 
 \bigskip
-In our implementation of the Gradient Tracking algorithm, applied to the federated learning of a neural network,  we compute the new weights $x^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $x^{k+1}$.
+In our implementation of the Gradient Tracking algorithm, applied to the federated learning of a neural network,  we compute the new weights $u^{k+1}$ before the forward pass, contrarily the auxiliary variable $s^{k+1}$ is obtained after the backward pass since its computation requires the gradient computed with the new weights $u^{k+1}$.
 
 \section{Experiments and Results}
 For testing the network we use the test set without splitting it, in this way we can check whether the agents provide equal results, given that they should reach consensus to the same weights. 
@@ -397,7 +399,7 @@ From the plots in \ref{cycle_cost_grad} we can appreciate the evolution of the c
 	\includegraphics[width=1.08\textwidth]{cycle/gradient_log}
 	\caption{Gradient evolution in log-scale}
 	\end{subfigure}
-\caption{Evolution of the cost function and of the gradient.}
+\caption{Evolution of the cost function and the gradient.}
 \label{cycle_cost_grad}
 \end{figure}
 
@@ -478,8 +480,8 @@ In the last test, we checked the impact of the shape of the communication graph 
 We have tested three different graphs represented in figure \ref{Graphs}:
 \begin{itemize}
 \item cycle graph
-\item star graph
 \item path graph
+\item star graph
 \end{itemize}
 
 From these experiments we would expect that fewer epochs are needed in the case of a more connected graph such as the cycle than in the case of a less connected one such as the star graph.
@@ -583,7 +585,7 @@ Also, the results about consensus in \ref{diminish_weights} seems to be good but
 The aim of the task was to obtain a desired geometric formation among a group of $N$ autonomous agents, by acting on the relative positions of agents.
 
 \bigskip
-The desired formation can be encoded in terms of an undirected graph, called \textit{formation graph}, whose set of vertices is indexed by the team agents $\mathcal{N} =\{ 1, \ldots, N\}$, and whose set of edges $E=\{(i,j) \in \mathcal{N} \times \mathcal{N} | \, j \in \mathcal{N}_i\}$ contains pairs of agents. Each edge $(i,j) \in E$ is assigned a scalar parameter $d_{ij} = d_{ji} > 0$, representing the distance at which agents $i,j$ should converge to. 
+The desired formation can be encoded in terms of an undirected graph, called \textit{formation graph}, whose set of vertices is indexed by the team agents $\mathcal{N} =\{ 1, \ldots, N\}$, and whose set of edges $E=\{(i,j) \in \mathcal{N} \times \mathcal{N} | \, j \in \mathcal{N}_i\}$ contains pairs of agents, where $\mathcal{N}_i$ are the neighbors of agent $i$. Each edge $(i,j) \in E$ is assigned a scalar parameter $d_{ij} = d_{ji} > 0$, representing the distance at which agents $i,j$ should converge to. 
 
 An example could be a predefined formation with hexagon shape with the following \textit{distances matrix}:
 \begin{equation}
@@ -606,7 +608,7 @@ V_{ij}(x)  = \frac{1}{4} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg)^2
 \label{Formation_potential}
 \end{equation}
 
-This kind of potential function represents the energy associated with the relative positions of the agents. By minimizing this potential function, the agents can achieve and maintain the desired formation.
+This kind of potential function represents the energy associated with the relative positions of the agents. By minimizing this potential function, the agents can achieve and maintain the desired formation, running as dynamics the opposite of the gradient of the potential function.
 As a consequence, the control law we have implemented for each agent $i$ is the following:
 \begin{equation}
 \dot{x}_i(t) = f_i(x(t)) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j )
@@ -630,7 +632,7 @@ By means of a launch file (named \texttt{formation\_control.launch.py}), we can 
 \item distances: each agent gets only "its" row of the distances matrix. In this way it will be able to know who are its neighbors and the distances he has to keep from them in the desired configuration;
 \item maximum number of dynamic updates.
 \end{itemize}
-This file manages the dynamic evolution of the agent and the communication with the other ones (the neighbors' ones). For what regards the communication, we have used a publisher-subscriber protocol implemented in ROS2: each node communicates its id, iteration and position only to its neighbors. 
+This file manages the dynamic evolution of the agent and the communication with the other ones (the neighbors' ones). For what regards the communication, we have used a publisher-subscriber protocol implemented in ROS2: each node communicates its id, current iteration and position only to its neighbors. 
 The communication between nodes is made by creating a topic for each agent in the network and letting the neighbors subscribe to the topic, so that they can access to the published information.
 
 \bigskip
@@ -733,12 +735,12 @@ V_{ij}(x) = - \log( \lVert x_i - x_j \rVert ^2)
 
 As a result, the control law has a new term due to this potential that is the following one:
 \begin{equation}
-\dot{x}_i(t) = - 2\sum_{j \in \mathcal{N}_i} \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)}
+\dot{x}_i(t) = 2\sum_{j \in \mathcal{N}_i} \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)}
 \end{equation}
 
 And the total control law becomes:
 \begin{equation}
-\dot{x}_i(t) = - \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) - 2 \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)}
+\dot{x}_i(t) = - \Biggl( \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) - 2  \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)} \Biggr)
 \label{Dynamics_with_collision_avoidance}
 \end{equation}
 
@@ -871,6 +873,21 @@ where $k$ is a proper proportional gain.
 \label{obstacle}
 \end{figure}
 
+As a consequence the control laws implemented in this task are the following:
+\begin{equation}
+\scriptsize
+\dot{x}_i(t) = - \Biggl( \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) - 2  \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)} \Biggr) + 2  \sum_{h \in \mathcal{H}} \frac{(x_i-x_h)}{\big( \lVert x_i - x_h \rVert^2 \big)}  
+\label{follower}
+\end{equation}
+
+\begin{equation}
+\scriptsize
+\dot{x}_i(t) = - \Biggl( \sum_{j \in \mathcal{N}_i} \bigg( \lVert x_i - x_j \rVert^2 - d_{ij}^2 \bigg) (x_i - x_j ) - 2  \frac{(x_i-x_j)}{\big( \lVert x_i - x_j \rVert^2 \big)} \Biggr) + k\cdot (x_{i,tar} - x_i)
+\label{leaders}
+\end{equation}
+the \ref{follower} for the followers (i.e. $i \in \{1, \ldots, N_f\}$) and \ref{leaders} for the leaders (i.e. $i \in \{N_f+1, \ldots, N\}$), where $\mathcal{H}$ is the set of obstacles in the simulation.
+
+\bigskip
 In figure \ref{obstacle} we have represented three crucial points of the simulation. The first, \ref{obstacle}(a) represents the moment in which the formation in reached and leaders start moving toward the target. The second, \ref{obstacle}(b) represents the moment in which the formation is moving in between the window left by the obstacles: the shape of the hexagon is a bit distorted in order to allow the motion. The third, \ref{obstacle}(c), shows the moment in which the leaders reach their targets: at this point the formation has its right shape again.
 
 
