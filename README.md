@@ -4,3 +4,4 @@ Gradient Tracking Algorithm.
 2) ROS2 implementation of a discrete-time version of a formation control law including
 collision and obstacle avoidance via barrier functions.
 
+Detailed informations and project description in Report
